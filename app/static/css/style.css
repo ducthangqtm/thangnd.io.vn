@@ -1,89 +1,84 @@
-/* --- BIẾN ĐỊNH DẠNG (VARIABLES) --- */
 :root {
-  --primary: #00d2ff; /* Blue Cyber */
-  --secondary: #ff007a; /* Pink Tiểu Tuyết */
-  --bg: #050505; /* Đen sâu */
-  --card-bg: #0f0f0f; /* Màu nền ô */
-  --text: #e0e0e0;
+  --bg-body: #f8f9fa;
+  --card-white: #ffffff;
+  --text-dark: #1d1d1f;
+  --text-muted: #6e6e73;
+  --accent-blue: #0066cc;
+  --border-light: #e5e5e7;
 }
 
-/* --- CẤU HÌNH CHUNG --- */
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  overflow-x: hidden;
+  background-color: var(--bg-body);
+  color: var(--text-dark);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* --- HIỆU ỨNG CARD CYBERPUNK --- */
-.card-cyber {
-  background: var(--card-bg);
-  border: 1px solid #1a1a1a;
-  border-radius: 16px;
-  padding: 24px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.card-cyber:hover {
-  border-color: var(--primary);
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
-}
-
-/* --- XỬ LÝ ẢNH NÉT CĂNG (FIX MỜ) --- */
+/* Ảnh Profile vuông bo góc hiện đại */
 .profile-img {
-  border: 3px solid var(--primary);
-  box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
-  object-fit: cover;
-  image-rendering: -webkit-optimize-contrast; /* Giúp ảnh nét hơn trên trình duyệt */
+  width: 140px;
+  height: 140px;
+  border-radius: 20px;
+  object-cover: cover;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-.tt-img {
-  border: 3px solid var(--secondary);
-  box-shadow: 0 0 15px rgba(255, 0, 122, 0.2);
-  object-fit: cover;
-  filter: brightness(0.9) contrast(1.1); /* Tăng độ sâu cho ảnh Tiểu Tuyết */
+/* Card trắng tinh khiết */
+.card-minimal {
+  background: var(--card-white);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
-/* --- TRẠNG THÁI HỆ THỐNG --- */
-.status-pulse {
-  width: 10px;
-  height: 10px;
-  background: #39ff14;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-  animation: pulse-green 2s infinite;
+/* Skill tags kiểu nhẹ nhàng */
+.skill-tag {
+  background: #f2f2f7;
+  color: var(--text-muted);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-@keyframes pulse-green {
-  0% {
-    box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(57, 255, 20, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(57, 255, 20, 0);
-  }
+/* Khung chat Tiểu Tuyết thu nhỏ */
+.ai-widget {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 20px;
 }
 
-/* --- RESPONSIVE FIX (CHO MOBILE) --- */
-@media (max-width: 768px) {
-  .card-cyber {
-    padding: 16px;
-  }
-
-  /* Đảm bảo ảnh không bao giờ bị đè */
-  .flex-col-reverse-mobile {
-    display: flex;
-    flex-direction: column-reverse;
-  }
+.chat-box {
+  height: 150px;
+  overflow-y: auto;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
 }
 
-/* --- HIỆU ỨNG CHỮ MONO --- */
-.font-mono {
-  font-family: "Fira Code", "Courier New", monospace;
+.chat-input {
+  width: 100%;
+  background: #f5f5f7;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 10px 15px;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  background: #fff;
+}
+
+/* Uptime & Status */
+.status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #34c759;
 }

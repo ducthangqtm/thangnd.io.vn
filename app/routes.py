@@ -8,7 +8,7 @@ OPENCLAW_TOKEN = '3a65af5e56fe234825f6354c2db4fa130eaa2523dcc96c7d'
 @app.route('/')
 def index():
     skills = ['Network Infrastructure', 'Python/Flask', 'AI Automation', 'Nginx/IIS']
-    return render_template('index.html', title='Nguyễn Đức Thắng | Portfolio', skills=skills)
+    return render_template('index.html', title='Nguyễn Đức Thắng', skills=skills)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

@@ -16,31 +16,37 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+
     <link
       rel="icon"
       type="image/png"
       href="{{ url_for('static', filename='img/logo.png') }}"
     />
-
     <link
       rel="apple-touch-icon"
       href="{{ url_for('static', filename='img/logo.png') }}"
     />
-
     <link
       rel="shortcut icon"
       href="{{ url_for('static', filename='img/logo.png') }}"
     />
   </head>
-  <body class="min-h-screen p-4 md:p-12 flex flex-col items-center">
+
+  <body
+    class="bg-slate-50 text-slate-900 min-h-screen p-4 md:p-12 flex flex-col items-center selection:bg-blue-100"
+  >
     <div
-      class="w-full max-w-6xl mb-8 flex justify-between items-center border-b border-white/5 pb-4 opacity-50"
+      class="w-full max-w-6xl mb-8 flex justify-between items-center border-b border-slate-200 pb-4 opacity-70"
     >
-      <div class="text-[10px] font-mono tracking-widest uppercase">
-        System: <span class="text-blue-500">v2.0.26_Stable</span>
+      <div
+        class="text-[10px] font-mono tracking-widest uppercase text-slate-500"
+      >
+        System: <span class="text-blue-600 font-bold">v2.0.26_Stable</span>
       </div>
-      <div class="text-[10px] font-mono tracking-widest uppercase">
-        Node: <span class="text-blue-500">THANGND_CORE</span>
+      <div
+        class="text-[10px] font-mono tracking-widest uppercase text-slate-500"
+      >
+        Node: <span class="text-blue-600 font-bold">THANGND_CORE</span>
       </div>
     </div>
 
@@ -49,14 +55,14 @@
     </main>
 
     <footer
-      class="mt-12 py-8 border-t border-white/5 w-full max-w-6xl flex flex-col md:flex-row justify-between items-center text-gray-600 text-[10px] uppercase tracking-[0.2em] gap-4"
+      class="mt-12 py-8 border-t border-slate-200 w-full max-w-6xl flex flex-col md:flex-row justify-between items-center text-slate-400 text-[10px] uppercase tracking-[0.2em] gap-4"
     >
-      <div>&copy; 2026 THANGND.IO.VN</div>
+      <div class="font-semibold text-slate-500">&copy; 2026 THANGND.IO.VN</div>
       <div class="flex gap-4">
         <span>Flask Server</span>
-        <span>•</span>
+        <span class="text-slate-200">•</span>
         <span>Nginx Proxy</span>
-        <span>•</span>
+        <span class="text-slate-200">•</span>
         <span>Python 3.12</span>
       </div>
     </footer>
