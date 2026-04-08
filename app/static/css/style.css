@@ -1,0 +1,89 @@
+/* --- BIẾN ĐỊNH DẠNG (VARIABLES) --- */
+:root {
+  --primary: #00d2ff; /* Blue Cyber */
+  --secondary: #ff007a; /* Pink Tiểu Tuyết */
+  --bg: #050505; /* Đen sâu */
+  --card-bg: #0f0f0f; /* Màu nền ô */
+  --text: #e0e0e0;
+}
+
+/* --- CẤU HÌNH CHUNG --- */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* --- HIỆU ỨNG CARD CYBERPUNK --- */
+.card-cyber {
+  background: var(--card-bg);
+  border: 1px solid #1a1a1a;
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.card-cyber:hover {
+  border-color: var(--primary);
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
+}
+
+/* --- XỬ LÝ ẢNH NÉT CĂNG (FIX MỜ) --- */
+.profile-img {
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast; /* Giúp ảnh nét hơn trên trình duyệt */
+}
+
+.tt-img {
+  border: 3px solid var(--secondary);
+  box-shadow: 0 0 15px rgba(255, 0, 122, 0.2);
+  object-fit: cover;
+  filter: brightness(0.9) contrast(1.1); /* Tăng độ sâu cho ảnh Tiểu Tuyết */
+}
+
+/* --- TRẠNG THÁI HỆ THỐNG --- */
+.status-pulse {
+  width: 10px;
+  height: 10px;
+  background: #39ff14;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(57, 255, 20, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(57, 255, 20, 0);
+  }
+}
+
+/* --- RESPONSIVE FIX (CHO MOBILE) --- */
+@media (max-width: 768px) {
+  .card-cyber {
+    padding: 16px;
+  }
+
+  /* Đảm bảo ảnh không bao giờ bị đè */
+  .flex-col-reverse-mobile {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+
+/* --- HIỆU ỨNG CHỮ MONO --- */
+.font-mono {
+  font-family: "Fira Code", "Courier New", monospace;
+}

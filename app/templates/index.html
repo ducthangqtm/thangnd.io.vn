@@ -1,0 +1,154 @@
+{% extends "base.html" %} {% block content %}
+<div class="flex flex-col md:flex-row gap-8 items-start">
+  <div class="w-full md:w-1/3 sticky top-10">
+    <div class="card-cyber text-center">
+      <img
+        src="{{ url_for('static', filename='img/thangnd.png') }}"
+        class="w-32 h-32 rounded-full mx-auto mb-4 profile-img object-cover"
+      />
+      <h1 class="text-3xl font-bold text-white uppercase tracking-tighter">
+        NGUYỄN ĐỨC THẮNG
+      </h1>
+      <p class="text-blue-400 text-sm font-mono mb-6">> IT_NETWORK_ENGINEER</p>
+
+      <div class="text-left space-y-4 text-sm text-gray-400">
+        <p class="border-l-2 border-blue-500 pl-3 italic">
+          "Chuyên gia tối ưu hạ tầng mạng và xây dựng hệ thống tự động hóa."
+        </p>
+        <div class="flex flex-wrap gap-2 pt-2">
+          {% for skill in skills %}
+          <span
+            class="bg-blue-900/20 text-blue-400 px-2 py-1 rounded border border-blue-900/50 text-[10px] font-mono"
+          >
+            {{ skill }}
+          </span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="card-cyber mt-4 flex items-center justify-between border-l-4 border-l-green-500"
+    >
+      <span class="text-xs font-mono">SERVER_STATUS:</span>
+      <span class="text-green-400 text-xs font-bold tracking-widest uppercase">
+        <span class="status-pulse"></span> ONLINE
+      </span>
+    </div>
+  </div>
+
+  <div class="w-full md:w-2/3 space-y-6">
+    <div class="card-cyber overflow-hidden">
+      <div class="flex items-center gap-4 mb-4 pb-4 border-b border-white/5">
+        <img
+          src="{{ url_for('static', filename='img/tieutuyet.png') }}"
+          class="w-16 h-16 rounded-lg tt-img object-cover"
+        />
+        <div class="flex-1">
+          <h3 class="text-pink-500 font-bold text-xl uppercase tracking-widest">
+            TIỂU TUYẾT AI
+          </h3>
+          <p class="text-[10px] text-gray-500 font-mono">
+            OpenClaw Agent Service v1.0
+          </p>
+        </div>
+        <div>
+          {% if session.get('logged_in') %}
+          <a
+            href="/logout"
+            class="text-[10px] text-red-500 border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/10 transition"
+            >ĐĂNG_XUẤT</a
+          >
+          {% else %}
+          <a
+            href="/login"
+            class="text-[10px] text-pink-500 border border-pink-500/30 px-3 py-1 rounded hover:bg-pink-500/10 transition"
+            >XÁC_THỰC</a
+          >
+          {% endif %}
+        </div>
+      </div>
+
+      {% if session.get('logged_in') %}
+      <div class="bg-black/40 rounded-xl p-4 border border-white/5">
+        <div
+          id="chat-messages"
+          class="h-64 overflow-y-auto font-mono text-[11px] space-y-3 mb-4 p-2 scrollbar-hide"
+        >
+          <div class="text-pink-400 opacity-60">
+            >> Hệ thống sẵn sàng. Chào Sếp Thắng, em có thể giúp gì cho hạ tầng
+            hôm nay?
+          </div>
+        </div>
+
+        <div class="relative flex gap-2">
+          <input
+            type="text"
+            id="chat-input"
+            onkeypress="if (event.key === 'Enter') sendMessage();"
+            placeholder="Gửi lệnh cho Tiểu Tuyết..."
+            class="flex-1 bg-black/60 border border-pink-500/30 rounded-lg px-4 py-2 text-xs text-pink-100 focus:outline-none focus:border-pink-500/50 transition-all font-mono"
+          />
+          <button
+            onclick="sendMessage()"
+            class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded-lg transition active:scale-95"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 5l7 7-7 7M5 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      {% else %}
+      <div class="py-12 text-center">
+        <p class="text-gray-500 italic text-sm mb-4">
+          "Chào Sếp Thắng! Em đang giám sát cổng 5000. Vui lòng xác thực để truy
+          cập hệ thống chat."
+        </p>
+        <div class="w-24 h-1 bg-pink-500/20 mx-auto rounded-full"></div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="card-cyber group cursor-pointer" id="btn-like">
+      <div class="flex items-center gap-4">
+        <div
+          class="text-3xl grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110"
+        >
+          👍
+        </div>
+        <div>
+          <h4 class="text-white font-bold tracking-tight">KẾT NỐI VỚI THẮNG</h4>
+          <p class="text-xs text-gray-500 italic">
+            Network Engineer & Flask Developer for Hire.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-cyber text-center py-6 border-b-4 border-b-blue-500">
+      <span
+        class="text-[10px] font-mono text-gray-600 uppercase tracking-[0.3em]"
+        >System Uptime Monitor</span
+      >
+      <div
+        id="uptime"
+        class="text-2xl font-mono text-blue-400 mt-2 tracking-tighter"
+      >
+        00:00:00
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

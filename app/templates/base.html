@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body class="min-h-screen p-4 md:p-12 flex flex-col items-center">
+    <div
+      class="w-full max-w-6xl mb-8 flex justify-between items-center border-b border-white/5 pb-4 opacity-50"
+    >
+      <div class="text-[10px] font-mono tracking-widest uppercase">
+        System: <span class="text-blue-500">v2.0.26_Stable</span>
+      </div>
+      <div class="text-[10px] font-mono tracking-widest uppercase">
+        Node: <span class="text-blue-500">THANGND_CORE</span>
+      </div>
+    </div>
+
+    <main class="w-full max-w-6xl flex-grow">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer
+      class="mt-12 py-8 border-t border-white/5 w-full max-w-6xl flex flex-col md:flex-row justify-between items-center text-gray-600 text-[10px] uppercase tracking-[0.2em] gap-4"
+    >
+      <div>&copy; 2026 THANGND.IO.VN</div>
+      <div class="flex gap-4">
+        <span>Flask Server</span>
+        <span>•</span>
+        <span>Nginx Proxy</span>
+        <span>•</span>
+        <span>Python 3.12</span>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
