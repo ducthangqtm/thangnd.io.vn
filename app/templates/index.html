@@ -1,128 +1,91 @@
 {% extends "base.html" %} {% block content %}
-<div class="max-w-5xl mx-auto px-6 py-20">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-    <div class="lg:col-span-7 space-y-8">
-      <div class="flex flex-col md:flex-row items-center gap-8">
-        <img
-          src="{{ url_for('static', filename='img/thangnd.png') }}"
-          class="profile-img"
-        />
-        <div class="text-center md:text-left">
-          <h1 class="text-4xl font-bold tracking-tight text-gray-900">
-            Nguyễn Đức Thắng
-          </h1>
-          <p class="text-blue-600 font-medium mt-1">IT Network Engineer</p>
+<div class="max-w-2xl mx-auto px-4 py-16 flex flex-col items-center">
+  <div class="relative mb-8">
+    <div
+      class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-[3rem] blur opacity-20"
+    ></div>
+    <img
+      src="{{ url_for('static', filename='img/thangnd.png') }}"
+      class="relative w-40 h-40 rounded-[2.5rem] object-cover border-4 border-white shadow-2xl"
+    />
+  </div>
+
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-black text-slate-900 tracking-tight uppercase">
+      Nguyễn Đức Thắng
+    </h1>
+    <p class="text-blue-600 font-bold text-sm mt-2 uppercase tracking-[0.2em]">
+      IT Network Engineer
+    </p>
+    <p class="text-slate-500 mt-6 max-w-sm mx-auto leading-relaxed">
+      Chuyên gia tối ưu hạ tầng mạng, đam mê tự động hóa và phát triển ứng dụng
+      Python/Flask tại Bắc Ninh.
+    </p>
+  </div>
+
+  <div class="w-full space-y-4">
+    <a
+      href="{{ social.facebook }}"
+      target="_blank"
+      class="flex items-center justify-between p-5 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md hover:border-blue-200 transition-all group"
+    >
+      <div class="flex items-center gap-4">
+        <div
+          class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600"
+        >
+          <i class="fab fa-facebook-f text-xl"></i>
         </div>
+        <span class="font-bold text-slate-700">Facebook</span>
       </div>
-
-      <div class="card-minimal">
-        <p class="text-xl text-gray-600 leading-relaxed font-light">
-          "Chuyên gia tối ưu
-          <span class="text-black font-semibold">hạ tầng mạng</span> và xây dựng
-          hệ thống <span class="text-black font-semibold">tự động hóa</span> vận
-          hành doanh nghiệp."
-        </p>
-
-        <div class="flex flex-wrap gap-2 mt-6">
-          {% for skill in skills %}
-          <span class="skill-tag">{{ skill }}</span>
-          {% endfor %}
-        </div>
-      </div>
-
-      <a
-        href="#"
-        class="flex items-center justify-between p-6 bg-white border border-gray-100 rounded-2xl hover:shadow-md transition-shadow group"
-        id="btn-like"
+      <span
+        class="text-slate-300 group-hover:translate-x-1 transition-transform"
+        >→</span
       >
-        <div class="flex items-center gap-4">
-          <span class="text-2xl">👋</span>
-          <div>
-            <h4 class="font-bold text-gray-900">Kết nối với Thắng</h4>
-            <p class="text-sm text-gray-500">
-              Network Engineer & Flask Developer
-            </p>
-          </div>
-        </div>
-        <span class="text-gray-300 group-hover:text-blue-600 transition-colors"
-          >→</span
-        >
-      </a>
-    </div>
+    </a>
 
-    <div class="lg:col-span-5 space-y-6">
-      <div class="ai-widget shadow-sm">
+    <a
+      href="{{ social.zalo }}"
+      target="_blank"
+      class="flex items-center justify-between p-5 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md hover:border-blue-200 transition-all group"
+    >
+      <div class="flex items-center gap-4">
         <div
-          class="flex items-center justify-between mb-4 pb-4 border-b border-gray-50"
+          class="w-12 h-12 bg-cyan-50 rounded-2xl flex items-center justify-center text-cyan-600 font-black text-xs"
         >
-          <div class="flex items-center gap-3">
-            <img
-              src="{{ url_for('static', filename='img/tieutuyet.png') }}"
-              class="w-8 h-8 rounded-full border border-pink-100"
-            />
-            <span
-              class="text-xs font-bold uppercase tracking-widest text-pink-600"
-              >Tiểu Tuyết AI</span
-            >
-          </div>
-          {% if session.get('logged_in') %}
-          <a
-            href="/logout"
-            class="text-[10px] text-gray-400 hover:text-red-500 font-bold uppercase"
-            >Log out</a
-          >
-          {% else %}
-          <a
-            href="/login"
-            class="text-[10px] text-pink-500 hover:text-pink-600 font-bold uppercase"
-            >Auth</a
-          >
-          {% endif %}
+          ZALO
         </div>
-
-        {% if session.get('logged_in') %}
-        <div id="chat-messages" class="chat-box mb-4 pr-2">
-          <div
-            class="p-3 bg-gray-50 rounded-2xl rounded-tl-none italic text-gray-500"
-          >
-            >> Chào Sếp Thắng! Em đang trực cổng 5000.
-          </div>
-        </div>
-        <input
-          type="text"
-          id="chat-input"
-          onkeypress="if (event.key === 'Enter') sendMessage();"
-          placeholder="Gửi tin nhắn..."
-          class="chat-input"
-        />
-        {% else %}
-        <p class="text-[11px] text-gray-400 text-center py-4">
-          Hệ thống chat đã khóa. Vui lòng xác thực.
-        </p>
-        {% endif %}
+        <span class="font-bold text-slate-700">Zalo Cá Nhân</span>
       </div>
+      <span
+        class="text-slate-300 group-hover:translate-x-1 transition-transform"
+        >→</span
+      >
+    </a>
 
-      <div class="grid grid-cols-2 gap-4">
+    <a
+      href="{{ social.x }}"
+      target="_blank"
+      class="flex items-center justify-between p-5 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md hover:border-slate-300 transition-all group"
+    >
+      <div class="flex items-center gap-4">
         <div
-          class="p-4 bg-white border border-gray-100 rounded-2xl text-center"
+          class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white"
         >
-          <p class="text-[9px] text-gray-400 uppercase font-bold mb-1">
-            Server Status
-          </p>
-          <span class="status-pill">● Online</span>
+          <i class="fab fa-x-twitter text-xl"></i>
         </div>
-        <div
-          class="p-4 bg-white border border-gray-100 rounded-2xl text-center"
-        >
-          <p class="text-[9px] text-gray-400 uppercase font-bold mb-1">
-            System Uptime
-          </p>
-          <span id="uptime" class="text-xs font-mono font-bold text-gray-700"
-            >00:00:00</span
-          >
-        </div>
+        <span class="font-bold text-slate-700">X (Twitter)</span>
       </div>
-    </div>
+      <span
+        class="text-slate-300 group-hover:translate-x-1 transition-transform"
+        >→</span
+      >
+    </a>
+  </div>
+
+  <div
+    class="mt-16 text-slate-400 text-[10px] font-medium uppercase tracking-widest"
+  >
+    © 2026 THANGND.IO.VN • POWERED BY FLASK
   </div>
 </div>
 {% endblock %}

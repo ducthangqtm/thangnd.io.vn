@@ -1,27 +1,24 @@
-# ⚡ THANGND.IO.VN - Cyberpunk Portfolio & AI Assistant
+# 🚀 NGUYEN DUC THANG - PORTFOLIO
 
-Dự án trang web cá nhân tích hợp trợ lý ảo **Tiểu Tuyết AI**, được xây dựng tối ưu cho việc quản trị hệ thống và tự động hóa.
+Giao diện Bio Link cá nhân được xây dựng trên nền tảng **Flask**, tối ưu hóa cho tốc độ và khả năng hiển thị đa thiết bị. Dự án được thiết kế theo phong cách tối giản (Minimalism) dành riêng cho kỹ sư hệ thống.
 
-## 🌌 Overview
-Giao diện được thiết kế theo phong cách **Cyberpunk Terminal**, mang lại trải nghiệm chuyên nghiệp cho dân IT Network. Hệ thống không chỉ là Portfolio mà còn là giao diện điều khiển Agent thông qua **OpenClaw Gateway**.
+## 🛠️ Cấu trúc hệ thống (Clean Architecture)
 
-## 🛠️ Tech Stack
-- **Backend:** Python 3.12 / Flask Framework
-- **Frontend:** HTML5, Tailwind CSS, JavaScript (ES6+)
-- **AI Integration:** OpenClaw Gateway (Port 18789)
-- **Model:** Step-3.5-Flash (via OpenRouter)
+Dự án được rút gọn tối đa, không sử dụng Database rườm rà, tập trung vào hiệu suất:
 
-## 🚀 Tính năng chính
-- [x] **Responsive Design:** Hiển thị nét căng trên cả PC và Mobile.
-- [x] **Secure Auth:** Hệ thống đăng nhập bảo vệ quyền truy cập Agent.
-- [x] **Real-time Chat:** Kết nối trực tiếp với Tiểu Tuyết AI không cần load lại trang.
-- [x] **Uptime Monitor:** Giả lập giám sát trạng thái hệ thống thời gian thực.
+- **Backend:** Flask (Python 3.x)
+- **Frontend:** Tailwind CSS (via CDN) & FontAwesome
+- **Deployment:** Cấu hình sẵn sàng cho Nginx / Gunicorn trên môi trường Windows/Linux.
 
-## 🛠️ Hướng dẫn cài đặt nhanh (Local)
-1. Kích hoạt môi trường ảo: `venv\Scripts\activate`
-2. Cài đặt thư viện: `pip install -r requirements.txt`
-3. Khởi chạy OpenClaw Gateway tại máy chủ (Port 18789)
-4. Chạy ứng dụng: `python run.py`
+## 📂 Sơ đồ thư mục
 
----
-*© 2026 Developed by ThangND. Powered by Flask & Nginx.*
+```text
+thangnd.io.vn/
+├── app/
+│   ├── static/          # Assets: Profile images, CSS
+│   ├── templates/       # Jinja2 Templates: index, base
+│   ├── __init__.py      # Flask Application Factory
+│   └── routes.py        # Main Routing (Bio Links)
+├── serve.py             # Entry point (Development Server)
+└── requirements.txt     # Danh sách thư viện
+```

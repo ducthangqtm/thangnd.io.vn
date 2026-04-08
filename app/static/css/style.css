@@ -1,84 +1,55 @@
-:root {
-  --bg-body: #f8f9fa;
-  --card-white: #ffffff;
-  --text-dark: #1d1d1f;
-  --text-muted: #6e6e73;
-  --accent-blue: #0066cc;
-  --border-light: #e5e5e7;
-}
+/* Font chữ hiện đại */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap");
 
 body {
-  background-color: var(--bg-body);
-  color: var(--text-dark);
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
+  background-color: #f8fafc; /* Slate 50 */
   -webkit-font-smoothing: antialiased;
 }
 
-/* Ảnh Profile vuông bo góc hiện đại */
-.profile-img {
-  width: 140px;
-  height: 140px;
-  border-radius: 20px;
-  object-cover: cover;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+/* Hiệu ứng đổ bóng đổ sâu cho ảnh Profile */
+.shadow-2xl {
+  shadow-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 }
 
-/* Card trắng tinh khiết */
-.card-minimal {
-  background: var(--card-white);
-  border: 1px solid var(--border-light);
-  border-radius: 24px;
-  padding: 30px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+/* Hiệu ứng hover cho các nút liên kết */
+.transition-all {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Skill tags kiểu nhẹ nhàng */
-.skill-tag {
-  background: #f2f2f7;
-  color: var(--text-muted);
-  padding: 6px 16px;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 500;
+/* Bo góc siêu tròn trịa đúng kiểu Apple/Bento */
+.rounded-3xl {
+  border-radius: 1.75rem;
 }
 
-/* Khung chat Tiểu Tuyết thu nhỏ */
-.ai-widget {
-  background: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: 20px;
-  padding: 20px;
+/* Tinh chỉnh Icon cho Zalo vì nó không có trong FontAwesome chuẩn */
+.bg-cyan-50 {
+  background-color: #ecfeff;
 }
 
-.chat-box {
-  height: 150px;
-  overflow-y: auto;
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.6;
+/* Đảm bảo trang web luôn hiển thị đẹp trên điện thoại */
+@media (max-width: 640px) {
+  .max-w-2xl {
+    padding-top: 2rem;
+  }
+  h1 {
+    font-size: 1.875rem !important; /* text-3xl */
+  }
 }
 
-.chat-input {
-  width: 100%;
-  background: #f5f5f7;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  padding: 10px 15px;
-  font-size: 13px;
-  transition: all 0.2s;
+/* Hiệu ứng hiện dần khi load trang */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.chat-input:focus {
-  outline: none;
-  border-color: var(--accent-blue);
-  background: #fff;
-}
-
-/* Uptime & Status */
-.status-pill {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #34c759;
+.max-w-2xl {
+  animation: fadeInUp 0.6s ease-out;
 }
