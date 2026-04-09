@@ -1,6 +1,31 @@
+# Python rác
 venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Môi trường & Bảo mật
 .env
+.flaskenv
 instance/
+
+# Database
+*.sqlite
+*.db
+
+# Static & Uploads (Chỉ đẩy folder, không đẩy ảnh)
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+
+# IDE & OS
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# Build & Dist
+dist/
+build/
+*.egg-info/

@@ -1,0 +1,107 @@
+{% extends "base.html" %} {% block content %}
+<div
+  style="background-color: #0f172a; min-height: 100vh; width: 100%"
+  class="animate-fade-in"
+>
+  <div class="max-w-4xl mx-auto px-6 py-16">
+    <h2 class="text-2xl font-black text-white uppercase mb-8 text-center">
+      Viết bài Blog chuyên nghiệp
+    </h2>
+
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      class="glass-card p-8 rounded-[2.5rem] space-y-6"
+    >
+      <div>
+        <label class="block text-[#d4af37] text-xs font-bold uppercase mb-2"
+          >Tiêu đề bài viết</label
+        >
+        <input
+          type="text"
+          name="title"
+          required
+          class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 transition-all"
+        />
+      </div>
+
+      <div>
+        <label class="block text-[#d4af37] text-xs font-bold uppercase mb-2"
+          >Ảnh bìa bài viết (Thumbnail)</label
+        >
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          class="w-full text-white/60 text-sm cursor-pointer"
+        />
+      </div>
+
+      <div>
+        <label class="block text-[#d4af37] text-xs font-bold uppercase mb-2"
+          >Nội dung chi tiết</label
+        >
+        <div class="editor-container text-black">
+          <textarea name="content" id="editor"></textarea>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full p-4 cv-button text-white font-bold rounded-2xl shadow-lg hover:scale-[1.02] transition-all"
+      >
+        XUẤT BẢN BÀI VIẾT
+      </button>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+  ClassicEditor.create(document.querySelector("#editor"), {
+    // Thêm 'uploadImage' vào thanh công cụ
+    toolbar: [
+      "heading",
+      "|",
+      "bold",
+      "italic",
+      "link",
+      "uploadImage",
+      "insertTable",
+      "blockQuote",
+      "bulletedList",
+      "numberedList",
+      "|",
+      "undo",
+      "redo",
+    ],
+    // Cấu hình đường dẫn để CKEditor gửi ảnh lên Flask
+    ckfinder: {
+      uploadUrl: "{{ url_for('upload_image_content') }}",
+    },
+  })
+    .then((editor) => {
+      console.log("Editor initialized");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+</script>
+
+<style>
+  .ck-editor__editable {
+    min-height: 450px;
+    border-radius: 0 0 15px 15px !important;
+  }
+  .ck-toolbar {
+    border-radius: 15px 15px 0 0 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+  }
+  /* Đảm bảo ảnh trong editor không bị tràn */
+  .ck-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+  }
+</style>
+{% endblock %}

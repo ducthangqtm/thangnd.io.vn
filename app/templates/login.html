@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block content %}
+<div class="min-h-screen flex items-center justify-center bg-[#0f172a]">
+  <div
+    class="glass-card p-10 rounded-[2.5rem] w-full max-w-md shadow-2xl animate-fade-in"
+  >
+    <div class="text-center mb-8">
+      <div
+        class="w-20 h-20 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <i class="fa-solid fa-shield-halved text-blue-400 text-3xl"></i>
+      </div>
+      <h2 class="text-2xl font-black text-white uppercase tracking-widest">
+        Hệ thống Quản trị
+      </h2>
+      <p class="text-white/40 text-xs mt-2 font-medium">
+        VUI LÒNG XÁC THỰC QUYỀN TRUY CẬP
+      </p>
+    </div>
+
+    <form method="POST" class="space-y-6">
+      <input
+        type="text"
+        name="username"
+        placeholder="Tài khoản"
+        required
+        class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-blue-500 outline-none transition-all"
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Mật khẩu"
+        required
+        class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-blue-500 outline-none transition-all"
+      />
+      <button
+        type="submit"
+        class="w-full p-4 cv-button text-white font-bold rounded-2xl shadow-lg"
+      >
+        ĐĂNG NHẬP
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

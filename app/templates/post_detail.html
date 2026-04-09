@@ -1,0 +1,129 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  .post-body-content img {
+    display: block !important;
+    margin: 2rem auto !important; /* Căn giữa ảnh */
+    max-width: 100% !important; /* Không tràn màn hình điện thoại */
+    width: auto !important; /* Giữ tỷ lệ */
+    max-height: 450px !important; /* ÉP CHIỀU CAO TỐI ĐA - Anh có thể chỉnh số này */
+    object-fit: cover !important; /* Chống méo ảnh */
+    border-radius: 1.5rem !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  }
+  /* LOẠI BỎ HIỆU ỨNG NỔI LÊN (HOVER) CHO KHỐI NỘI DUNG */
+  .post-body-container:hover {
+    transform: none !important; /* Không cho nhích lên */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important; /* Giữ nguyên bóng đổ hoặc chỉnh nhẹ */
+  }
+</style>
+
+<div
+  style="background-color: #0f172a; min-height: 100vh; width: 100%"
+  class="animate-fade-in"
+>
+  <article class="max-w-3xl mx-auto px-6 py-12">
+    <div class="mb-10">
+      <a
+        href="/blog"
+        class="text-white/50 hover:text-white transition-colors flex items-center gap-2 text-sm uppercase font-bold tracking-widest"
+      >
+        <i class="fa-solid fa-chevron-left"></i> Tất cả bài viết
+      </a>
+    </div>
+
+    <header class="mb-10">
+      <span class="text-[#d4af37] font-black text-xs uppercase tracking-[0.3em]"
+        >{{ post.author }}</span
+      >
+      <h1 class="text-3xl md:text-4xl font-black text-white mt-4 leading-tight">
+        {{ post.title }}
+      </h1>
+      <div class="flex items-center gap-4 mt-6 text-white/40 text-sm">
+        <span
+          ><i class="fa-regular fa-calendar-check mr-2"></i>{{
+          post.date_posted.strftime('%d tháng %m, %Y') }}</span
+        >
+      </div>
+    </header>
+
+    <div
+      class="post-body-container glass-card p-8 md:p-12 rounded-[2.5rem] text-white/80 leading-relaxed text-lg prose prose-invert max-w-none shadow-2xl"
+    >
+      {{ post.content | safe }}
+    </div>
+
+    <div class="mt-16 border-t border-white/10 pt-10">
+      <h3
+        class="text-[#d4af37] font-black mb-8 uppercase tracking-widest text-sm flex items-center gap-2"
+      >
+        <i class="fa-solid fa-comments"></i> Bình luận hệ thống
+      </h3>
+
+      {% if current_user.is_authenticated %}
+      <form
+        action="{{ url_for('add_comment', post_id=post.id) }}"
+        method="POST"
+        class="mb-12"
+      >
+        <textarea
+          name="comment_body"
+          required
+          class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-blue-500 transition-all"
+          placeholder="Viết bình luận của bạn..."
+          rows="3"
+        ></textarea>
+        <button
+          type="submit"
+          class="mt-3 cv-button px-8 py-2 rounded-xl text-white font-bold text-[10px] uppercase tracking-widest shadow-lg"
+        >
+          GỬI BÌNH LUẬN
+        </button>
+      </form>
+      {% else %}
+      <div
+        class="bg-blue-500/10 border border-blue-500/20 p-4 rounded-2xl mb-12 text-center"
+      >
+        <p class="text-white/40 text-sm italic">
+          Vui lòng
+          <a href="/login" class="text-blue-400 font-bold hover:underline"
+            >Đăng nhập</a
+          >
+          để tham gia thảo luận.
+        </p>
+      </div>
+      {% endif %}
+
+      <div class="space-y-6">
+        {% for comment in post.comments | sort(attribute='date_posted',
+        reverse=True) %}
+        <div class="glass-card p-6 rounded-3xl border border-white/5">
+          <div class="flex justify-between items-center mb-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 font-bold text-xs uppercase"
+              >
+                {{ comment.author_info.name[0] }}
+              </div>
+              <span
+                class="text-white font-bold text-xs uppercase tracking-wider"
+                >{{ comment.author_info.name }}</span
+              >
+            </div>
+            <span class="text-white/30 text-[9px] font-medium"
+              >{{ comment.date_posted.strftime('%H:%M - %d/%m/%Y') }}</span
+            >
+          </div>
+          <p class="text-white/70 text-sm leading-relaxed">
+            {{ comment.body }}
+          </p>
+        </div>
+        {% else %}
+        <p class="text-white/20 text-center text-xs italic py-10">
+          Chưa có bình luận nào. Hãy là người đầu tiên thảo luận!
+        </p>
+        {% endfor %}
+      </div>
+    </div>
+  </article>
+</div>
+{% endblock %}

@@ -13,6 +13,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Ép tên Nguyễn Đức Thắng nhỏ lại một chút và thanh thoát hơn */
+h1 {
+  font-size: 2.25rem !important; /* Tương đương text-3xl, nhỏ hơn 4xl cũ */
+  letter-spacing: -0.025em !important;
+  line-height: 1.2 !important;
+}
+
 /* 2. Hiệu ứng Glassmorphism & Card */
 .glass-card {
   background: rgba(30, 41, 59, 0.7) !important;
@@ -20,12 +27,24 @@ body {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* THÊM DÒNG NÀY ĐỂ KHÔNG BỊ LẸM */
+  overflow: visible !important;
 }
 
 .glass-card:hover {
   background: rgba(51, 65, 85, 0.9) !important;
-  transform: translateY(-3px);
-  border-color: rgba(212, 175, 55, 0.4) !important; /* Ánh vàng kim khi hover */
+  transform: translateY(-5px) scale(1.05); /* Cho cả khung bay lên và to ra nhẹ */
+  border-color: rgba(212, 175, 55, 0.4) !important;
+  z-index: 10; /* Đảm bảo khi to ra nó đè lên trên các thứ khác, không bị lẹm */
+}
+
+/* Nếu anh đang để hiệu ứng phóng to riêng cho icon (thẻ i hoặc svg) */
+.glass-card:hover i,
+.glass-card:hover svg,
+.glass-card:hover span {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
 
 /* 3. Nút CV rực rỡ (Navy Blue Gradient) */
@@ -36,10 +55,12 @@ body {
 
   /* Giới hạn chiều rộng bằng dàn icon và căn giữa */
   width: 100%;
-  max-width: 420px;
+  max-width: 420px; /* Độ rộng này sẽ giúp nút bao quát dàn icon phía dưới rất đẹp */
   margin-left: auto;
   margin-right: auto;
   display: flex !important;
+  justify-content: space-between; /* Giữ mũi tên và text ở 2 đầu nút */
+  align-items: center;
 }
 
 .cv-button:hover {
@@ -61,4 +82,51 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+/* 5. Nút Blog (AI & Kỹ thuật) */
+.blog-button {
+  /* Giữ phong cách Glassmorphism */
+  background: rgba(30, 41, 59, 0.7) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.3s ease;
+
+  /* Cấu hình kích thước chuẩn 420px và căn giữa */
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.blog-button:hover {
+  background: rgba(51, 65, 85, 0.9) !important;
+  transform: translateY(-2px) scale(1.01);
+  border-color: rgba(59, 130, 246, 0.5) !important; /* Ánh xanh nhẹ khi hover */
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3) !important;
+}
+/* Fix triệt để ảnh trong bài viết */
+.post-content img {
+  display: block;
+  margin: 2rem auto; /* Căn giữa và tạo khoảng cách trên dưới */
+
+  width: 100%;
+  max-width: 500px !important; /* Chiều ngang vừa phải */
+
+  /* Ép tỷ lệ khung hình 4:3 hoặc 16:9 để ảnh không bao giờ quá cao */
+  aspect-ratio: 4 / 3 !important;
+
+  /* Ép chiều cao tối đa (phòng hờ) */
+  max-height: 400px !important;
+
+  /* Quan trọng: Cắt ảnh vừa khung, không làm méo mặt */
+  object-fit: cover !important;
+  object-position: center; /* Luôn lấy phần giữa ảnh */
+
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }

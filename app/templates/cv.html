@@ -49,12 +49,12 @@
           <h1
             class="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none"
           >
-            {{ p.name }}
+            Nguyễn Đức Thắng
           </h1>
           <p
             class="text-[#d4af37] font-bold text-sm mt-3 uppercase tracking-widest"
           >
-            {{ p.title }}
+            Senior IT Network Engineer
           </p>
           <p
             class="text-slate-400 mt-4 max-w-lg text-xs md:text-sm leading-relaxed"
@@ -70,18 +70,18 @@
         class="glass-card p-6 rounded-3xl space-y-3 w-full md:w-auto text-[13px] border border-white/10 shadow-2xl"
       >
         <p class="flex items-center gap-3 text-slate-200">
-          <i class="fa-solid fa-phone text-[#d4af37] w-4 text-center"></i> {{
-          p.phone }}
+          <i class="fa-solid fa-phone text-[#d4af37] w-4 text-center"></i>
+          0986.192.092
         </p>
         <p class="flex items-center gap-3 text-slate-200">
-          <i class="fa-solid fa-envelope text-[#d4af37] w-4 text-center"></i> {{
-          p.email }}
+          <i class="fa-solid fa-envelope text-[#d4af37] w-4 text-center"></i>
+          ducthangqtm@gmail.com
         </p>
         <p class="flex items-center gap-3 text-slate-200">
           <i
             class="fa-solid fa-location-dot text-[#d4af37] w-4 text-center"
           ></i>
-          {{ p.address }}
+          Số 12, Thịnh Liên. Phù Đổng, Hà Nội
         </p>
       </div>
     </div>
@@ -98,7 +98,9 @@
             >Kỹ năng
           </h2>
           <div class="flex flex-wrap gap-2">
-            {% for skill in p.skills %}
+            {% set skills = ["Python (Flask)", "Network Design", "Azure/O365",
+            "Cisco/Juniper Swtich", "Automation Marketing/Scripts"] %} {% for
+            skill in skills %}
             <span
               class="px-3 py-1 bg-white/5 text-slate-300 rounded-lg text-[11px] font-semibold border border-white/10 hover:border-[#d4af37]/50 transition-colors"
             >
@@ -118,17 +120,26 @@
             >Học vấn
           </h2>
           <div class="space-y-6">
-            {% for edu in p.education %}
             <div class="relative pl-5 border-l border-white/10">
               <div
                 class="absolute -left-[4.5px] top-1.5 w-2 h-2 bg-[#d4af37] rounded-full"
               ></div>
               <p class="font-bold text-white text-xs leading-tight">
-                {{ edu.school }}
+                Đại học Điện Lực
               </p>
-              <p class="text-slate-500 text-[11px] mt-1">{{ edu.major }}</p>
+              <p class="text-slate-500 text-[11px] mt-1">Công nghệ thông tin</p>
             </div>
-            {% endfor %}
+            <div class="relative pl-5 border-l border-white/10">
+              <div
+                class="absolute -left-[4.5px] top-1.5 w-2 h-2 bg-[#d4af37] rounded-full"
+              ></div>
+              <p class="font-bold text-white text-xs leading-tight">
+                Bách Khoa - Aptech
+              </p>
+              <p class="text-slate-500 text-[11px] mt-1">
+                Quản trị mạng và bảo mật hệ thống HDSM
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -144,12 +155,10 @@
         </h2>
 
         <div class="space-y-12">
-          {% for exp in p.experience %}
           <div class="relative pl-8 border-l-2 border-white/5 pb-2">
             <div
               class="absolute -left-[9px] top-0.5 w-4 h-4 bg-[#0f172a] rounded-full border-2 border-[#d4af37] shadow-lg"
             ></div>
-
             <div
               class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2"
             >
@@ -157,37 +166,177 @@
                 <h3
                   class="font-black text-white uppercase text-lg tracking-tight leading-tight"
                 >
-                  {{ exp.company }}
+                  Behn Meyer Việt Nam - Chi nhánh Bắc Ninh
                 </h3>
                 <p
                   class="text-[#d4af37] font-bold text-[11px] mt-1 uppercase tracking-wider"
                 >
-                  {{ exp.role }}
+                  IT Network Engineer
                 </p>
               </div>
               <span
                 class="whitespace-nowrap text-[10px] font-black text-slate-400 bg-white/5 px-3 py-1 rounded-full border border-white/10 italic"
+                >04/2025 - Hiện tại</span
               >
-                {{ exp.time }}
-              </span>
             </div>
-
             <ul class="space-y-3">
-              {% for task in exp.tasks %}
               <li
                 class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
               >
-                <span class="text-[#d4af37] mt-1 text-[12px]">
-                  <i class="fa-solid fa-square-check"></i>
-                </span>
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
                 <span class="group-hover:text-slate-200 transition-colors"
-                  >{{ task }}</span
+                  >Quản trị toàn bộ hạ tầng mạng và hệ thống CNTT tại chi nhánh
+                  Bắc Ninh.</span
                 >
               </li>
-              {% endfor %}
+              <li
+                class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
+              >
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
+                <span class="group-hover:text-slate-200 transition-colors"
+                  >Đảm bảo sự vận hành ổn định cho hệ thống LAN/WAN, Wifi và các
+                  thiết bị ngoại vi.</span
+                >
+              </li>
+              <li
+                class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
+              >
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
+                <span class="group-hover:text-slate-200 transition-colors"
+                  >Hỗ trợ người dùng cuối (End-user support) và quản trị hệ
+                  thống phần cứng/phần mềm doanh nghiệp.</span
+                >
+              </li>
+              <li
+                class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
+              >
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
+                <span class="group-hover:text-slate-200 transition-colors"
+                  >Ứng dụng Python/Flask xây dựng hệ thống tự động hóa đơn hàng
+                  tối ưu quy trình phối hợp vận chuyển.</span
+                >
+              </li>
             </ul>
           </div>
-          {% endfor %}
+
+          <div class="relative pl-8 border-l-2 border-white/5 pb-2">
+            <div
+              class="absolute -left-[9px] top-0.5 w-4 h-4 bg-[#0f172a] rounded-full border-2 border-[#d4af37] shadow-lg"
+            ></div>
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2"
+            >
+              <div>
+                <h3
+                  class="font-black text-white uppercase text-lg tracking-tight leading-tight"
+                >
+                  DB Schenker Việt Nam
+                </h3>
+                <p
+                  class="text-[#d4af37] font-bold text-[11px] mt-1 uppercase tracking-wider"
+                >
+                  IT Network Engineer
+                </p>
+              </div>
+              <span
+                class="whitespace-nowrap text-[10px] font-black text-slate-400 bg-white/5 px-3 py-1 rounded-full border border-white/10 italic"
+                >10/2016 - 03/2025</span
+              >
+            </div>
+            <ul class="space-y-3">
+              <li
+                class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
+              >
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
+                <span class="group-hover:text-slate-200 transition-colors"
+                  >Thiết kế và triển khai hạ tầng mạng cho hệ thống kho vận quy
+                  mô lớn (30,000 - 40,000 m2).</span
+                >
+              </li>
+              <li
+                class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
+              >
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
+                <span class="group-hover:text-slate-200 transition-colors"
+                  >Quản lý hơn 500 thiết bị IT, vận hành hệ thống Server, LAN,
+                  Vlans, Wifi công nghiệp.</span
+                >
+              </li>
+              <li
+                class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
+              >
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
+                <span class="group-hover:text-slate-200 transition-colors"
+                  >Quản trị Azure Domain, Office 365 và hỗ trợ kỹ thuật cho các
+                  hệ thống ERP (WMS, SAP).</span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="relative pl-8 border-l-2 border-white/5 pb-2">
+            <div
+              class="absolute -left-[9px] top-0.5 w-4 h-4 bg-[#0f172a] rounded-full border-2 border-[#d4af37] shadow-lg"
+            ></div>
+            <div
+              class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2"
+            >
+              <div>
+                <h3
+                  class="font-black text-white uppercase text-lg tracking-tight leading-tight"
+                >
+                  Srithai Hà Nội
+                </h3>
+                <p
+                  class="text-[#d4af37] font-bold text-[11px] mt-1 uppercase tracking-wider"
+                >
+                  IT Support Engineer
+                </p>
+              </div>
+              <span
+                class="whitespace-nowrap text-[10px] font-black text-slate-400 bg-white/5 px-3 py-1 rounded-full border border-white/10 italic"
+                >11/2015 - 08/2016</span
+              >
+            </div>
+            <ul class="space-y-3">
+              <li
+                class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
+              >
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
+                <span class="group-hover:text-slate-200 transition-colors"
+                  >Xây dựng hạ tầng mạng nội bộ, hệ thống Camera giám sát và
+                  mạng điện thoại công ty.</span
+                >
+              </li>
+              <li
+                class="text-slate-400 text-[13px] leading-relaxed flex items-start gap-3 group/item"
+              >
+                <span class="text-[#d4af37] mt-1 text-[12px]"
+                  ><i class="fa-solid fa-square-check"></i
+                ></span>
+                <span class="group-hover:text-slate-200 transition-colors"
+                  >Quản trị người dùng và hỗ trợ kỹ thuật phần mềm ERP Microsoft
+                  Dynamics AX.</span
+                >
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

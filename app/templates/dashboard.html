@@ -1,0 +1,201 @@
+{% extends "base.html" %} {% block content %}
+<div
+  style="background-color: #0f172a; min-height: 100vh; width: 100%"
+  class="animate-fade-in py-16"
+>
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-2xl font-black text-white uppercase tracking-tight">
+          Quản lý bài viết
+        </h2>
+        <p
+          class="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-1"
+        >
+          Nội dung Blog & Kỹ thuật
+        </p>
+      </div>
+      <a
+        href="{{ url_for('add_post') }}"
+        class="cv-button px-6 py-3 rounded-xl text-white text-xs font-bold uppercase shadow-lg"
+      >
+        + VIẾT BÀI MỚI
+      </a>
+    </div>
+
+    <div
+      class="glass-card rounded-[2rem] overflow-hidden mb-16 border border-white/5"
+    >
+      <table class="w-full text-left text-white text-sm">
+        <thead
+          class="bg-white/5 text-[#d4af37] text-[10px] uppercase tracking-[0.2em]"
+        >
+          <tr>
+            <th class="px-6 py-5">Tiêu đề bài viết</th>
+            <th class="px-6 py-5">Ngày đăng</th>
+            <th class="px-6 py-5 text-right">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5">
+          {% for post in posts %}
+          <tr class="hover:bg-white/[0.02] transition-all group">
+            <td
+              class="px-6 py-5 font-bold text-white/90 group-hover:text-[#d4af37] transition-colors"
+            >
+              {{ post.title }}
+            </td>
+            <td class="px-6 py-5 text-white/40 font-mono text-xs">
+              {{ post.date_posted.strftime('%d/%m/%Y') }}
+            </td>
+            <td class="px-6 py-5 text-right space-x-4">
+              <a
+                href="{{ url_for('edit_post', id=post.id) }}"
+                class="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                <i class="fa-solid fa-pen-to-square"></i>
+              </a>
+              {% if current_user.role == 'admin' %}
+              <a
+                href="{{ url_for('delete_post', id=post.id) }}"
+                onclick="
+                  return confirm('Anh Thắng chắc chắn muốn xóa bài này chứ?');
+                "
+                class="text-red-500/50 hover:text-red-500 transition-colors"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+              </a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if current_user.role == 'admin' %}
+    <div class="mb-8">
+      <h2 class="text-2xl font-black text-white uppercase tracking-tight">
+        Quản lý thành viên
+      </h2>
+      <p
+        class="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-1"
+      >
+        Phân quyền & Khởi tạo người dùng
+      </p>
+    </div>
+
+    <div
+      class="glass-card p-8 rounded-[2rem] mb-8 border border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.1)]"
+    >
+      <form
+        action="{{ url_for('admin_create_user') }}"
+        method="POST"
+        class="grid grid-cols-1 md:grid-cols-4 gap-4"
+      >
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          required
+          class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all"
+        />
+        <input
+          type="text"
+          name="full_name"
+          placeholder="Họ và tên"
+          required
+          class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Mật khẩu"
+          required
+          class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all"
+        />
+        <select
+          name="role"
+          class="bg-slate-800 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] appearance-none"
+        >
+          <option value="member">Member (Khách)</option>
+          <option value="mod">Moderator (Sửa bài)</option>
+          <option value="admin">Admin (Toàn quyền)</option>
+        </select>
+        <button
+          type="submit"
+          class="md:col-span-4 bg-[#d4af37] text-[#0f172a] font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest"
+        >
+          Tạo tài khoản mới
+        </button>
+      </form>
+    </div>
+
+    <div
+      class="glass-card rounded-[2rem] overflow-hidden border border-white/5"
+    >
+      <table class="w-full text-left text-white text-sm">
+        <thead
+          class="bg-white/5 text-blue-400 text-[10px] uppercase tracking-[0.2em]"
+        >
+          <tr>
+            <th class="px-6 py-5">Tên thành viên</th>
+            <th class="px-6 py-5">Quyền hạn</th>
+            <th class="px-6 py-5 text-right">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5">
+          {% for user in users %}
+          <tr class="hover:bg-white/[0.02] transition-all">
+            <td class="px-6 py-5">
+              <div class="font-bold">{{ user.name }}</div>
+              <div class="text-[10px] text-white/30 font-mono">
+                @{{ user.username }}
+              </div>
+            </td>
+            <td class="px-6 py-5">
+              {% if user.role == 'admin' %}
+              <span
+                class="bg-red-500/10 text-red-400 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter border border-red-500/20"
+                >Admin</span
+              >
+              {% elif user.role == 'mod' %}
+              <span
+                class="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter border border-blue-500/20"
+                >Moderator</span
+              >
+              {% else %}
+              <span
+                class="bg-slate-500/10 text-slate-400 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter border border-slate-500/20"
+                >Member</span
+              >
+              {% endif %}
+            </td>
+            <td class="px-6 py-5 text-right">
+              {% if user.username != 'thangnd' %}
+              <a
+                href="{{ url_for('delete_user', id=user.id) }}"
+                onclick="
+                  return confirm(
+                    'Anh có chắc chắn muốn xóa user này khỏi hệ thống?',
+                  );
+                "
+                class="text-red-500/40 hover:text-red-500 transition-colors"
+              >
+                <i class="fa-solid fa-user-xmark"></i>
+              </a>
+              {% else %}
+              <i
+                class="fa-solid fa-crown text-[#d4af37]/50"
+                title="Root Admin"
+              ></i>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

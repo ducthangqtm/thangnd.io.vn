@@ -1,0 +1,90 @@
+{% extends "base.html" %} {% block content %}
+<div class="min-h-screen flex items-center justify-center bg-[#0f172a]">
+  <div
+    class="glass-card p-10 rounded-[2.5rem] w-full max-w-md shadow-2xl animate-fade-in"
+  >
+    <div class="text-center mb-8">
+      <div
+        class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <i class="fa-solid fa-user-plus text-green-400 text-3xl"></i>
+      </div>
+      <h2 class="text-2xl font-black text-white uppercase tracking-widest">
+        Đăng ký Thành viên
+      </h2>
+      <p class="text-white/40 text-[10px] mt-2 font-medium uppercase">
+        Tham gia thảo luận cùng Thắng Nguyễn
+      </p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <div
+      class="bg-{{ 'red' if category == 'danger' else 'green' }}-500/10 text-{{ 'red' if category == 'danger' else 'green' }}-400 text-[11px] p-3 rounded-xl mb-4 text-center border border-{{ 'red' if category == 'danger' else 'green' }}-500/20"
+    >
+      {{ message }}
+    </div>
+    {% endfor %} {% endif %} {% endwith %}
+
+    <form method="POST" class="space-y-4">
+      <div>
+        <label
+          class="block text-[#d4af37] text-[10px] font-bold uppercase mb-1.5 ml-1"
+          >Tài khoản</label
+        >
+        <input
+          type="text"
+          name="username"
+          placeholder="thangnd_fan"
+          required
+          class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-green-500 transition-all text-sm"
+        />
+      </div>
+
+      <div>
+        <label
+          class="block text-[#d4af37] text-[10px] font-bold uppercase mb-1.5 ml-1"
+          >Họ và tên</label
+        >
+        <input
+          type="text"
+          name="full_name"
+          placeholder="Nguyễn Văn A"
+          required
+          class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-green-500 transition-all text-sm"
+        />
+      </div>
+
+      <div>
+        <label
+          class="block text-[#d4af37] text-[10px] font-bold uppercase mb-1.5 ml-1"
+          >Mật khẩu</label
+        >
+        <input
+          type="password"
+          name="password"
+          placeholder="••••••••"
+          required
+          class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-green-500 transition-all text-sm"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="w-full p-4 cv-button text-white font-bold rounded-2xl shadow-lg hover:scale-[1.02] transition-all mt-4"
+      >
+        XÁC NHẬN TẠO TÀI KHOẢN
+      </button>
+    </form>
+
+    <div class="mt-6 text-center">
+      <a
+        href="{{ url_for('login') }}"
+        class="text-white/30 hover:text-white text-[11px] transition-colors uppercase tracking-wider font-bold"
+      >
+        Đã có tài khoản? Đăng nhập
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
