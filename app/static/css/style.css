@@ -1,8 +1,8 @@
+/* 1. Import Font & Cấu trúc cơ bản */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap&subset=vietnamese");
 
 body {
   font-family: "Inter", sans-serif;
-  /* Ép nền tối bằng mã màu hex để không bị trắng */
   background: #0f172a !important;
   background-image:
     radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.4) 0px, transparent 50%),
@@ -10,27 +10,44 @@ body {
   color: #f1f5f9;
   margin: 0;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Thẻ Glassmorphism cho các nút MXH */
+/* 2. Hiệu ứng Glassmorphism & Card */
 .glass-card {
   background: rgba(30, 41, 59, 0.7) !important;
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
   background: rgba(51, 65, 85, 0.9) !important;
   transform: translateY(-3px);
+  border-color: rgba(212, 175, 55, 0.4) !important; /* Ánh vàng kim khi hover */
 }
 
-/* Nút CV rực rỡ */
+/* 3. Nút CV rực rỡ (Navy Blue Gradient) */
 .cv-button {
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4) !important;
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4) !important;
+  transition: all 0.3s ease;
+
+  /* Giới hạn chiều rộng bằng dàn icon và căn giữa */
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex !important;
 }
 
+.cv-button:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+/* 4. Hiệu ứng Animation */
 .animate-fade-in {
   animation: fadeInUp 1s ease-out forwards;
 }

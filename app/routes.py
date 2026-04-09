@@ -1,23 +1,10 @@
-from flask import render_template, send_from_directory
+import os
+from flask import render_template, send_from_directory, make_response
 from flask import current_app as app
 
-@app.route('/')
-def index():
-    # Thông tin MXH của Sếp
-    social_links = {
-        "facebook": "https://www.facebook.com/ducthangqtm",
-        "zalo": "https://zalo.me/0986192092", 
-        "x": "https://x.com/ducthangqtm",
-        "github": "https://github.com/ducthangqtm",
-        'discord': 'https://discord.com/users/thangqtm',
-        'whatsapp': 'https://wa.me/84986192092'
-    }
-    return render_template('index.html', social=social_links)
-
-@app.route('/cv')
-def cv():
-    # Dữ liệu Profile đã được tinh chỉnh mốc thời gian và kinh nghiệm
-    profile = {
+# Hàm dùng chung để quản lý dữ liệu Profile - Sửa 1 nơi, cập nhật mọi nơi
+def get_profile_data():
+    return {
         "name": "Nguyễn Đức Thắng",
         "title": "Senior IT Network Engineer",
         "phone": "0986.192.092",
@@ -46,8 +33,7 @@ def cv():
                 "tasks": [
                     "Thiết kế và triển khai hạ tầng mạng cho hệ thống kho vận quy mô lớn (30,000 - 40,000 m2).",
                     "Quản lý hơn 500 thiết bị IT, vận hành hệ thống Server, LAN, Vlans, Wifi công nghiệp.",
-                    "Quản trị Azure Domain, Office 365 và hỗ trợ kỹ thuật cho các hệ thống ERP (WMS, SAP).",
-                   
+                    "Quản trị Azure Domain, Office 365 và hỗ trợ kỹ thuật cho các hệ thống ERP (WMS, SAP)."
                 ]
             },
             {
@@ -62,7 +48,33 @@ def cv():
         ],
         "skills": ["Python (Flask)", "Network Design", "Azure/O365", "Cisco/Juniper Swtich", "Automation Marketing/Scripts"]
     }
-    return render_template('cv.html', p=profile)
+
+@app.route('/')
+def index():
+    social_links = {
+        "facebook": "https://www.facebook.com/ducthangqtm",
+        "zalo": "https://zalo.me/0986192092", 
+        "x": "https://x.com/ducthangqtm",
+        "github": "https://github.com/ducthangqtm",
+        'discord': 'https://discord.com/users/thangqtm',
+        'whatsapp': 'https://wa.me/84986192092'
+    }
+    return render_template('index.html', social=social_links)
+
+@app.route('/cv')
+def cv():
+    return render_template('cv.html', p=get_profile_data())
+
+# Route mới để tải ảnh CV
+@app.route('/download-cv')
+def download_cv():
+    img_dir = os.path.join(app.root_path, 'static', 'img')
+    return send_from_directory(
+        directory=img_dir, 
+        path='cv.pdf', 
+        as_attachment=True,
+        download_name='CV_Nguyen_Duc_Thang_IT_Network_Engineer.pdf'
+    )
 
 @app.route('/google954f6558285dd27a.html')
 def google_verify():
