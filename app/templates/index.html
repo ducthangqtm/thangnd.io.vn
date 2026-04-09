@@ -1,123 +1,119 @@
 {% extends "base.html" %} {% block content %}
-<div class="max-w-2xl mx-auto px-4 py-16 flex flex-col items-center">
-  <div class="relative mb-8">
-    <div
-      class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-[3rem] blur opacity-20"
-    ></div>
-    <img
-      src="{{ url_for('static', filename='img/thangnd.png') }}"
-      class="relative w-40 h-40 rounded-[2.5rem] object-cover border-4 border-white shadow-2xl"
-    />
-  </div>
-
-  <div class="text-center mb-12">
-    <h1 class="text-4xl font-black text-slate-900 tracking-tight uppercase">
-      Nguyễn Đức Thắng
-    </h1>
-    <p class="text-blue-600 font-bold text-sm mt-2 uppercase tracking-[0.2em]">
-      IT Network Engineer
-    </p>
-    <p class="text-slate-500 mt-6 max-w-sm mx-auto leading-relaxed">
-      Chuyên gia tối ưu hạ tầng mạng, đam mê tự động hóa và phát triển ứng dụng
-      Python/Flask tại Hà Nội - Bắc Ninh.
-    </p>
-  </div>
-
-  <div class="w-full space-y-4">
-    <a
-      href="/cv"
-      class="flex items-center justify-between p-5 bg-gradient-to-br from-blue-600 to-blue-700 border-none rounded-3xl shadow-lg shadow-blue-200 hover:shadow-xl hover:-translate-y-0.5 transition-all group"
-    >
-      <div class="flex items-center gap-4">
-        <div
-          class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-white"
-        >
-          <i class="fa-solid fa-file-pdf text-xl"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="font-bold text-white">Hồ Sơ Năng Lực (CV)</span>
-          <span
-            class="text-blue-100 text-[10px] uppercase tracking-wider font-medium"
-            >Kinh nghiệm & Kỹ năng</span
-          >
-        </div>
-      </div>
-      <span class="text-white/50 group-hover:translate-x-1 transition-transform"
-        >→</span
-      >
-    </a>
-
-    <div class="py-2 flex items-center gap-4">
-      <div class="h-[1px] bg-slate-100 flex-1"></div>
-      <span
-        class="text-[10px] text-slate-300 font-bold uppercase tracking-widest"
-        >Liên kết mạng xã hội</span
-      >
-      <div class="h-[1px] bg-slate-100 flex-1"></div>
+<div
+  style="background-color: #0f172a; min-height: 100vh; width: 100%"
+  class="animate-fade-in"
+>
+  <div class="max-w-2xl mx-auto px-6 py-16 flex flex-col items-center">
+    <div class="relative mb-8 profile-img-container">
+      <div
+        class="absolute -inset-1.5 bg-[#d4af37] rounded-[3rem] blur opacity-30 animate-pulse"
+      ></div>
+      <img
+        src="{{ url_for('static', filename='img/thangnd.png') }}"
+        class="relative w-40 h-40 rounded-[2.5rem] object-cover border-4 border-[#1e293b] shadow-2xl"
+      />
     </div>
 
-    <a
-      href="{{ social.facebook }}"
-      target="_blank"
-      class="flex items-center justify-between p-5 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md hover:border-blue-200 transition-all group"
-    >
-      <div class="flex items-center gap-4">
-        <div
-          class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600"
-        >
-          <i class="fab fa-facebook-f text-xl"></i>
-        </div>
-        <span class="font-bold text-slate-700">Facebook</span>
-      </div>
-      <span
-        class="text-slate-300 group-hover:translate-x-1 transition-transform"
-        >→</span
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-black text-white tracking-tight uppercase">
+        Nguyễn Đức Thắng
+      </h1>
+      <p
+        class="text-[#d4af37] font-bold text-sm mt-2 uppercase tracking-[0.2em]"
       >
-    </a>
+        IT Network Engineer
+      </p>
+    </div>
 
-    <a
-      href="{{ social.zalo }}"
-      target="_blank"
-      class="flex items-center justify-between p-5 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md hover:border-blue-200 transition-all group"
-    >
-      <div class="flex items-center gap-4">
-        <div
-          class="w-12 h-12 bg-cyan-50 rounded-2xl flex items-center justify-center text-cyan-600 font-black text-xs"
+    <div class="w-full space-y-8">
+      <a
+        href="/cv"
+        class="flex items-center justify-between p-5 cv-button border-none rounded-3xl shadow-lg hover:scale-[1.02] transition-all group"
+      >
+        <div class="flex items-center gap-4 text-left text-white">
+          <div
+            class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center"
+          >
+            <i class="fa-solid fa-file-contract text-xl"></i>
+          </div>
+          <div>
+            <p class="font-bold uppercase leading-tight text-sm md:text-base">
+              Hồ Sơ Năng Lực (CV)
+            </p>
+            <p class="text-white/70 text-[10px] uppercase font-medium">
+              Kinh nghiệm & Kỹ năng
+            </p>
+          </div>
+        </div>
+        <span
+          class="text-white/50 group-hover:translate-x-1 transition-transform"
+          >→</span
+        >
+      </a>
+
+      <div
+        class="flex flex-nowrap justify-center items-center gap-3 md:gap-6 pt-4 w-full overflow-hidden"
+      >
+        <a
+          href="{{ social.facebook }}"
+          target="_blank"
+          title="Facebook"
+          class="w-14 h-14 md:w-16 md:h-16 glass-card rounded-2xl flex items-center justify-center text-[#1877F2] hover:scale-110 transition-all flex-shrink-0"
+        >
+          <i class="fab fa-facebook text-2xl md:text-3xl"></i>
+        </a>
+
+        <a
+          href="{{ social.zalo }}"
+          target="_blank"
+          title="Zalo"
+          class="w-14 h-14 md:w-16 md:h-16 glass-card rounded-2xl flex items-center justify-center text-[#3b82f6] font-black text-[10px] md:text-xs hover:scale-110 transition-all flex-shrink-0"
         >
           ZALO
-        </div>
-        <span class="font-bold text-slate-700">Zalo Cá Nhân</span>
-      </div>
-      <span
-        class="text-slate-300 group-hover:translate-x-1 transition-transform"
-        >→</span
-      >
-    </a>
+        </a>
 
-    <a
-      href="{{ social.x }}"
-      target="_blank"
-      class="flex items-center justify-between p-5 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md hover:border-slate-300 transition-all group"
-    >
-      <div class="flex items-center gap-4">
-        <div
-          class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white"
+        <a
+          href="{{ social.discord }}"
+          target="_blank"
+          title="Discord"
+          class="w-14 h-14 md:w-16 md:h-16 glass-card rounded-2xl flex items-center justify-center text-[#5865F2] hover:scale-110 transition-all flex-shrink-0"
         >
-          <i class="fab fa-x-twitter text-xl"></i>
-        </div>
-        <span class="font-bold text-slate-700">X (Twitter)</span>
-      </div>
-      <span
-        class="text-slate-300 group-hover:translate-x-1 transition-transform"
-        >→</span
-      >
-    </a>
-  </div>
+          <i class="fab fa-discord text-2xl md:text-3xl"></i>
+        </a>
 
-  <div
-    class="mt-16 text-slate-400 text-[10px] font-medium uppercase tracking-widest"
-  >
-    © 2026 THANGND.IO.VN • POWERED BY FLASK
+        <a
+          href="{{ social.whatsapp }}"
+          target="_blank"
+          title="WhatsApp"
+          class="w-14 h-14 md:w-16 md:h-16 glass-card rounded-2xl flex items-center justify-center text-[#25D366] p-3.5 md:p-4 hover:scale-110 transition-all flex-shrink-0"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .018 5.394 0 12.03a11.85 11.85 0 001.577 5.925L0 24l6.135-1.612a11.871 11.871 0 005.907 1.577h.005c6.632 0 12.028-5.398 12.033-12.034a11.812 11.812 0 00-3.536-8.451z"
+            />
+          </svg>
+        </a>
+
+        <a
+          href="{{ social.x }}"
+          target="_blank"
+          title="X (Twitter)"
+          class="w-14 h-14 md:w-16 md:h-16 glass-card rounded-2xl flex items-center justify-center text-white p-3.5 md:p-4 hover:scale-110 transition-all flex-shrink-0"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            ></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="mt-20 text-slate-600 text-[10px] font-bold uppercase tracking-[0.3em]"
+    >
+      © 2026 THANGND.IO.VN • POWERED BY FLASK
+    </div>
   </div>
 </div>
 {% endblock %}

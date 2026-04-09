@@ -9,6 +9,8 @@ def index():
         "zalo": "https://zalo.me/0986192092", 
         "x": "https://x.com/ducthangqtm",
         "github": "https://github.com/ducthangqtm",
+        'discord': 'https://discord.com/users/thangqtm',
+        'whatsapp': 'https://wa.me/84986192092'
     }
     return render_template('index.html', social=social_links)
 
@@ -32,8 +34,8 @@ def cv():
                 "role": "IT Network Engineer",
                 "tasks": [
                     "Quản trị toàn bộ hạ tầng mạng và hệ thống CNTT tại chi nhánh Bắc Ninh.",
-                    "Đảm bảo sự vận hành ổn định cho hệ thống LAN/WAN, hệ thống Wifi và các thiết bị ngoại vi.",
-                    "Hỗ trợ người dùng cuối (End-user support) và quản trị hệ thống phần cứng/phần mềm doanh nghiệp."
+                    "Đảm bảo sự vận hành ổn định cho hệ thống LAN/WAN, Wifi và các thiết bị ngoại vi.",
+                    "Hỗ trợ người dùng cuối (End-user support) và quản trị hệ thống phần cứng/phần mềm doanh nghiệp.",
                     "Ứng dụng Python/Flask xây dựng hệ thống tự động hóa đơn hàng tối ưu quy trình phối hợp vận chuyển."
                 ]
             },

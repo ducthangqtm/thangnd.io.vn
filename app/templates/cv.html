@@ -1,10 +1,20 @@
 {% extends "base.html" %} {% block content %}
-<div class="bg-white min-h-screen pb-24 text-slate-800 font-inter">
-  <div class="border-b border-slate-100 bg-white sticky top-0 z-50">
+<div
+  style="
+    background-color: #0f172a;
+    min-height: 100vh;
+    width: 100%;
+    color: #f1f5f9;
+  "
+  class="animate-fade-in font-inter"
+>
+  <div
+    class="border-b border-white/5 bg-[#0f172a]/80 sticky top-0 z-50 backdrop-blur-md"
+  >
     <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
       <a
         href="/"
-        class="group flex items-center text-slate-500 hover:text-blue-600 transition-colors text-xs font-bold uppercase tracking-widest"
+        class="group flex items-center text-slate-400 hover:text-[#d4af37] transition-colors text-xs font-bold uppercase tracking-widest"
       >
         <i
           class="fa-solid fa-arrow-left mr-2.5 transition-transform group-hover:-translate-x-1"
@@ -12,46 +22,49 @@
         Trang chủ
       </a>
       <span
-        class="text-[10px] text-slate-300 font-black uppercase tracking-[0.3em]"
+        class="text-[10px] text-slate-500 font-black uppercase tracking-[0.3em]"
         >Hồ sơ năng lực</span
       >
     </div>
   </div>
 
-  <div class="max-w-5xl mx-auto px-6 mt-12 md:mt-16">
+  <div class="max-w-5xl mx-auto px-6 mt-12 md:mt-16 pb-24">
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-12 border-b-2 border-slate-100"
+      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 pb-12 border-b border-white/10"
     >
       <div>
         <h1
-          class="text-4xl md:text-5xl font-extrabold text-slate-950 tracking-tighter uppercase"
+          class="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase"
         >
           {{ p.name }}
         </h1>
         <p
-          class="text-blue-600 font-bold text-base mt-1.5 uppercase tracking-widest"
+          class="text-[#d4af37] font-bold text-base mt-2 uppercase tracking-widest"
         >
           {{ p.title }}
         </p>
-        <p class="text-slate-500 mt-4 max-w-xl text-sm leading-relaxed">
+        <p class="text-slate-400 mt-6 max-w-xl text-sm leading-relaxed">
           Kỹ sư hệ thống mạng với 10 năm kinh nghiệm vận hành hạ tầng quy mô
-          lớn. Đam mê ứng dụng Python & Flask để tự động hóa (Automation) quy
+          lớn[cite: 26, 27]. Đam mê ứng dụng Python & Flask để tự động hóa quy
           trình, tối ưu hiệu suất và giảm thiểu rủi ro.
         </p>
       </div>
+
       <div
-        class="bg-slate-50 border border-slate-100 p-6 rounded-2xl space-y-2.5 w-full md:w-auto shadow-inner text-sm"
+        class="glass-card p-6 rounded-3xl space-y-3 w-full md:w-auto text-sm border border-white/10 shadow-2xl"
       >
-        <p class="flex items-center gap-3 text-slate-700 font-medium">
-          <i class="fa-solid fa-phone text-blue-500 w-4 text-center"></i> {{
+        <p class="flex items-center gap-3 text-slate-200">
+          <i class="fa-solid fa-phone text-[#d4af37] w-4 text-center"></i> {{
           p.phone }}
         </p>
-        <p class="flex items-center gap-3 text-slate-700 font-medium">
-          <i class="fa-solid fa-envelope text-blue-500 w-4 text-center"></i> {{
+        <p class="flex items-center gap-3 text-slate-200">
+          <i class="fa-solid fa-envelope text-[#d4af37] w-4 text-center"></i> {{
           p.email }}
         </p>
-        <p class="flex items-center gap-3 text-slate-700 font-medium">
-          <i class="fa-solid fa-location-dot text-blue-500 w-4 text-center"></i>
+        <p class="flex items-center gap-3 text-slate-200">
+          <i
+            class="fa-solid fa-location-dot text-[#d4af37] w-4 text-center"
+          ></i>
           {{ p.address }}
         </p>
       </div>
@@ -61,36 +74,43 @@
       <div class="md:col-span-1 space-y-12">
         <div>
           <h2
-            class="text-xs font-black text-slate-950 uppercase tracking-[0.4em] mb-6 flex items-center gap-3"
+            class="text-xs font-black text-white uppercase tracking-[0.4em] mb-8 flex items-center gap-3"
           >
-            <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>Kỹ năng
+            <span
+              class="w-1.5 h-1.5 bg-[#d4af37] rounded-full shadow-[0_0_8px_#d4af37]"
+            ></span
+            >Kỹ năng
           </h2>
           <div class="flex flex-wrap gap-2.5">
             {% for skill in p.skills %}
             <span
-              class="px-3.5 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-100"
-              >{{ skill }}</span
+              class="px-3.5 py-1.5 bg-white/5 text-slate-300 rounded-xl text-xs font-semibold border border-white/10 hover:border-[#d4af37]/50 transition-colors"
             >
+              {{ skill }}
+            </span>
             {% endfor %}
           </div>
         </div>
 
         <div>
           <h2
-            class="text-xs font-black text-slate-950 uppercase tracking-[0.4em] mb-6 flex items-center gap-3"
+            class="text-xs font-black text-white uppercase tracking-[0.4em] mb-8 flex items-center gap-3"
           >
-            <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>Học vấn
+            <span
+              class="w-1.5 h-1.5 bg-[#d4af37] rounded-full shadow-[0_0_8px_#d4af37]"
+            ></span
+            >Học vấn
           </h2>
-          <div class="space-y-6">
+          <div class="space-y-8">
             {% for edu in p.education %}
-            <div class="relative pl-5 border-l-2 border-slate-100">
+            <div class="relative pl-6 border-l border-white/10">
               <div
-                class="absolute -left-[5px] top-1.5 w-2 h-2 bg-slate-200 rounded-full border-2 border-white"
+                class="absolute -left-[4.5px] top-1.5 w-2 h-2 bg-[#d4af37] rounded-full"
               ></div>
-              <p class="font-bold text-slate-900 text-sm leading-tight">
+              <p class="font-bold text-white text-sm leading-tight">
                 {{ edu.school }}
               </p>
-              <p class="text-slate-600 text-xs mt-1.5">{{ edu.major }}</p>
+              <p class="text-slate-400 text-xs mt-2">{{ edu.major }}</p>
             </div>
             {% endfor %}
           </div>
@@ -99,49 +119,56 @@
 
       <div class="md:col-span-3">
         <h2
-          class="text-xs font-black text-slate-950 uppercase tracking-[0.4em] mb-10 flex items-center gap-3"
+          class="text-xs font-black text-white uppercase tracking-[0.4em] mb-12 flex items-center gap-3"
         >
-          <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>Kinh nghiệm
-          làm việc
+          <span
+            class="w-1.5 h-1.5 bg-[#d4af37] rounded-full shadow-[0_0_8px_#d4af37]"
+          ></span
+          >Kinh nghiệm làm việc
         </h2>
 
-        <div class="space-y-12">
+        <div class="space-y-16">
           {% for exp in p.experience %}
-          <div class="relative pl-9 border-l-2 border-slate-100">
+          <div class="relative pl-10 border-l-2 border-white/5">
             <div
-              class="absolute -left-[11px] top-0.5 w-5 h-5 bg-blue-600 rounded-full border-4 border-white shadow-md shadow-blue-100"
+              class="absolute -left-[11px] top-0.5 w-5 h-5 bg-[#0f172a] rounded-full border-4 border-[#d4af37] shadow-lg"
             ></div>
 
             <div
-              class="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 gap-3"
+              class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4"
             >
               <div>
                 <h3
-                  class="font-black text-slate-950 uppercase text-lg tracking-tightleading-tight"
+                  class="font-black text-white uppercase text-xl tracking-tight leading-tight"
                 >
                   {{ exp.company }}
                 </h3>
                 <p
-                  class="text-blue-600 font-bold text-xs mt-1 uppercase tracking-wider"
+                  class="text-[#d4af37] font-bold text-xs mt-1.5 uppercase tracking-wider"
                 >
                   {{ exp.role }}
                 </p>
               </div>
               <span
-                class="whitespace-nowrap text-[10px] font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200"
-                >{{ exp.time }}</span
+                class="whitespace-nowrap text-[10px] font-black text-slate-300 bg-white/5 px-4 py-2 rounded-full border border-white/10 italic"
               >
+                {{ exp.time }}
+              </span>
             </div>
 
-            <ul class="space-y-3.5 mt-6">
+            <ul class="space-y-4">
               {% for task in exp.tasks %}
               <li
-                class="text-slate-700 text-sm leading-relaxed flex items-start gap-3.5"
+                class="text-slate-400 text-sm leading-relaxed flex items-start gap-4 group/item"
               >
-                <span class="text-blue-500 mt-2 text-[6px]"
-                  ><i class="fa-solid fa-check"></i
-                ></span>
-                <span class="flex-1">{{ task }}</span>
+                <span
+                  class="text-[#d4af37] mt-1.5 text-[10px] transition-transform group-hover/item:scale-125"
+                >
+                  <i class="fa-solid fa-square-check"></i>
+                </span>
+                <span class="group-hover/item:text-slate-200 transition-colors"
+                  >{{ task }}</span
+                >
               </li>
               {% endfor %}
             </ul>
@@ -151,9 +178,11 @@
       </div>
     </div>
 
-    <div class="mt-24 pt-10 border-t border-slate-100 text-center">
-      <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-        © 2026 THANGND.IO.VN • POWERED BY FLASK & TAILWIND CSS
+    <div class="mt-24 pt-10 border-t border-white/5 text-center">
+      <p
+        class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.3em]"
+      >
+        © 2026 THANGND.IO.VN • PROFESSIONAL PORTFOLIO
       </p>
     </div>
   </div>

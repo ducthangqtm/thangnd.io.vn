@@ -1,44 +1,40 @@
-/* Font chữ hiện đại */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap&subset=vietnamese");
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: #f8fafc; /* Slate 50 */
-  -webkit-font-smoothing: antialiased;
+  /* Ép nền tối bằng mã màu hex để không bị trắng */
+  background: #0f172a !important;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.4) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(20, 184, 166, 0.1) 0px, transparent 50%) !important;
+  color: #f1f5f9;
+  margin: 0;
+  min-height: 100vh;
 }
 
-/* Hiệu ứng đổ bóng đổ sâu cho ảnh Profile */
-.shadow-2xl {
-  shadow-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+/* Thẻ Glassmorphism cho các nút MXH */
+.glass-card {
+  background: rgba(30, 41, 59, 0.7) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.3s ease;
 }
 
-/* Hiệu ứng hover cho các nút liên kết */
-.transition-all {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.glass-card:hover {
+  background: rgba(51, 65, 85, 0.9) !important;
+  transform: translateY(-3px);
 }
 
-/* Bo góc siêu tròn trịa đúng kiểu Apple/Bento */
-.rounded-3xl {
-  border-radius: 1.75rem;
+/* Nút CV rực rỡ */
+.cv-button {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4) !important;
 }
 
-/* Tinh chỉnh Icon cho Zalo vì nó không có trong FontAwesome chuẩn */
-.bg-cyan-50 {
-  background-color: #ecfeff;
+.animate-fade-in {
+  animation: fadeInUp 1s ease-out forwards;
 }
 
-/* Đảm bảo trang web luôn hiển thị đẹp trên điện thoại */
-@media (max-width: 640px) {
-  .max-w-2xl {
-    padding-top: 2rem;
-  }
-  h1 {
-    font-size: 1.875rem !important; /* text-3xl */
-  }
-}
-
-/* Hiệu ứng hiện dần khi load trang */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -48,8 +44,4 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.max-w-2xl {
-  animation: fadeInUp 0.6s ease-out;
 }
