@@ -44,13 +44,20 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
+      href="{{ url_for('static', filename='css/style.css') }}?v=2.1"
     />
   </head>
 
-  <body class="bg-[#0f172a] min-h-screen text-slate-200">
+  <body class="bg-[#020617] min-h-screen text-slate-200">
+    <!-- Animated Background Blobs -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+      <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-blue-600/20 mix-blend-screen filter blur-[100px] animate-blob"></div>
+      <div class="absolute top-[20%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-indigo-600/20 mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+      <div class="absolute bottom-[-20%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-purple-600/20 mix-blend-screen filter blur-[120px] animate-blob animation-delay-4000"></div>
+    </div>
+
     <nav
-      class="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/80 backdrop-blur-lg border-b border-white/5"
+      class="fixed top-0 left-0 right-0 z-50 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 transition-all duration-300"
     >
       <div
         class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between"

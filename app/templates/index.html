@@ -1,25 +1,23 @@
 {% extends "base.html" %} {% block content %}
-<div
-  style="background-color: #0f172a; min-height: 100vh; width: 100%"
-  class="animate-fade-in"
->
+<div class="animate-fade-in relative z-10 w-full min-h-[calc(100vh-4rem)]">
   <div class="max-w-2xl mx-auto px-6 py-16 flex flex-col items-center">
-    <div class="relative mb-8 profile-img-container">
-      <div
-        class="absolute -inset-1.5 bg-[#d4af37] rounded-[3rem] blur opacity-30 animate-pulse"
-      ></div>
-      <img
-        src="{{ url_for('static', filename='img/thangnd.png') }}"
-        class="relative w-40 h-40 rounded-[2.5rem] object-cover border-4 border-[#1e293b] shadow-2xl"
-      />
+    <div class="relative mb-10 group">
+      <!-- Glow effect -->
+      <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-[3rem] blur-lg opacity-60 group-hover:opacity-100 transition duration-500 group-hover:scale-105"></div>
+      <div class="relative p-1 rounded-[2.8rem] bg-gradient-to-b from-[#020617] to-slate-800 border border-white/10 shadow-2xl">
+        <img
+          src="{{ url_for('static', filename='img/thangnd.png') }}"
+          class="w-40 h-40 rounded-[2.5rem] object-cover"
+        />
+      </div>
     </div>
 
-    <div class="text-center mb-10">
-      <h1 class="text-3xl font-black text-white tracking-tight uppercase">
+    <div class="text-center mb-12 flex flex-col items-center">
+      <h1 class="text-3xl font-black tracking-tight uppercase text-gradient mb-2">
         Nguyễn Đức Thắng
       </h1>
       <p
-        class="text-[#d4af37] font-bold text-sm mt-2 uppercase tracking-[0.2em]"
+        class="text-gradient-gold font-bold text-sm mt-2 uppercase tracking-[0.2em]"
       >
         IT Network Engineer
       </p>

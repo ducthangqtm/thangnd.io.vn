@@ -3,40 +3,88 @@
 
 body {
   font-family: "Inter", sans-serif;
-  background: #0f172a !important;
-  background-image:
-    radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.4) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(20, 184, 166, 0.1) 0px, transparent 50%) !important;
+  background: #020617 !important; /* Thay nền bằng màu đen sâu hơn (slate-950) */
   color: #f1f5f9;
   margin: 0;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Animations cho blob nền */
+.animate-blob {
+  animation: blob 10s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+/* Utils cho text */
+.text-gradient {
+  background: linear-gradient(to right, #ffffff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-top: 0.15em; /* Fix lỗi chữ Quốc ngữ bị cắt dấu khi dùng background-clip */
+  padding-bottom: 0.05em;
+  display: inline-block;
+}
+.text-gradient-gold {
+  background: linear-gradient(135deg, #d4af37 0%, #fcd34d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-top: 0.1em;
+  display: inline-block;
 }
 
 /* Ép tên Nguyễn Đức Thắng nhỏ lại một chút và thanh thoát hơn */
 h1 {
   font-size: 2.25rem !important; /* Tương đương text-3xl, nhỏ hơn 4xl cũ */
   letter-spacing: -0.025em !important;
-  line-height: 1.2 !important;
+  line-height: 1.3 !important;
 }
 
 /* 2. Hiệu ứng Glassmorphism & Card */
 .glass-card {
-  background: rgba(30, 41, 59, 0.7) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* THÊM DÒNG NÀY ĐỂ KHÔNG BỊ LẸM */
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: visible !important;
+  position: relative;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .glass-card:hover {
-  background: rgba(51, 65, 85, 0.9) !important;
-  transform: translateY(-5px) scale(1.05); /* Cho cả khung bay lên và to ra nhẹ */
-  border-color: rgba(212, 175, 55, 0.4) !important;
-  z-index: 10; /* Đảm bảo khi to ra nó đè lên trên các thứ khác, không bị lẹm */
+  background: rgba(255, 255, 255, 0.08) !important;
+  transform: translateY(-5px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
 /* Nếu anh đang để hiệu ứng phóng to riêng cho icon (thẻ i hoặc svg) */
@@ -49,23 +97,40 @@ h1 {
 
 /* 3. Nút CV rực rỡ (Navy Blue Gradient) */
 .cv-button {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4) !important;
-  transition: all 0.3s ease;
-
-  /* Giới hạn chiều rộng bằng dàn icon và căn giữa */
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.8) 0%, rgba(29, 78, 216, 0.8) 100%) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.5) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  max-width: 420px; /* Độ rộng này sẽ giúp nút bao quát dàn icon phía dưới rất đẹp */
+  max-width: 420px;
   margin-left: auto;
   margin-right: auto;
   display: flex !important;
-  justify-content: space-between; /* Giữ mũi tên và text ở 2 đầu nút */
+  justify-content: space-between;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cv-button::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.5s ease;
+}
+
+.cv-button:hover::after {
+  left: 150%;
 }
 
 .cv-button:hover {
-  transform: scale(1.02);
-  filter: brightness(1.1);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 /* 4. Hiệu ứng Animation */
@@ -86,13 +151,12 @@ h1 {
 /* 5. Nút Blog (AI & Kỹ thuật) */
 .blog-button {
   /* Giữ phong cách Glassmorphism */
-  background: rgba(30, 41, 59, 0.7) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  transition: all 0.3s ease;
-
-  /* Cấu hình kích thước chuẩn 420px và căn giữa */
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
   max-width: 420px;
   margin-left: auto;
@@ -101,13 +165,28 @@ h1 {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .blog-button:hover {
-  background: rgba(51, 65, 85, 0.9) !important;
-  transform: translateY(-2px) scale(1.01);
-  border-color: rgba(59, 130, 246, 0.5) !important; /* Ánh xanh nhẹ khi hover */
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  transform: translateY(-3px) scale(1.01);
+  border-color: rgba(59, 130, 246, 0.4) !important;
+  box-shadow: 0 15px 35px -10px rgba(59, 130, 246, 0.2) !important;
 }
 /* Fix triệt để ảnh trong bài viết */
 .post-content img {
