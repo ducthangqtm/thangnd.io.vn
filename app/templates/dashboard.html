@@ -6,6 +6,16 @@
   <div class="max-w-6xl mx-auto px-6">
     <div class="flex justify-between items-center mb-8">
       <div>
+        
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="mb-4 px-4 py-3 rounded text-sm text-white border {{ 'bg-green-500/20 border-green-500/50' if category == 'success' else 'bg-red-500/20 border-red-500/50' if category == 'danger' else 'bg-yellow-500/20 border-yellow-500/50' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
         <h2 class="text-2xl font-black text-white uppercase tracking-tight">
           Quản lý bài viết
         </h2>
@@ -15,12 +25,22 @@
           Nội dung Blog & Kỹ thuật
         </p>
       </div>
-      <a
-        href="{{ url_for('add_post') }}"
-        class="cv-button px-6 py-3 rounded-xl text-white text-xs font-bold uppercase shadow-lg"
-      >
-        + VIẾT BÀI MỚI
-      </a>
+      <div class="flex items-center gap-3">
+        <form action="{{ url_for('generate_ai_post') }}" method="POST" class="m-0" onsubmit="this.querySelector('button').innerHTML='<i class=\'fa-solid fa-spinner fa-spin mr-1\'></i> ĐANG NGHĨ...'; this.querySelector('button').classList.add('opacity-50', 'pointer-events-none');">
+          <button
+            type="submit"
+            class="px-4 md:px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 border border-white/10 text-white text-[10px] xl:text-xs font-bold uppercase shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:scale-105 transition-all text-nowrap"
+          >
+            <i class="fa-solid fa-robot mr-1"></i> AI TỰ VIẾT BÀI
+          </button>
+        </form>
+        <a
+          href="{{ url_for('add_post') }}"
+          class="cv-button px-4 md:px-6 py-3 rounded-xl text-white text-[10px] xl:text-xs font-bold uppercase shadow-lg text-nowrap"
+        >
+          + VIẾT BÀI THỦ CÔNG
+        </a>
+      </div>
     </div>
 
     <div

@@ -47,11 +47,12 @@ body {
   display: inline-block;
 }
 
-/* Ép tên Nguyễn Đức Thắng nhỏ lại một chút và thanh thoát hơn */
+/* Ép tên Nguyễn Đức Thắng đáp ứng trên điện thoại, không bị rớt dòng */
 h1 {
-  font-size: 2.25rem !important; /* Tương đương text-3xl, nhỏ hơn 4xl cũ */
+  font-size: clamp(1.5rem, 6vw, 2.25rem) !important; 
   letter-spacing: -0.025em !important;
   line-height: 1.3 !important;
+  white-space: nowrap !important;
 }
 
 /* 2. Hiệu ứng Glassmorphism & Card */
@@ -103,7 +104,7 @@ h1 {
   box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.5) !important;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  max-width: 420px;
+  max-width: 504px;
   margin-left: auto;
   margin-right: auto;
   display: flex !important;
@@ -158,7 +159,7 @@ h1 {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  max-width: 420px;
+  max-width: 504px;
   margin-left: auto;
   margin-right: auto;
   display: flex !important;

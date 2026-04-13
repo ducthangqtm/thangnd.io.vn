@@ -5,7 +5,7 @@ import re
 import unicodedata
 
 # 1. Cấu hình API Key của anh
-client = genai.Client(api_key="AIzaSyB2pTYyvhcybhGeQ68v0keghcFgQ2GuoHk")
+client = genai.Client(api_key="AIzaSyCAeoqV5aYtbaU9qXuKhpjBy_7rh3Wq-o0")
 
 def slugify(text):
     """Hàm tạo đường dẫn không dấu cho bài viết"""

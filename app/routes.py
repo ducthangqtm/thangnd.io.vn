@@ -1,6 +1,7 @@
 import os
 import unicodedata
 import re
+from google import genai
 from flask import render_template, send_from_directory, request, redirect, url_for, jsonify, flash, abort, session
 from flask import current_app as app
 from .models import Post, User, Comment 
@@ -36,7 +37,8 @@ def delete_image_files(content):
 def index():
     social_links = {
         "facebook": "https://www.facebook.com/ducthangqtm",
-        "zalo": "https://zalo.me/0986192092", 
+        "zalo": "https://zalo.me/0986192092",
+        "telegram": "https://t.me/ducthangqtm",
         "x": "https://x.com/ducthangqtm",
         "github": "https://github.com/ducthangqtm",
         'discord': 'https://discord.com/users/thangqtm',
@@ -199,6 +201,60 @@ def add_post():
         db.session.commit()
         return redirect(url_for('dashboard'))
     return render_template('add_post.html')
+
+@app.route('/thangnd-admin/generate-ai-post', methods=['POST'])
+@login_required
+def generate_ai_post():
+    if current_user.role not in ['admin', 'mod']:
+        abort(403)
+        
+    try:
+        client = genai.Client(api_key="AIzaSyCAeoqV5aYtbaU9qXuKhpjBy_7rh3Wq-o0")
+        prompt = """
+        Viết một bài blog kỹ thuật ngắn gọn dành cho IT Network.
+        Chủ đề: Random một kiến thức độc đáo về Network Automation, TCP/IP, OSPF, BGP, hoặc Cyber Security thực tế.
+        Yêu cầu bài viết có tính ứng dụng cao, giống như một chuyên gia đang chia sẻ kinh nghiệm.
+        Yêu cầu định dạng CHÍNH XÁC (không thừa không thiếu):
+        TITLE: [Tiêu đề bài viết hấp dẫn]
+        CONTENT: [Nội dung body của bài viết được bao bọc bởi mã HTML thuần tuý như <p>, <ul>, <li>, <strong>, tuyệt đối KHÔNG bỏ code trong thẻ markdown ``` ]
+        """
+        response = client.models.generate_content(
+            model="gemini-2.0-flash", 
+            contents=prompt
+        )
+        text = response.text
+
+        title_match = re.search(r"TITLE:\s*(.*)", text)
+        content_match = re.search(r"CONTENT:\s*([\s\S]*)", text)
+
+        if title_match and content_match:
+            title = title_match.group(1).strip()
+            content = content_match.group(1).strip()
+            
+            # Khử mã markdown nếu Gemini cố chấp bọc nó
+            content = content.replace("```html", "").replace("```", "").strip()
+            slug = slugify(title)
+
+            if not Post.query.filter_by(slug=slug).first():
+                new_post = Post(
+                    title=title,
+                    content=content,
+                    author="Gemini AI Blogger",
+                    slug=slug,
+                    user_id=current_user.id
+                )
+                db.session.add(new_post)
+                db.session.commit()
+                flash(f"✅ AI vừa tự động đăng bài: {title}", "success")
+            else:
+                flash("⚠️ Trùng lặp chủ đề, AI chưa nghĩ ra bài mới, hãy bấm lại.", "warning")
+        else:
+            flash("❌ AI trả về sai định dạng thiết kế, vui lòng bấm tạo lại.", "danger")
+            
+    except Exception as e:
+        flash(f"Lỗi hệ thống khi gọi AI: {str(e)}", "danger")
+
+    return redirect(url_for('dashboard'))
 
 @app.route('/edit-post/<int:id>', methods=['GET', 'POST'])
 @login_required
