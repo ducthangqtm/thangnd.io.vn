@@ -5,8 +5,7 @@ from app import create_app
 app = create_app()
 
 if __name__ == '__main__':
-    print("🚀 Server đang chạy tại: http://0.0.0.0:5000")
-    print("💡 Host 0.0.0.0 cho phép truy cập từ các thiết bị khác trong cùng mạng LAN.")
+    print("🚀 Server đang chạy tại: http://127.0.0.1:5000 (Chế độ Nginx Proxy)")
     
-    # Chạy bằng Waitress (WSGI Server cho Production)
-    serve(app, host='0.0.0.0', port=5000, threads=4)
+    # Chạy bằng Waitress tại localhost, Nginx sẽ proxy vào đây
+    serve(app, host='127.0.0.1', port=5000, threads=4)
