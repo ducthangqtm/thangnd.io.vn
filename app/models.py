@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
     
     # Liên kết với bình luận
     # commenter giúp ta gọi user.user_comments để xem người đó đã comment những gì
-    user_comments = db.relationship('Comment', backref='commenter', lazy=True, overlaps="author_info,user_posts_comments")
+    user_comments = db.relationship('Comment', backref='commenter', lazy=True)
 
 # 2. Bảng Post
 class Post(db.Model):
@@ -45,8 +45,4 @@ class Comment(db.Model):
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    
-    # Quan hệ lấy thông tin người bình luận
-    # Dùng để hiển thị tên người comment ở post_detail.html thông qua comment.author_info.name
-    author_info = db.relationship('User', backref='user_posts_comments', lazy=True, overlaps="commenter,user_comments")
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
