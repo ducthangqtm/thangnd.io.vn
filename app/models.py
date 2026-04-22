@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
     
     # Liên kết với bình luận
     # commenter giúp ta gọi user.user_comments để xem người đó đã comment những gì
-    user_comments = db.relationship('Comment', backref='commenter', lazy=True)
+    user_comments = db.relationship('Comment', backref='commenter', lazy=True, overlaps="author_info,user_posts_comments")
 
 # 2. Bảng Post
 class Post(db.Model):
@@ -49,4 +49,4 @@ class Comment(db.Model):
     
     # Quan hệ lấy thông tin người bình luận
     # Dùng để hiển thị tên người comment ở post_detail.html thông qua comment.author_info.name
-    author_info = db.relationship('User', backref='user_posts_comments', lazy=True)
+    author_info = db.relationship('User', backref='user_posts_comments', lazy=True, overlaps="commenter,user_comments")
