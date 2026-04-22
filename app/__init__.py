@@ -2,48 +2,53 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_migrate import Migrate # 1. Import thêm Migrate
+from flask_migrate import Migrate
+from app.config import Config
 
 # Khởi tạo các extension
 db = SQLAlchemy()
 login_manager = LoginManager()
-migrate = Migrate() # 2. Khởi tạo đối tượng migrate
+migrate = Migrate()
 
-def create_app():
+def create_app(config_class=Config):
     app = Flask(__name__)
+    app.config.from_object(config_class)
 
-    # 1. Cấu hình Database & Security
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.instance_path, 'blog.db')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = 'dev-key-thang-network-2026'
+    # Đảm bảo thư mục 'instance' tồn tại
+    if not os.path.exists(app.instance_path):
+        try:
+            os.makedirs(app.instance_path)
+        except OSError:
+            pass
 
-    # 2. Đảm bảo thư mục 'instance' tồn tại
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    # 3. Kết nối app với các extension
+    # Kết nối app với các extension
     db.init_app(app)
     login_manager.init_app(app)
-    migrate.init_app(app, db) # 3. Kết nối migrate với app và db
+    migrate.init_app(app, db)
     
-    # Cấu hình cho Login: Nếu chưa đăng nhập mà vào trang cấm thì đá về trang 'login'
-    login_manager.login_view = 'login'
+    # Cấu hình cho Login
+    login_manager.login_view = 'auth.login' # Cập nhật link sang blueprint auth
     login_manager.login_message_category = 'info'
 
-    # 4. Đăng ký Models, Routes và User Loader
     with app.app_context():
-        from . import models
-        from . import routes
-        from .models import User # Import bảng User để load dữ liệu
-        
-        # User Loader: Giúp Flask-Login lấy thông tin User từ ID trong session
+        # Đăng ký Blueprints
+        from app.blueprints.main import main_bp
+        from app.blueprints.auth import auth_bp
+        from app.blueprints.blog import blog_bp
+        from app.blueprints.admin import admin_bp
+
+        app.register_blueprint(main_bp)
+        app.register_blueprint(auth_bp)
+        app.register_blueprint(blog_bp)
+        app.register_blueprint(admin_bp)
+
+        # User Loader
+        from app.models import User
         @login_manager.user_loader
         def load_user(user_id):
             return User.query.get(int(user_id))
 
-        # Tự động tạo file .db nếu chưa có (Sau này dùng Migrate thì dòng này có thể bỏ qua)
+        # Tự động tạo db nếu chưa có
         db.create_all()
 
     return app

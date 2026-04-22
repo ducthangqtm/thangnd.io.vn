@@ -26,7 +26,7 @@
 
     <div class="w-full space-y-4 flex flex-col items-center">
       <a
-        href="/cv"
+        href="{{ url_for('main.cv') }}"
         class="flex items-center justify-between p-5 cv-button border-none rounded-3xl shadow-lg transition-all group w-full"
       >
         <div class="flex items-center gap-4 text-left text-white">
@@ -51,8 +51,8 @@
       </a>
 
       <a
-        href="/blog"
-        class="blog-button p-5 border-none rounded-3xl shadow-lg transition-all group w-full"
+        href="{{ url_for('blog.blog_list') }}"
+        class="flex items-center justify-between p-5 blog-button border-none rounded-3xl shadow-lg transition-all group w-full"
       >
         <div class="flex items-center gap-4 text-left text-white">
           <div

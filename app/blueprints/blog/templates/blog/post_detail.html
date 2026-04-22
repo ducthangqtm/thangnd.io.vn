@@ -24,7 +24,7 @@
   <article class="max-w-3xl mx-auto px-6 py-12">
     <div class="mb-10">
       <a
-        href="/blog"
+        href="{{ url_for('blog.blog_list') }}"
         class="text-white/50 hover:text-white transition-colors flex items-center gap-2 text-sm uppercase font-bold tracking-widest"
       >
         <i class="fa-solid fa-chevron-left"></i> Tất cả bài viết
@@ -61,7 +61,7 @@
 
       {% if current_user.is_authenticated %}
       <form
-        action="{{ url_for('add_comment', post_id=post.id) }}"
+        action="{{ url_for('blog.add_comment', post_id=post.id) }}"
         method="POST"
         class="mb-12"
       >
@@ -85,7 +85,7 @@
       >
         <p class="text-white/40 text-sm italic">
           Vui lòng
-          <a href="/login" class="text-blue-400 font-bold hover:underline"
+          <a href="{{ url_for('auth.login') }}" class="text-blue-400 font-bold hover:underline"
             >Đăng nhập</a
           >
           để tham gia thảo luận.

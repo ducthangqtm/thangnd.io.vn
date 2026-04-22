@@ -6,7 +6,7 @@
   <div class="max-w-4xl mx-auto px-6 py-12">
     <div class="flex items-center justify-between mb-12">
       <a
-        href="/"
+        href="{{ url_for('main.index') }}"
         class="text-white/50 hover:text-white transition-colors flex items-center gap-2"
       >
         <i class="fa-solid fa-arrow-left"></i> Quay lại
@@ -19,7 +19,7 @@
     <div class="grid gap-6">
       {% if posts %} {% for post in posts %}
       <a
-        href="{{ url_for('blog_detail', slug=post.slug) }}"
+        href="{{ url_for('blog.blog_detail', slug=post.slug) }}"
         class="glass-card p-6 rounded-3xl block group"
       >
         <div
