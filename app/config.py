@@ -1,4 +1,8 @@
 import os
+from dotenv import load_dotenv
+
+# Tìm và nạp các biến từ file .env vào hệ thống
+load_dotenv()
 
 class Config:
     # Cấu hình cơ bản
