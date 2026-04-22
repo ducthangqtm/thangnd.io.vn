@@ -47,12 +47,11 @@ body {
   display: inline-block;
 }
 
-/* Ép tên Nguyễn Đức Thắng đáp ứng trên điện thoại, không bị rớt dòng */
-h1 {
+/* Ép tên Nguyễn Đức Thắng đáp ứng trên điện thoại */
+h1.text-gradient {
   font-size: clamp(1.5rem, 6vw, 2.25rem) !important; 
   letter-spacing: -0.025em !important;
   line-height: 1.3 !important;
-  white-space: nowrap !important;
 }
 
 /* 2. Hiệu ứng Glassmorphism & Card */
