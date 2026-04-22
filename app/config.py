@@ -13,7 +13,7 @@ class Config:
     BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     INSTANCE_PATH = os.path.join(BASE_DIR, 'instance')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(INSTANCE_PATH, 'blog.db')
+        'sqlite:///' + os.path.join(INSTANCE_PATH, 'blog.db').replace('\\', '/')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Cấu hình Upload
