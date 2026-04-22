@@ -16,6 +16,30 @@
       </h2>
     </div>
 
+    <!-- Search Bar -->
+    <div class="mb-10">
+      <form action="{{ url_for('blog.blog_list') }}" method="GET" class="relative group">
+        <input 
+          type="text" 
+          name="q" 
+          value="{{ search_query or '' }}"
+          placeholder="Tìm kiếm kiến thức..." 
+          class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white focus:outline-none focus:border-blue-500 transition-all backdrop-blur-md"
+        >
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-focus-within:text-blue-400 transition-colors"></i>
+        {% if search_query %}
+          <a href="{{ url_for('blog.blog_list') }}" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors">
+            <i class="fa-solid fa-xmark"></i>
+          </a>
+        {% endif %}
+      </form>
+      {% if search_query %}
+        <p class="text-white/40 text-xs mt-3 italic">
+          Kết quả tìm kiếm cho: <span class="text-blue-400 font-bold">"{{ search_query }}"</span>
+        </p>
+      {% endif %}
+    </div>
+
     <div class="grid gap-6">
       {% if posts %} {% for post in posts %}
       <a

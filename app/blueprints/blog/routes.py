@@ -6,8 +6,14 @@ from . import blog_bp
 
 @blog_bp.route('/blog')
 def blog_list():
-    posts = Post.query.order_by(Post.date_posted.desc()).all()
-    return render_template('blog/blog.html', posts=posts)
+    query = request.args.get('q')
+    if query:
+        posts = Post.query.filter(
+            (Post.title.contains(query)) | (Post.content.contains(query))
+        ).order_by(Post.date_posted.desc()).all()
+    else:
+        posts = Post.query.order_by(Post.date_posted.desc()).all()
+    return render_template('blog/blog.html', posts=posts, search_query=query)
 
 @blog_bp.route('/blog/<slug>')
 def blog_detail(slug):
