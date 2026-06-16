@@ -36,11 +36,13 @@ def create_app(config_class=Config):
         from app.blueprints.auth import auth_bp
         from app.blueprints.blog import blog_bp
         from app.blueprints.admin import admin_bp
+        from app.blueprints.chat import chat_bp
 
         app.register_blueprint(main_bp)
         app.register_blueprint(auth_bp)
         app.register_blueprint(blog_bp)
         app.register_blueprint(admin_bp)
+        app.register_blueprint(chat_bp)
 
         # User Loader
         from app.models import User

@@ -19,3 +19,7 @@ class Config:
     # Cấu hình Upload
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'app', 'static', 'uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # Giới hạn 16MB
+
+    # Cấu hình Telegram Chat
+    TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
+    TELEGRAM_ADMIN_CHAT_ID = os.environ.get('TELEGRAM_ADMIN_CHAT_ID')

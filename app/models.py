@@ -45,4 +45,22 @@ class Comment(db.Model):
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+# 4. Bảng ChatSession (Phiên chat của khách truy cập)
+class ChatSession(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(100), unique=True, nullable=False)
+    visitor_name = db.Column(db.String(100), default='Khách ẩn danh')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    messages = db.relationship('ChatMessage', backref='session', lazy=True, cascade="all, delete-orphan")
+
+# 5. Bảng ChatMessage (Tin nhắn chat)
+class ChatMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(100), db.ForeignKey('chat_session.session_id'), nullable=False)
+    sender = db.Column(db.String(10), nullable=False) # 'visitor' hoặc 'admin'
+    message = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    telegram_message_id = db.Column(db.Integer, nullable=True) # Để ánh xạ phản hồi từ admin qua Telegram

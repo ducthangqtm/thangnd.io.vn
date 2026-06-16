@@ -127,5 +127,218 @@
     <div class="h-16"></div>
 
     {% block content %}{% endblock %}
+
+    <!-- Real-time Telegram Chat Widget -->
+    <div id="chat-widget" class="fixed bottom-6 right-6 z-[1000] font-sans">
+      <!-- Chat Button -->
+      <button id="chat-btn" class="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 relative border border-white/10">
+        <i class="fa-solid fa-comments text-xl"></i>
+        <span id="chat-notification" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-[10px] font-bold rounded-full flex items-center justify-center hidden">0</span>
+      </button>
+
+      <!-- Chat Panel -->
+      <div id="chat-panel" class="absolute bottom-16 right-0 w-[320px] sm:w-[350px] h-[450px] bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col transition-all duration-300 origin-bottom-right scale-0 opacity-0 pointer-events-none">
+        <!-- Header -->
+        <div class="px-4 py-3 bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border-b border-white/5 rounded-t-2xl flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="relative">
+              <img src="{{ url_for('static', filename='img/logo.png') }}" class="w-8 h-8 rounded-full border border-white/10 object-cover" alt="Thắng IT">
+              <span class="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-[#0f172a] animate-pulse"></span>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-white tracking-wide">Thắng IT</h4>
+              <span class="text-[9px] text-green-400 font-medium">Trực tuyến (Qua Telegram)</span>
+            </div>
+          </div>
+          <button id="close-chat-btn" class="text-slate-400 hover:text-white transition-colors">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+
+        <!-- Messages Container -->
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 flex flex-col text-[11px] scrollbar-thin">
+          <!-- Default Welcome Message -->
+          <div class="bg-white/5 border border-white/5 text-slate-300 p-2.5 rounded-xl rounded-tl-none max-w-[85%] self-start leading-relaxed">
+            Chào bro! Mình là bot tự động của anh Thắng. Bạn có thắc mắc gì hoặc cần liên hệ cứ nhắn ở đây, tin nhắn sẽ chuyển thẳng về Telegram của anh ấy!
+          </div>
+        </div>
+
+        <!-- Input Form -->
+        <div class="p-3 border-t border-white/5 bg-slate-950/40 rounded-b-2xl">
+          <div class="flex gap-2">
+            <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500/50 transition-colors">
+            <button id="send-chat-btn" class="px-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl flex items-center justify-center transition-colors">
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatBtn = document.getElementById('chat-btn');
+        const chatPanel = document.getElementById('chat-panel');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendChatBtn = document.getElementById('send-chat-btn');
+        const chatNotification = document.getElementById('chat-notification');
+
+        let chatOpen = false;
+        let pollInterval = null;
+
+        // Get or Create Session ID
+        let sessionId = localStorage.getItem('thangnd_chat_session_id');
+        if (!sessionId) {
+            sessionId = 'sess_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+            localStorage.setItem('thangnd_chat_session_id', sessionId);
+        }
+
+        // Toggle Chat
+        chatBtn.addEventListener('click', () => {
+            chatOpen = !chatOpen;
+            if (chatOpen) {
+                chatPanel.classList.remove('scale-0', 'opacity-0', 'pointer-events-none');
+                chatPanel.classList.add('scale-100', 'opacity-100');
+                chatNotification.classList.add('hidden');
+                chatNotification.innerText = '0';
+                loadHistory();
+                startPolling();
+                setTimeout(() => chatInput.focus(), 100);
+            } else {
+                closeChat();
+            }
+        });
+
+        closeChatBtn.addEventListener('click', closeChat);
+
+        function closeChat() {
+            chatOpen = false;
+            chatPanel.classList.remove('scale-100', 'opacity-100');
+            chatPanel.classList.add('scale-0', 'opacity-0', 'pointer-events-none');
+            stopPolling();
+        }
+
+        // Load Message History
+        function loadHistory() {
+            fetch(`/chat/history?session_id=${sessionId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.history) {
+                        renderMessages(data.history);
+                    }
+                })
+                .catch(err => console.error("Lỗi lấy lịch sử chat:", err));
+        }
+
+        // Render Messages
+        function renderMessages(messages) {
+            const welcomeHtml = `
+                <div class="bg-white/5 border border-white/5 text-slate-300 p-2.5 rounded-xl rounded-tl-none max-w-[85%] self-start leading-relaxed">
+                    Chào bro! Mình là bot tự động của anh Thắng. Bạn có thắc mắc gì hoặc cần liên hệ cứ nhắn ở đây, tin nhắn sẽ chuyển thẳng về Telegram của anh ấy!
+                </div>
+            `;
+            chatMessages.innerHTML = welcomeHtml;
+
+            messages.forEach(msg => {
+                const isVisitor = msg.sender === 'visitor';
+                const msgDiv = document.createElement('div');
+                if (isVisitor) {
+                    msgDiv.className = "bg-blue-600/20 border border-blue-500/10 text-blue-100 p-2.5 rounded-xl rounded-tr-none max-w-[85%] self-end leading-relaxed break-words text-left";
+                } else {
+                    msgDiv.className = "bg-indigo-600/20 border border-indigo-500/10 text-indigo-100 p-2.5 rounded-xl rounded-tl-none max-w-[85%] self-start leading-relaxed break-words";
+                }
+                msgDiv.innerHTML = `<div>${escapeHtml(msg.message)}</div><div class="text-[9px] text-slate-500 mt-1">${msg.timestamp.split(' - ')[0]}</div>`;
+                chatMessages.appendChild(msgDiv);
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Send Message
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            chatInput.value = '';
+
+            // Render temporary
+            const tempDiv = document.createElement('div');
+            tempDiv.className = "bg-blue-600/20 border border-blue-500/10 text-blue-100 p-2.5 rounded-xl rounded-tr-none max-w-[85%] self-end leading-relaxed break-words text-right";
+            tempDiv.innerHTML = `<div>${escapeHtml(text)}</div><div class="text-[9px] text-slate-500 mt-1">Đang gửi...</div>`;
+            chatMessages.appendChild(tempDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            fetch('/chat/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    session_id: sessionId,
+                    message: text,
+                    visitor_name: 'Khách ẩn danh'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                loadHistory();
+            })
+            .catch(err => {
+                console.error("Lỗi gửi:", err);
+                tempDiv.querySelector('.text-slate-500').innerText = 'Lỗi gửi';
+            });
+        }
+
+        sendChatBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Polling
+        let messageCount = 0;
+        function startPolling() {
+            stopPolling();
+            pollInterval = setInterval(() => {
+                fetch(`/chat/history?session_id=${sessionId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.history) {
+                            const newCount = data.history.length;
+                            if (newCount > messageCount) {
+                                // Nếu có tin nhắn mới từ admin và chat đang đóng, báo thông báo đỏ
+                                if (data.history.length > 0) {
+                                    const lastMsg = data.history[data.history.length - 1];
+                                    if (lastMsg.sender === 'admin' && !chatOpen) {
+                                        chatNotification.classList.remove('hidden');
+                                        chatNotification.innerText = (parseInt(chatNotification.innerText || '0') + 1).toString();
+                                    }
+                                }
+                                renderMessages(data.history);
+                            }
+                            messageCount = newCount;
+                        }
+                    })
+                    .catch(err => console.error("Lỗi check tin nhắn:", err));
+            }, 3000);
+        }
+
+        function stopPolling() {
+            if (pollInterval) {
+                clearInterval(pollInterval);
+                pollInterval = null;
+            }
+        }
+    });
+    </script>
   </body>
 </html>

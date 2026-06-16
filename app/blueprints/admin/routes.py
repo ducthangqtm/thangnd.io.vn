@@ -5,6 +5,7 @@ from flask import render_template, request, redirect, url_for, jsonify, flash, a
 from flask import current_app as app
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 from app.models import Post, User
 from app import db
 from app.utils import slugify, delete_image_files
@@ -32,7 +33,8 @@ def admin_create_user():
     if User.query.filter_by(username=username).first():
         flash('Username này đã tồn tại!', 'danger')
     else:
-        new_user = User(username=username, password=password, name=full_name, role=role)
+        hashed_password = generate_password_hash(password)
+        new_user = User(username=username, password=hashed_password, name=full_name, role=role)
         db.session.add(new_user)
         db.session.commit()
         flash(f'Đã tạo thành công tài khoản {role}: {username}', 'success')
