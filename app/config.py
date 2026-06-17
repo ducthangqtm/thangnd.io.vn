@@ -23,3 +23,4 @@ class Config:
     # Cấu hình Telegram Chat
     TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
     TELEGRAM_ADMIN_CHAT_ID = os.environ.get('TELEGRAM_ADMIN_CHAT_ID')
+    TELEGRAM_API_URL = os.environ.get('TELEGRAM_API_URL')

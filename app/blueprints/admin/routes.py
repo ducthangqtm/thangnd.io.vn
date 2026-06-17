@@ -6,7 +6,7 @@ from flask import current_app as app
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
-from app.models import Post, User
+from app.models import Post, User, Link
 from app import db
 from app.utils import slugify, delete_image_files
 from . import admin_bp
@@ -18,7 +18,8 @@ def dashboard():
         abort(403)
     posts = Post.query.order_by(Post.date_posted.desc()).all()
     users = User.query.all()
-    return render_template('admin/dashboard.html', posts=posts, users=users)
+    links = Link.query.order_by(Link.order.asc()).all()
+    return render_template('admin/dashboard.html', posts=posts, users=users, links=links)
 
 @admin_bp.route('/thangnd-admin/create-user', methods=['POST'])
 @login_required
@@ -132,3 +133,45 @@ def upload_image_content():
         file.save(os.path.join(upload_path, filename))
         return jsonify({"uploaded": 1, "fileName": filename, "url": url_for('static', filename='uploads/' + filename)})
     return jsonify({"uploaded": 0, "error": {"message": "Lỗi tải file."}})
+
+@admin_bp.route('/thangnd-admin/links/create', methods=['POST'])
+@login_required
+def create_link():
+    if current_user.role not in ['admin', 'mod']: abort(403)
+    title = request.form.get('title')
+    url = request.form.get('url')
+    icon_class = request.form.get('icon_class', 'fa-solid fa-link')
+    order = request.form.get('order', 0, type=int)
+    
+    if title and url:
+        new_link = Link(title=title, url=url, icon_class=icon_class, order=order)
+        db.session.add(new_link)
+        db.session.commit()
+        flash('Đã thêm liên kết mới thành công!', 'success')
+    else:
+        flash('Vui lòng điền đầy đủ tiêu đề và liên kết!', 'danger')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/thangnd-admin/links/edit/<int:id>', methods=['POST'])
+@login_required
+def edit_link(id):
+    if current_user.role not in ['admin', 'mod']: abort(403)
+    link = Link.query.get_or_404(id)
+    link.title = request.form.get('title')
+    link.url = request.form.get('url')
+    link.icon_class = request.form.get('icon_class', 'fa-solid fa-link')
+    link.order = request.form.get('order', 0, type=int)
+    link.is_active = 'is_active' in request.form
+    db.session.commit()
+    flash('Đã cập nhật liên kết thành công!', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/thangnd-admin/links/delete/<int:id>')
+@login_required
+def delete_link(id):
+    if current_user.role != 'admin': abort(403)
+    link = Link.query.get_or_404(id)
+    db.session.delete(link)
+    db.session.commit()
+    flash('Đã xóa liên kết thành công!', 'success')
+    return redirect(url_for('admin.dashboard'))

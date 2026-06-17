@@ -46,14 +46,24 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}?v=2.2"
     />
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.classList.add('light');
+        } else {
+          document.documentElement.classList.remove('light');
+        }
+      })();
+    </script>
   </head>
 
   <body class="bg-[#020617] min-h-screen text-slate-200">
     <!-- Animated Background Blobs -->
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-      <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-blue-600/20 mix-blend-screen filter blur-[100px] animate-blob"></div>
-      <div class="absolute top-[20%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-indigo-600/20 mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
-      <div class="absolute bottom-[-20%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-purple-600/20 mix-blend-screen filter blur-[120px] animate-blob animation-delay-4000"></div>
+      <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-blob-1 filter blur-[100px] animate-blob"></div>
+      <div class="absolute top-[20%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-blob-2 filter blur-[100px] animate-blob animation-delay-2000"></div>
+      <div class="absolute bottom-[-20%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-blob-3 filter blur-[120px] animate-blob animation-delay-4000"></div>
     </div>
 
     <nav
@@ -76,6 +86,10 @@
         </a>
 
         <div class="flex items-center gap-2 md:gap-4">
+          <!-- Theme Toggle Button -->
+          <button id="theme-toggle" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-colors mr-1">
+            <i id="theme-toggle-icon" class="fa-solid fa-moon text-xs"></i>
+          </button>
           {% if current_user.is_authenticated %}
           <div
             class="flex items-center gap-1.5 px-2 py-1 bg-white/5 rounded-lg border border-white/10"
@@ -155,6 +169,12 @@
           </button>
         </div>
 
+        <!-- Visitor Name Bar -->
+        <div class="px-4 py-2 bg-slate-900/40 border-b border-white/5 flex items-center justify-between gap-2 text-[10px]">
+          <span class="text-slate-400 font-bold uppercase tracking-wider">Tên của bạn:</span>
+          <input type="text" id="visitor-name-input" placeholder="Khách ẩn danh" class="bg-white/5 border border-white/10 rounded px-2 py-0.5 text-[10px] text-white outline-none focus:border-blue-500/50 w-36 transition-colors text-right">
+        </div>
+
         <!-- Messages Container -->
         <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 flex flex-col text-[11px] scrollbar-thin">
           <!-- Default Welcome Message -->
@@ -194,6 +214,18 @@
             sessionId = 'sess_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
             localStorage.setItem('thangnd_chat_session_id', sessionId);
         }
+
+        // Get or Save Visitor Name
+        const visitorNameInput = document.getElementById('visitor-name-input');
+        let visitorName = localStorage.getItem('thangnd_chat_visitor_name') || 'Khách ẩn danh';
+        visitorNameInput.value = visitorName;
+
+        visitorNameInput.addEventListener('change', () => {
+            const newName = visitorNameInput.value.trim();
+            visitorName = newName || 'Khách ẩn danh';
+            visitorNameInput.value = visitorName;
+            localStorage.setItem('thangnd_chat_visitor_name', visitorName);
+        });
 
         // Toggle Chat
         chatBtn.addEventListener('click', () => {
@@ -284,7 +316,7 @@
                 body: JSON.stringify({
                     session_id: sessionId,
                     message: text,
-                    visitor_name: 'Khách ẩn danh'
+                    visitor_name: visitorName
                 })
             })
             .then(res => res.json())
@@ -338,6 +370,32 @@
                 pollInterval = null;
             }
         }
+
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggleIcon = document.getElementById('theme-toggle-icon');
+
+        function updateToggleIcon() {
+            if (document.documentElement.classList.contains('light')) {
+                themeToggleIcon.className = 'fa-solid fa-sun text-xs';
+            } else {
+                themeToggleIcon.className = 'fa-solid fa-moon text-xs';
+            }
+        }
+
+        // Set initial icon state
+        updateToggleIcon();
+
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('light')) {
+                document.documentElement.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.add('light');
+                localStorage.setItem('theme', 'light');
+            }
+            updateToggleIcon();
+        });
     });
     </script>
   </body>

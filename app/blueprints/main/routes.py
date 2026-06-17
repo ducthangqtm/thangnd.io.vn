@@ -1,10 +1,15 @@
 import os
 from flask import render_template, send_from_directory
 from flask import current_app as app
+from app.models import Link
+from app.github_service import get_github_repositories
 from . import main_bp
 
 @main_bp.route('/')
 def index():
+    # Load Bio Links động từ Database
+    links = Link.query.filter_by(is_active=True).order_by(Link.order.asc()).all()
+    
     social_links = {
         "facebook": "https://www.facebook.com/ducthangqtm",
         "zalo": "https://zalo.me/0986192092",
@@ -14,7 +19,9 @@ def index():
         'discord': 'https://discord.com/users/thangqtm',
         'whatsapp': 'https://wa.me/84986192092'
     }
-    return render_template('main/index.html', social=social_links)
+    
+    repos = get_github_repositories()
+    return render_template('main/index.html', links=links, social=social_links, repos=repos)
 
 @main_bp.route('/cv')
 def cv():

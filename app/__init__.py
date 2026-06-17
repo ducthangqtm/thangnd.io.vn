@@ -44,6 +44,14 @@ def create_app(config_class=Config):
         app.register_blueprint(admin_bp)
         app.register_blueprint(chat_bp)
 
+        # Đăng ký template filter cho markdown
+        import markdown2
+        @app.template_filter('markdown')
+        def render_markdown(text):
+            if not text:
+                return ""
+            return markdown2.markdown(text, extras=["fenced-code-blocks", "tables", "break-on-newline", "code-friendly"])
+
         # User Loader
         from app.models import User
         @login_manager.user_loader
@@ -52,5 +60,23 @@ def create_app(config_class=Config):
 
         # Tự động tạo db nếu chưa có
         db.create_all()
+
+        # Tự động đồng bộ các link mặc định nếu database trống
+        from app.models import Link
+        try:
+            if Link.query.count() == 0:
+                default_links = [
+                    Link(title="Facebook", url="https://www.facebook.com/ducthangqtm", icon_class="fab fa-facebook", order=1),
+                    Link(title="Zalo", url="https://zalo.me/0986192092", icon_class="fa-solid fa-comment-sms", order=2),
+                    Link(title="Telegram", url="https://t.me/ducthangqtm", icon_class="fab fa-telegram", order=3),
+                    Link(title="Discord", url="https://discord.com/users/thangqtm", icon_class="fab fa-discord", order=4),
+                    Link(title="Whatsapp", url="https://wa.me/84986192092", icon_class="fab fa-whatsapp", order=5),
+                    Link(title="X (Twitter)", url="https://x.com/ducthangqtm", icon_class="fa-brands fa-x-twitter", order=6)
+                ]
+                db.session.bulk_save_objects(default_links)
+                db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error seeding links: {e}")
 
     return app

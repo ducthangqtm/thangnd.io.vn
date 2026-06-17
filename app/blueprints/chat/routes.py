@@ -8,7 +8,11 @@ def send_telegram_message(token, chat_id, text):
     """Gửi tin nhắn tới Telegram và trả về message_id"""
     if not token or not chat_id:
         return None
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    
+    # Lấy base URL từ cấu hình (mặc định là api.telegram.org)
+    api_url = app.config.get('TELEGRAM_API_URL') or 'https://api.telegram.org'
+    url = f"{api_url.rstrip('/')}/bot{token}/sendMessage"
+    
     payload = {
         "chat_id": chat_id,
         "text": text,
@@ -38,6 +42,9 @@ def send_message():
     if not session:
         session = ChatSession(session_id=session_id, visitor_name=visitor_name)
         db.session.add(session)
+        db.session.commit()
+    elif visitor_name and visitor_name != session.visitor_name:
+        session.visitor_name = visitor_name
         db.session.commit()
 
     # Tạo tin nhắn mới của Khách

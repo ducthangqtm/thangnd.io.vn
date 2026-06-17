@@ -1,4 +1,4 @@
-﻿APScheduler==3.10.4
+APScheduler==3.10.4
 blinker==1.9.0
 certifi==2026.2.25
 charset-normalizer==3.4.7
@@ -23,3 +23,4 @@ tzlocal==5.3.1
 urllib3==2.6.3
 waitress==3.0.2
 Werkzeug==3.1.8
+markdown2==2.4.13

@@ -75,6 +75,25 @@
         >
       </a>
 
+      <!-- Bio Links section -->
+      {% if links %}
+      <div class="flex flex-wrap justify-center items-center gap-3 md:gap-6 pt-6 w-full">
+        {% for link in links %}
+        <a
+          href="{{ link.url }}"
+          target="_blank"
+          title="{{ link.title }}"
+          class="w-14 h-14 md:w-16 md:h-16 glass-card rounded-2xl flex items-center justify-center hover:scale-110 transition-all flex-shrink-0 text-[#d4af37]"
+        >
+          {% if link.title.lower() == 'zalo' %}
+            <span class="font-black text-[10px] md:text-xs tracking-wider">ZALO</span>
+          {% else %}
+            <i class="{{ link.icon_class }} text-2xl md:text-3xl"></i>
+          {% endif %}
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
       <div
         class="flex flex-nowrap justify-center items-center gap-3 md:gap-6 pt-6 w-full"
       >
@@ -88,9 +107,10 @@
         <a
           href="{{ social.zalo }}"
           target="_blank"
-          class="w-14 h-14 md:w-16 md:h-16 glass-card rounded-2xl flex items-center justify-center text-[#3b82f6] font-black text-[10px] md:text-xs hover:scale-110 transition-all flex-shrink-0"
-          >ZALO</a
+          class="w-14 h-14 md:w-16 md:h-16 glass-card rounded-2xl flex items-center justify-center text-[#d4af37] hover:scale-110 transition-all flex-shrink-0"
         >
+          <span class="font-black text-[10px] md:text-xs tracking-wider">ZALO</span>
+        </a>
         <a
           href="{{ social.telegram }}"
           target="_blank"
@@ -120,7 +140,46 @@
           <i class="fa-brands fa-x-twitter text-2xl md:text-3xl"></i>
         </a>
       </div>
+      {% endif %}
     </div>
+
+    <!-- GitHub Repositories Grid -->
+    {% if repos %}
+    <div class="w-full mt-16 border-t border-white/5 pt-12">
+      <h3 class="text-[#d4af37] font-black text-xs uppercase tracking-[0.3em] mb-8 text-center flex items-center justify-center gap-2">
+        <i class="fa-brands fa-github text-base"></i> Dự Án Nổi Bật (GitHub)
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        {% for repo in repos %}
+        <a href="{{ repo.html_url }}" target="_blank" class="glass-card p-6 rounded-[2rem] flex flex-col justify-between hover:scale-[1.02] transition-all border border-white/5 relative group overflow-hidden">
+          <div>
+            <div class="flex justify-between items-start mb-3">
+              <h4 class="text-white font-black text-base group-hover:text-[#d4af37] transition-colors flex items-center gap-1.5">
+                <i class="fa-solid fa-code-branch text-sm text-slate-400"></i> {{ repo.name }}
+              </h4>
+              <span class="flex items-center gap-1 text-xs text-white/40">
+                <i class="fa-regular fa-star text-amber-400"></i> {{ repo.stargazers_count }}
+              </span>
+            </div>
+            <p class="text-white/60 text-xs leading-relaxed mb-6">
+              {{ repo.description }}
+            </p>
+          </div>
+          
+          <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider text-white/40">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span> {{ repo.language }}
+            </span>
+            <span class="group-hover:translate-x-1 transition-transform text-[#d4af37] flex items-center gap-1">
+              Xem Repo <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+            </span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
 
     <div class="mt-20">
       <div

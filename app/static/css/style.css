@@ -1,14 +1,51 @@
 /* 1. Import Font & Cấu trúc cơ bản */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap&subset=vietnamese");
 
+:root {
+  --bg-color: #020617;
+  --text-color: #f1f5f9;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-hover-bg: rgba(255, 255, 255, 0.08);
+  --glass-hover-border: rgba(255, 255, 255, 0.1);
+  --text-gradient-start: #ffffff;
+  --text-gradient-end: #94a3b8;
+  --nav-bg: rgba(2, 6, 23, 0.8);
+  --nav-border: rgba(255, 255, 255, 0.05);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --text-semi-muted: rgba(255, 255, 255, 0.7);
+  --border-muted: rgba(255, 255, 255, 0.1);
+  --blob-opacity: 0.2;
+  --blob-mix-blend: screen;
+}
+
+html.light {
+  --bg-color: #f8fafc;
+  --text-color: #0f172a;
+  --glass-bg: rgba(15, 23, 42, 0.03);
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --glass-hover-bg: rgba(15, 23, 42, 0.06);
+  --glass-hover-border: rgba(15, 23, 42, 0.15);
+  --text-gradient-start: #0f172a;
+  --text-gradient-end: #475569;
+  --nav-bg: rgba(248, 250, 252, 0.85);
+  --nav-border: rgba(15, 23, 42, 0.08);
+  --text-muted: rgba(15, 23, 42, 0.5);
+  --text-semi-muted: rgba(15, 23, 42, 0.7);
+  --border-muted: rgba(15, 23, 42, 0.1);
+  --blob-opacity: 0.15;
+  --blob-mix-blend: multiply;
+}
+
 body {
   font-family: "Inter", sans-serif;
-  background: #020617 !important; /* Thay nền bằng màu đen sâu hơn (slate-950) */
-  color: #f1f5f9;
+  background: var(--bg-color) !important; /* Thay nền bằng màu đen sâu hơn (slate-950) */
+  color: var(--text-color) !important;
   margin: 0;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Animations cho blob nền */
@@ -30,7 +67,7 @@ body {
 
 /* Utils cho text */
 .text-gradient {
-  background: linear-gradient(to right, #ffffff, #94a3b8);
+  background: linear-gradient(to right, var(--text-gradient-start), var(--text-gradient-end));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -56,10 +93,10 @@ h1.text-gradient {
 
 /* 2. Hiệu ứng Glassmorphism & Card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.03) !important;
+  background: var(--glass-bg) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--glass-border) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: visible !important;
@@ -80,9 +117,9 @@ h1.text-gradient {
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
+  background: var(--glass-hover-bg) !important;
   transform: translateY(-5px) scale(1.05);
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: var(--glass-hover-border) !important;
   box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   z-index: 10;
 }
@@ -151,10 +188,10 @@ h1.text-gradient {
 /* 5. Nút Blog (AI & Kỹ thuật) */
 .blog-button {
   /* Giữ phong cách Glassmorphism */
-  background: rgba(255, 255, 255, 0.03) !important;
+  background: var(--glass-bg) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--glass-border) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
@@ -183,7 +220,7 @@ h1.text-gradient {
 }
 
 .blog-button:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
+  background: var(--glass-hover-bg) !important;
   transform: translateY(-3px) scale(1.01);
   border-color: rgba(59, 130, 246, 0.4) !important;
   box-shadow: 0 15px 35px -10px rgba(59, 130, 246, 0.2) !important;
@@ -209,3 +246,44 @@ h1.text-gradient {
   border-radius: 24px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
+
+.bg-blob-1 {
+  background-color: rgba(37, 99, 235, var(--blob-opacity)) !important;
+  mix-blend-mode: var(--blob-mix-blend) !important;
+}
+.bg-blob-2 {
+  background-color: rgba(79, 70, 229, var(--blob-opacity)) !important;
+  mix-blend-mode: var(--blob-mix-blend) !important;
+}
+.bg-blob-3 {
+  background-color: rgba(147, 51, 234, var(--blob-opacity)) !important;
+  mix-blend-mode: var(--blob-mix-blend) !important;
+}
+
+/* Light mode Tailwind class overrides */
+html.light .text-slate-200 { color: #334155 !important; }
+html.light .text-white\/80 { color: rgba(15, 23, 42, 0.8) !important; }
+html.light .text-white { color: #0f172a !important; }
+html.light .text-white\/40 { color: rgba(15, 23, 42, 0.5) !important; }
+html.light .text-white\/50 { color: rgba(15, 23, 42, 0.6) !important; }
+html.light .text-slate-600 { color: #475569 !important; }
+html.light .bg-\[\#020617\]\/80 { background-color: rgba(248, 250, 252, 0.85) !important; }
+html.light .border-white\/5 { border-color: rgba(15, 23, 42, 0.08) !important; }
+html.light .border-white\/10 { border-color: rgba(15, 23, 42, 0.12) !important; }
+html.light .bg-white\/5 { background-color: rgba(15, 23, 42, 0.04) !important; }
+html.light .bg-slate-950\/40 { background-color: rgba(241, 245, 249, 0.5) !important; }
+html.light .text-blue-100 { color: #1e3a8a !important; }
+html.light .bg-blue-600\/20 { background-color: rgba(37, 99, 235, 0.15) !important; }
+html.light .text-indigo-100 { color: #312e81 !important; }
+html.light .bg-indigo-600\/20 { background-color: rgba(79, 70, 229, 0.15) !important; }
+html.light #chat-panel {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+html.light #chat-input { color: #0f172a !important; }
+html.light .prose-invert { color: #334155 !important; }
+html.light .prose-invert h1, 
+html.light .prose-invert h2, 
+html.light .prose-invert h3, 
+html.light .prose-invert h4, 
+html.light .prose-invert strong { color: #0f172a !important; }

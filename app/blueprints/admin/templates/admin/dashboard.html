@@ -85,6 +85,141 @@
       </table>
     </div>
 
+    <!-- Bio Links section -->
+    <div class="flex justify-between items-center mb-8 mt-16">
+      <div>
+        <h2 class="text-2xl font-black text-white uppercase tracking-tight">
+          Quản lý Bio Links
+        </h2>
+        <p class="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-1">
+          Liên kết mạng xã hội & Bio cá nhân hiển thị tại trang chủ
+        </p>
+      </div>
+    </div>
+
+    <!-- Create link form -->
+    <div class="glass-card p-8 rounded-[2rem] mb-8 border border-white/5 shadow-2xl">
+      <form action="{{ url_for('admin.create_link') }}" method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <input type="text" name="title" placeholder="Tiêu đề (e.g. Facebook)" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+        <input type="url" name="url" placeholder="URL liên kết" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+        <input type="text" name="icon_class" placeholder="Icon Class (e.g. fab fa-facebook)" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+        <input type="number" name="order" placeholder="Thứ tự hiển thị" value="0" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+        <button type="submit" class="md:col-span-4 bg-[#d4af37] text-[#0f172a] font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest">
+          Thêm liên kết mới
+        </button>
+      </form>
+    </div>
+
+    <!-- Current links table -->
+    <div class="glass-card rounded-[2rem] overflow-hidden border border-white/5 mb-16">
+      <table class="w-full text-left text-white text-sm">
+        <thead class="bg-white/5 text-[#d4af37] text-[10px] uppercase tracking-[0.2em]">
+          <tr>
+            <th class="px-6 py-5">Icon</th>
+            <th class="px-6 py-5">Tiêu đề</th>
+            <th class="px-6 py-5">Liên kết</th>
+            <th class="px-6 py-5">Thứ tự</th>
+            <th class="px-6 py-5">Trạng thái</th>
+            <th class="px-6 py-5 text-right">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5">
+          {% for link in links %}
+          <tr class="hover:bg-white/[0.02] transition-all group">
+            <td class="px-6 py-5">
+              <span class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-[#d4af37]">
+                <i class="{{ link.icon_class }} text-lg"></i>
+              </span>
+            </td>
+            <td class="px-6 py-5 font-bold">{{ link.title }}</td>
+            <td class="px-6 py-5 text-white/40 text-xs font-mono truncate max-w-[200px]" title="{{ link.url }}">
+              {{ link.url }}
+            </td>
+            <td class="px-6 py-5 text-white/70">{{ link.order }}</td>
+            <td class="px-6 py-5">
+              {% if link.is_active %}
+              <span class="bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border border-green-500/20">Hoạt động</span>
+              {% else %}
+              <span class="bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border border-red-500/20">Tạm tắt</span>
+              {% endif %}
+            </td>
+            <td class="px-6 py-5 text-right">
+              <button onclick="openEditModal('{{ link.id }}', '{{ link.title }}', '{{ link.url }}', '{{ link.icon_class }}', '{{ link.order }}', '{{ link.is_active }}')" class="text-blue-400 hover:text-blue-300 transition-colors mr-3">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              {% if current_user.role == 'admin' %}
+              <a href="{{ url_for('admin.delete_link', id=link.id) }}" onclick="return confirm('Chắc chắn muốn xóa liên kết này chứ?');" class="text-red-500/50 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-trash-can"></i>
+              </a>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" class="px-6 py-10 text-center text-white/30 text-xs italic">Chưa có liên kết Bio nào. Hệ thống đang sử dụng liên kết mặc định.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Simple Edit Link Modal -->
+    <div id="edit-link-modal" class="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+      <div class="glass-card p-8 rounded-[2rem] w-full max-w-lg border border-white/10 shadow-2xl relative">
+        <button onclick="closeEditModal()" class="absolute top-6 right-6 text-white/50 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        <h3 class="text-lg font-black text-white uppercase tracking-wider mb-6 text-center text-[#d4af37]">Sửa liên kết Bio</h3>
+        
+        <form id="edit-link-form" method="POST" class="space-y-4">
+          <div>
+            <label class="block text-[10px] font-bold uppercase text-white/40 tracking-wider mb-1.5">Tiêu đề</label>
+            <input type="text" id="edit-title" name="title" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold uppercase text-white/40 tracking-wider mb-1.5">Liên kết URL</label>
+            <input type="url" id="edit-url" name="url" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold uppercase text-white/40 tracking-wider mb-1.5">Icon Class (e.g. fab fa-facebook)</label>
+            <input type="text" id="edit-icon" name="icon_class" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold uppercase text-white/40 tracking-wider mb-1.5">Thứ tự hiển thị</label>
+            <input type="number" id="edit-order" name="order" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+          </div>
+          <div class="flex items-center gap-2 pt-2">
+            <input type="checkbox" id="edit-active" name="is_active" class="w-4 h-4 bg-white/5 border border-white/10 rounded">
+            <label for="edit-active" class="text-sm text-white/80">Kích hoạt liên kết</label>
+          </div>
+          <button type="submit" class="w-full bg-[#d4af37] text-[#0f172a] font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest pt-2">Lưu thay đổi</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function openEditModal(id, title, url, icon, order, isActive) {
+        const modal = document.getElementById('edit-link-modal');
+        const form = document.getElementById('edit-link-form');
+        form.action = `/thangnd-admin/links/edit/${id}`;
+        
+        document.getElementById('edit-title').value = title;
+        document.getElementById('edit-url').value = url;
+        document.getElementById('edit-icon').value = icon;
+        document.getElementById('edit-order').value = order;
+        document.getElementById('edit-active').checked = isActive === 'True';
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      function closeEditModal() {
+        const modal = document.getElementById('edit-link-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    </script>
+
     {% if current_user.role == 'admin' %}
     <div class="mb-8">
       <h2 class="text-2xl font-black text-white uppercase tracking-tight">

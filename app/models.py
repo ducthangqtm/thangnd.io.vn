@@ -63,4 +63,13 @@ class ChatMessage(db.Model):
     sender = db.Column(db.String(10), nullable=False) # 'visitor' hoặc 'admin'
     message = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    telegram_message_id = db.Column(db.Integer, nullable=True) # Để ánh xạ phản hồi từ admin qua Telegram
+    telegram_message_id = db.Column(db.Integer, nullable=True) # Để ánh xạ phản hồi từ admin qua Telegram
+
+# 6. Bảng Link (Quản lý các Bio Links động)
+class Link(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    url = db.Column(db.String(500), nullable=False)
+    icon_class = db.Column(db.String(100), nullable=False) # e.g. 'fa-brands fa-facebook'
+    is_active = db.Column(db.Boolean, default=True)
+    order = db.Column(db.Integer, default=0)
