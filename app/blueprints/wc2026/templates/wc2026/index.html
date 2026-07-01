@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kết Quả & Lịch Thi Đấu FIFA World Cup 2026</title>
+    <title>FIFA World Cup 2026 - Lịch Thi Đấu &amp; Kết Quả</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +15,17 @@
 </head>
 <body>
 
+    <!-- MINI TOP NAV -->
+    <div class="mini-topnav">
+        <a href="{{ url_for('main.index') }}" class="mini-topnav-brand">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="mini-topnav-logo">
+            <span class="mini-topnav-name">Thắng IT</span>
+        </a>
+        <span class="mini-topnav-title">
+            <i class="fa-solid fa-trophy text-gold"></i> FIFA World Cup 2026
+        </span>
+    </div>
+
     <!-- BACKGROUND EFFECTS -->
     <div class="stadium-bg"></div>
     <div class="glow-effect glow-purple"></div>
@@ -22,28 +33,6 @@
 
     <!-- MAIN APP WRAPPER -->
     <div id="app-container" class="app-container">
-        
-        <!-- STICKY TOP CONTAINER -->
-        <div class="sticky-header-container">
-            <!-- HEADER -->
-            <header class="main-header">
-                <div class="header-user">
-                    <div class="user-avatar" style="background: linear-gradient(135deg, #7c3aed, #0284c7); color: #fff;">
-                        <i class="fa-solid fa-trophy"></i>
-                    </div>
-                    <div class="user-info">
-                        <span class="user-welcome">FIFA World Cup 2026</span>
-                        <span class="user-name">Lịch Thi Đấu & Kết Quả</span>
-                    </div>
-                </div>
-                
-                <div class="header-actions">
-                    <button id="btn-refresh" class="btn btn-icon btn-dark" title="Làm mới dữ liệu">
-                        <i class="fa-solid fa-rotate text-cyan"></i>
-                    </button>
-                </div>
-            </header>
-        </div>
 
         <!-- MAIN TABS CONTAINER -->
         <main class="content-area">
@@ -66,13 +55,13 @@
                 </div>
                 <!-- Schedule sub-tabs -->
                 <div class="schedule-subtabs">
-                    <button class="schedule-subtab active" data-subtab="sub-group">Vòng Bảng</button>
-                    <button class="schedule-subtab" data-subtab="sub-knockout">Vòng Loại Trực Tiếp</button>
+                    <button class="schedule-subtab" data-subtab="sub-group">Vòng Bảng</button>
+                    <button class="schedule-subtab active" data-subtab="sub-knockout">Vòng Loại Trực Tiếp</button>
                 </div>
-                <div id="sub-group" class="schedule-subcontent animate-fade-in">
+                <div id="sub-group" class="schedule-subcontent hidden">
                     <!-- Group matches -->
                 </div>
-                <div id="sub-knockout" class="schedule-subcontent hidden">
+                <div id="sub-knockout" class="schedule-subcontent animate-fade-in">
                     <!-- Knockout matches -->
                 </div>
             </section>
@@ -91,17 +80,17 @@
 
     <!-- BOTTOM NAV BAR -->
     <nav class="bottom-nav">
-        <button class="nav-item active" data-tab="tab-bracket">
-            <i class="fa-solid fa-sitemap"></i>
-            <span>Sơ đồ</span>
-        </button>
         <button class="nav-item" data-tab="tab-schedule">
             <i class="fa-regular fa-calendar-days"></i>
             <span>Lịch đấu</span>
         </button>
+        <button class="nav-item active" data-tab="tab-bracket">
+            <i class="fa-solid fa-sitemap"></i>
+            <span>Vòng Loại</span>
+        </button>
         <button class="nav-item" data-tab="tab-standings">
             <i class="fa-solid fa-table-list"></i>
-            <span>Bảng xếp hạng</span>
+            <span>Vòng Bảng</span>
         </button>
     </nav>
 

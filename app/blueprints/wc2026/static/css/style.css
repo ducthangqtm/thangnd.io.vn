@@ -41,7 +41,59 @@ body {
     min-height: 100vh;
     padding-bottom: 90px;
     line-height: 1.5;
+    padding-top: 52px;
 }
+
+/* MINI TOP NAV */
+.mini-topnav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    height: 50px;
+    background: rgba(2, 6, 23, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    gap: 12px;
+}
+
+.mini-topnav-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.mini-topnav-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.mini-topnav-name {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.mini-topnav-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
 
 /* BACKGROUNDS & GLOW EFFECTS */
 .stadium-bg {
@@ -340,26 +392,34 @@ body {
     flex-direction: row;
     align-items: center;
     gap: 8px;
+    min-width: 0;
 }
 
 .match-team.team-a {
     justify-content: flex-end;
+    text-align: right;
 }
 
 .match-team.team-b {
     justify-content: flex-start;
+    text-align: left;
 }
 
 .match-team-flag {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 .match-team-name {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
 }
 
 .match-score-center {
