@@ -48,6 +48,26 @@
           </a>
 
           <a
+            href="{{ url_for('wc2026.index') }}"
+            class="flex items-center justify-between p-5 wc-button border-none rounded-3xl shadow-lg transition-all group w-full"
+          >
+            <div class="flex items-center gap-4 text-left text-white">
+              <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                <i class="fa-solid fa-trophy text-xl text-yellow-300"></i>
+              </div>
+              <div>
+                <p class="font-bold uppercase leading-tight text-sm md:text-base">
+                  World Cup 2026
+                </p>
+                <p class="text-white/70 text-[10px] uppercase font-medium">
+                  Lịch thi đấu & Kết quả trực tiếp
+                </p>
+              </div>
+            </div>
+            <span class="text-white/50 group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+
+          <a
             href="{{ url_for('blog.blog_list') }}"
             class="flex items-center justify-between p-5 blog-button border-none rounded-3xl shadow-lg transition-all group w-full"
           >

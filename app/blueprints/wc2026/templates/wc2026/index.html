@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết Quả & Lịch Thi Đấu FIFA World Cup 2026</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('wc2026.static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- BACKGROUND EFFECTS -->
+    <div class="stadium-bg"></div>
+    <div class="glow-effect glow-purple"></div>
+    <div class="glow-effect glow-cyan"></div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-container" class="app-container">
+        
+        <!-- STICKY TOP CONTAINER -->
+        <div class="sticky-header-container">
+            <!-- HEADER -->
+            <header class="main-header">
+                <div class="header-user">
+                    <div class="user-avatar" style="background: linear-gradient(135deg, #7c3aed, #0284c7); color: #fff;">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-welcome">FIFA World Cup 2026</span>
+                        <span class="user-name">Lịch Thi Đấu & Kết Quả</span>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <button id="btn-refresh" class="btn btn-icon btn-dark" title="Làm mới dữ liệu">
+                        <i class="fa-solid fa-rotate text-cyan"></i>
+                    </button>
+                </div>
+            </header>
+        </div>
+
+        <!-- MAIN TABS CONTAINER -->
+        <main class="content-area">
+            <!-- BRACKET SECTION -->
+            <section id="tab-bracket" class="tab-content bracket-container">
+                <div class="bracket-section-header" style="border-bottom: 2px solid var(--purple); margin-bottom: 20px;">
+                    <h2><i class="fa-solid fa-sitemap text-purple"></i> Sơ Đồ Vòng Loại Trực Tiếp</h2>
+                </div>
+                <div class="bracket-tree-wrapper" id="bracket-tree-wrapper">
+                    <div class="bracket-tree-inner" id="bracket-tree-inner">
+                        <!-- Symmetrical tree columns loaded dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCHEDULE SECTION -->
+            <section id="tab-schedule" class="tab-content schedule-container hidden">
+                <div class="bracket-section-header" style="border-bottom: 2px solid var(--cyan); margin-bottom: 16px;">
+                    <h2><i class="fa-regular fa-calendar-days text-cyan"></i> Lịch Thi Đấu &amp; Kết Quả</h2>
+                </div>
+                <!-- Schedule sub-tabs -->
+                <div class="schedule-subtabs">
+                    <button class="schedule-subtab active" data-subtab="sub-group">Vòng Bảng</button>
+                    <button class="schedule-subtab" data-subtab="sub-knockout">Vòng Loại Trực Tiếp</button>
+                </div>
+                <div id="sub-group" class="schedule-subcontent animate-fade-in">
+                    <!-- Group matches -->
+                </div>
+                <div id="sub-knockout" class="schedule-subcontent hidden">
+                    <!-- Knockout matches -->
+                </div>
+            </section>
+
+            <!-- STANDINGS SECTION -->
+            <section id="tab-standings" class="tab-content standings-section hidden" style="margin-top: 40px;">
+                <div class="bracket-section-header" style="border-bottom: 2px solid var(--gold); margin-bottom: 20px;">
+                    <h2><i class="fa-solid fa-table-list text-gold"></i> Bảng Xếp Hạng Vòng Bảng</h2>
+                </div>
+                <div id="standings-container" class="standings-grid animate-fade-in">
+                    <!-- Group boards loaded dynamically -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- BOTTOM NAV BAR -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-tab="tab-bracket">
+            <i class="fa-solid fa-sitemap"></i>
+            <span>Sơ đồ</span>
+        </button>
+        <button class="nav-item" data-tab="tab-schedule">
+            <i class="fa-regular fa-calendar-days"></i>
+            <span>Lịch đấu</span>
+        </button>
+        <button class="nav-item" data-tab="tab-standings">
+            <i class="fa-solid fa-table-list"></i>
+            <span>Bảng xếp hạng</span>
+        </button>
+    </nav>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- JS Files -->
+    <script src="{{ url_for('wc2026.static', filename='js/app.js') }}"></script>
+</body>
+</html>
