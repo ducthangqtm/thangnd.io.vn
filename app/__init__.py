@@ -38,6 +38,8 @@ def create_app(config_class=Config):
         from app.blueprints.admin import admin_bp
         from app.blueprints.chat import chat_bp
         from app.blueprints.wc2026 import wc2026_bp
+        from app.blueprints.epl import epl_bp
+        from app.blueprints.c1 import c1_bp
 
         app.register_blueprint(main_bp)
         app.register_blueprint(auth_bp)
@@ -45,6 +47,8 @@ def create_app(config_class=Config):
         app.register_blueprint(admin_bp)
         app.register_blueprint(chat_bp)
         app.register_blueprint(wc2026_bp, url_prefix='/wc2026')
+        app.register_blueprint(epl_bp, url_prefix='/epl')
+        app.register_blueprint(c1_bp, url_prefix='/c1')
 
         # Đăng ký template filter cho markdown
         import markdown2

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champions League - Lịch Thi Đấu &amp; Kết Quả Live</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('c1.static', filename='css/style.css') }}">
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark') {
+          document.documentElement.classList.remove('light');
+        } else {
+          document.documentElement.classList.add('light');
+        }
+      })();
+    </script>
+</head>
+<body>
+
+    <!-- MINI TOP NAV -->
+    <div class="mini-topnav">
+        <a href="{{ url_for('main.index') }}" class="mini-topnav-brand">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="mini-topnav-logo">
+            <span class="mini-topnav-name">Thắng IT</span>
+        </a>
+        <span class="mini-topnav-title">
+            <i class="fa-solid fa-trophy text-purple"></i> Champions League
+        </span>
+        <button id="btn-refresh" class="refresh-btn" title="Làm mới">
+            <i class="fa-solid fa-rotate text-purple"></i>
+        </button>
+    </div>
+
+    <!-- BACKGROUND EFFECTS -->
+    <div class="stadium-bg"></div>
+    <div class="glow-effect glow-purple"></div>
+    <div class="glow-effect glow-green"></div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-container" class="app-container">
+
+        <!-- MAIN TABS CONTAINER -->
+        <main class="content-area">
+            <!-- SCHEDULE SECTION -->
+            <section id="tab-schedule" class="tab-content schedule-container">
+                <div class="section-header">
+                    <h2><i class="fa-regular fa-calendar-days text-purple"></i> Lịch Thi Đấu &amp; Tỷ Số</h2>
+                </div>
+                <div id="schedule-container" class="matches-list animate-fade-in">
+                    <div class="loading-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu lịch thi đấu...
+                    </div>
+                </div>
+            </section>
+
+            <!-- STANDINGS SECTION -->
+            <section id="tab-standings" class="tab-content standings-section hidden">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-table-list text-green"></i> Bảng Xếp Hạng</h2>
+                </div>
+                <div class="standings-wrapper glass-card animate-fade-in">
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th class="col-rank">#</th>
+                                <th class="col-team">CLB</th>
+                                <th class="col-stat">ST</th>
+                                <th class="col-stat">T</th>
+                                <th class="col-stat">H</th>
+                                <th class="col-stat">B</th>
+                                <th class="col-stat hidable">BT</th>
+                                <th class="col-stat hidable">BB</th>
+                                <th class="col-stat">HS</th>
+                                <th class="col-pts">Điểm</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-tbody">
+                            <tr>
+                                <td colspan="10" class="loading-td">
+                                    <i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu bảng xếp hạng...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ARSENAL SECTION -->
+            <section id="tab-arsenal" class="tab-content hidden">
+                <div class="section-header">
+                    <h2><img src="https://a.espncdn.com/i/teamlogos/soccer/500/359.png" alt="Arsenal" class="section-logo-img"> Pháo Thủ Arsenal</h2>
+                </div>
+
+                <!-- Arsenal Matches Content -->
+                <div id="arsenal-matches" class="subcontent-area matches-list animate-fade-in">
+                    <div class="loading-state">
+                         <i class="fa-solid fa-spinner fa-spin"></i> Đang tải lịch đấu Arsenal...
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- BOTTOM NAV BAR -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-tab="tab-schedule">
+            <i class="fa-regular fa-calendar-days"></i>
+            <span>Lịch đấu</span>
+        </button>
+        <button class="nav-item" data-tab="tab-standings">
+            <i class="fa-solid fa-table-list"></i>
+            <span>Bảng xếp hạng</span>
+        </button>
+        <button class="nav-item" data-tab="tab-arsenal">
+            <img src="https://a.espncdn.com/i/teamlogos/soccer/500/359.png" alt="Arsenal" class="nav-logo-img">
+            <span>Arsenal</span>
+        </button>
+    </nav>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- JS Files -->
+    <script src="{{ url_for('c1.static', filename='js/app.js') }}"></script>
+</body>
+</html>
