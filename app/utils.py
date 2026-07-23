@@ -20,3 +20,24 @@ def delete_image_files(content):
                     os.remove(file_path)
                 except Exception as e:
                     print(f"Lỗi xóa file: {e}")
+
+import time
+
+# Simple in-memory cache store
+_cache = {}
+
+def get_cached_data(key, fetch_func, expiry_seconds=60):
+    """
+    Simple in-memory cache to store API responses.
+    """
+    now = time.time()
+    if key in _cache:
+        data, timestamp = _cache[key]
+        if now - timestamp < expiry_seconds:
+            return data
+            
+    # Fetch fresh data
+    data = fetch_func()
+    _cache[key] = (data, now)
+    return data
+
