@@ -59,12 +59,85 @@
           <h1 class="text-2xl md:text-3xl font-black tracking-tight uppercase text-gradient mb-2 block w-full">
             Nguyễn Đức Thắng
           </h1>
-          <p class="text-gradient-gold font-bold text-xs md:text-sm mt-1 uppercase tracking-[0.2em] block w-full">
+          <p class="text-gradient-gold font-bold text-xs md:text-sm mt-1 uppercase tracking-[0.2em] block w-full mb-6">
             IT Network Engineer
           </p>
+
+          <!-- Bio Links section (IT) - Moved to top above Grid -->
+          {% if links %}
+          <div class="flex flex-wrap justify-center items-center gap-3 md:gap-4 w-full">
+            {% for link in links %}
+            <a
+              href="{{ link.url }}"
+              target="_blank"
+              title="{{ link.title }}"
+              class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center hover:scale-110 transition-all flex-shrink-0 text-white"
+            >
+              {% if link.title.lower() == 'zalo' %}
+                <span class="font-black text-[10px] md:text-xs tracking-wider text-[#0068FF]">ZALO</span>
+              {% elif link.title.lower() == 'facebook' %}
+                <i class="{{ link.icon_class }} text-xl md:text-2xl text-[#1877F2]"></i>
+              {% elif link.title.lower() == 'telegram' %}
+                <i class="{{ link.icon_class }} text-xl md:text-2xl text-[#24A1DE]"></i>
+              {% elif link.title.lower() == 'discord' %}
+                <i class="{{ link.icon_class }} text-xl md:text-2xl text-[#5865F2]"></i>
+              {% elif link.title.lower() == 'whatsapp' %}
+                <i class="{{ link.icon_class }} text-xl md:text-2xl text-[#25D366]"></i>
+              {% else %}
+                <i class="{{ link.icon_class }} text-xl md:text-2xl text-[#d4af37]"></i>
+              {% endif %}
+            </a>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="flex flex-wrap justify-center items-center gap-3 md:gap-4 w-full">
+            <a
+              href="{{ social.facebook }}"
+              target="_blank"
+              class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#1877F2] hover:scale-110 transition-all flex-shrink-0"
+            >
+              <i class="fab fa-facebook text-xl md:text-2xl"></i>
+            </a>
+            <a
+              href="{{ social.zalo }}"
+              target="_blank"
+              class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#0068FF] hover:scale-110 transition-all flex-shrink-0"
+            >
+              <span class="font-black text-[10px] md:text-xs tracking-wider">ZALO</span>
+            </a>
+            <a
+              href="{{ social.telegram }}"
+              target="_blank"
+              class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#24A1DE] hover:scale-110 transition-all flex-shrink-0"
+            >
+              <i class="fab fa-telegram text-xl md:text-2xl"></i>
+            </a>
+            <a
+              href="{{ social.discord }}"
+              target="_blank"
+              class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#5865F2] hover:scale-110 transition-all flex-shrink-0"
+            >
+              <i class="fab fa-discord text-xl md:text-2xl"></i>
+            </a>
+            <a
+              href="{{ social.whatsapp }}"
+              target="_blank"
+              class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#25D366] hover:scale-110 transition-all flex-shrink-0"
+            >
+              <i class="fab fa-whatsapp text-xl md:text-2xl"></i>
+            </a>
+            <a
+              href="{{ social.x }}"
+              target="_blank"
+              class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all flex-shrink-0"
+            >
+              <i class="fa-brands fa-x-twitter text-xl md:text-2xl"></i>
+            </a>
+          </div>
+          {% endif %}
         </div>
 
-        <div class="w-full grid grid-cols-2 gap-3">
+        <div class="w-full grid grid-cols-2 gap-3 mt-8">
           <a
             href="{{ url_for('main.cv') }}"
             class="flex flex-col justify-between p-4 sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02] aspect-square"
@@ -150,71 +223,6 @@
             </div>
           </a>
         </div>
-
-        <!-- Bio Links section (IT) -->
-        {% if links %}
-        <div class="flex flex-wrap justify-center items-center gap-3 md:gap-4 pt-6 w-full">
-          {% for link in links %}
-          <a
-            href="{{ link.url }}"
-            target="_blank"
-            title="{{ link.title }}"
-            class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center hover:scale-110 transition-all flex-shrink-0 text-[#d4af37]"
-          >
-            {% if link.title.lower() == 'zalo' %}
-              <span class="font-black text-[10px] md:text-xs tracking-wider">ZALO</span>
-            {% else %}
-              <i class="{{ link.icon_class }} text-xl md:text-2xl"></i>
-            {% endif %}
-          </a>
-          {% endfor %}
-        </div>
-        {% else %}
-        <div class="flex flex-wrap justify-center items-center gap-3 md:gap-4 pt-6 w-full">
-          <a
-            href="{{ social.facebook }}"
-            target="_blank"
-            class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#1877F2] hover:scale-110 transition-all flex-shrink-0"
-          >
-            <i class="fab fa-facebook text-xl md:text-2xl"></i>
-          </a>
-          <a
-            href="{{ social.zalo }}"
-            target="_blank"
-            class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#d4af37] hover:scale-110 transition-all flex-shrink-0"
-          >
-            <span class="font-black text-[10px] md:text-xs tracking-wider">ZALO</span>
-          </a>
-          <a
-            href="{{ social.telegram }}"
-            target="_blank"
-            class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#24A1DE] hover:scale-110 transition-all flex-shrink-0"
-          >
-            <i class="fab fa-telegram text-xl md:text-2xl"></i>
-          </a>
-          <a
-            href="{{ social.discord }}"
-            target="_blank"
-            class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#5865F2] hover:scale-110 transition-all flex-shrink-0"
-          >
-            <i class="fab fa-discord text-xl md:text-2xl"></i>
-          </a>
-          <a
-            href="{{ social.whatsapp }}"
-            target="_blank"
-            class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-[#25D366] hover:scale-110 transition-all flex-shrink-0"
-          >
-            <i class="fab fa-whatsapp text-xl md:text-2xl"></i>
-          </a>
-          <a
-            href="{{ social.x }}"
-            target="_blank"
-            class="w-12 h-12 md:w-14 md:h-14 glass-card rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all flex-shrink-0"
-          >
-            <i class="fa-brands fa-x-twitter text-xl md:text-2xl"></i>
-          </a>
-        </div>
-        {% endif %}
       </div>
 
       <!-- SECTION: THẮNG NHẢY DÂY CONTENT -->
