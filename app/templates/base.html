@@ -72,11 +72,11 @@
       <div
         class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between"
       >
-        <div class="flex items-center gap-3 md:gap-4 flex-shrink-0">
+        <div class="flex items-center gap-2 sm:gap-4 flex-shrink-0">
           <a href="{{ url_for('main.index') }}" onclick="if(window.switchBioTab) { switchBioTab('nhayday'); event.preventDefault(); }" class="flex items-center gap-1">
             <i class="fa-solid fa-fire text-orange-500 text-[10px] md:text-xs"></i>
             <span
-              class="text-white font-black uppercase tracking-tight text-[10px] md:text-xs hover:text-orange-500 transition-colors"
+              class="text-white font-black uppercase tracking-tight text-[9px] sm:text-[10px] md:text-xs hover:text-orange-500 transition-colors"
             >
               Thắng Nhảy Dây
             </span>
@@ -85,7 +85,7 @@
           <a href="{{ url_for('main.index') }}" onclick="if(window.switchBioTab) { switchBioTab('it'); event.preventDefault(); }" class="flex items-center gap-1">
             <i class="fa-solid fa-network-wired text-blue-500 text-[10px] md:text-xs"></i>
             <span
-              class="text-white/80 hover:text-blue-400 font-black uppercase tracking-tighter text-[10px] md:text-xs transition-colors"
+              class="text-white/80 hover:text-blue-400 font-black uppercase tracking-tighter text-[9px] sm:text-[10px] md:text-xs transition-colors"
             >
               Thắng IT Network
             </span>
@@ -137,8 +137,14 @@
           <div
             class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest"
           >
-            <a href="{{ url_for('auth.login') }}" class="text-white/60 hover:text-blue-400">Login</a>
-            <a href="{{ url_for('auth.register') }}" class="text-[#d4af37]">Register</a>
+            <a href="{{ url_for('auth.login') }}" class="text-white/60 hover:text-blue-400">
+              <span class="hidden md:inline">Login</span>
+              <i class="fa-solid fa-right-to-bracket md:hidden text-xs"></i>
+            </a>
+            <a href="{{ url_for('auth.register') }}" class="text-[#d4af37]">
+              <span class="hidden md:inline">Register</span>
+              <i class="fa-solid fa-user-plus md:hidden text-xs"></i>
+            </a>
           </div>
           {% endif %}
         </div>
