@@ -110,92 +110,124 @@
           </div>
         </div>
 
-        <!-- Grid layout (IT) -->
-        <div class="w-full grid grid-cols-2 gap-3 mt-8">
-          <a
-            href="{{ url_for('main.cv') }}"
-            class="flex flex-col justify-between p-4 sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02] aspect-square"
-          >
-            <div class="flex flex-col items-center text-center w-full my-auto">
-              <div class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-3">
-                <i class="fa-solid fa-file-contract text-2xl"></i>
-              </div>
-              <h4 class="font-bold text-xs md:text-sm text-white/95 uppercase tracking-wide leading-tight">
-                Hồ Sơ Chuyên Môn
-              </h4>
-              <p class="text-white/50 text-[9px] mt-1 line-clamp-2 leading-relaxed">
-                10+ năm kinh nghiệm trong lĩnh vực IT Network
-              </p>
-            </div>
-          </a>
+        <!-- Grid layout (IT) - EXACT COPY OF NHAY DAY STRUCTURE -->
+        <div class="space-y-6 mt-8 w-full">
+          <div class="w-full text-left">
+            <h4 class="text-blue-500/80 font-bold text-[11px] uppercase tracking-wider mb-3 pl-3 border-l-2 border-blue-500">
+              Dịch Vụ & Dự Án
+            </h4>
+            <div class="grid grid-cols-2 gap-3">
+              <!-- Item 1: CV -->
+              <a
+                href="{{ url_for('main.cv') }}"
+                class="flex flex-col justify-between sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02]"
+              >
+                <div class="flex flex-col items-center text-center w-full">
+                  <div class="w-full aspect-square bg-blue-500/10 flex items-center justify-center text-blue-400 mb-2 border-b border-white/5">
+                    <i class="fa-solid fa-file-contract text-3xl"></i>
+                  </div>
+                  
+                  <p class="font-bold text-[10px] md:text-[11px] leading-snug text-white/90 line-clamp-2 min-h-[2.2rem] px-3">
+                    Hồ Sơ Chuyên Môn (CV)
+                  </p>
+                </div>
+                
+                <div class="mt-2 pb-3 px-3 w-full flex justify-center">
+                  <span class="text-[9px] font-black uppercase tracking-wider text-blue-500 bg-blue-500/10 group-hover:bg-blue-500 group-hover:text-white px-2.5 py-1.5 rounded-lg border border-blue-500/20 transition-colors w-full text-center">
+                    Xem ngay
+                  </span>
+                </div>
+              </a>
 
-          <a
-            href="{{ url_for('wc2026.index') }}"
-            class="flex flex-col justify-between p-4 sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02] aspect-square"
-          >
-            <div class="flex flex-col items-center text-center w-full my-auto">
-              <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center text-yellow-300 mb-3">
-                <i class="fa-solid fa-trophy text-2xl"></i>
-              </div>
-              <h4 class="font-bold text-xs md:text-sm text-white/95 uppercase tracking-wide leading-tight">
-                World Cup 2026
-              </h4>
-              <p class="text-white/50 text-[9px] mt-1 line-clamp-2 leading-relaxed">
-                Lịch thi đấu & Kết quả trực tiếp giải đấu
-              </p>
-            </div>
-          </a>
+              <!-- Item 2: WC2026 -->
+              <a
+                href="{{ url_for('wc2026.index') }}"
+                class="flex flex-col justify-between sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02]"
+              >
+                <div class="flex flex-col items-center text-center w-full">
+                  <div class="w-full aspect-square bg-purple-500/10 flex items-center justify-center text-yellow-300 mb-2 border-b border-white/5">
+                    <i class="fa-solid fa-trophy text-3xl"></i>
+                  </div>
+                  
+                  <p class="font-bold text-[10px] md:text-[11px] leading-snug text-white/90 line-clamp-2 min-h-[2.2rem] px-3">
+                    World Cup 2026
+                  </p>
+                </div>
+                
+                <div class="mt-2 pb-3 px-3 w-full flex justify-center">
+                  <span class="text-[9px] font-black uppercase tracking-wider text-blue-500 bg-blue-500/10 group-hover:bg-blue-500 group-hover:text-white px-2.5 py-1.5 rounded-lg border border-blue-500/20 transition-colors w-full text-center">
+                    Xem ngay
+                  </span>
+                </div>
+              </a>
 
-          <a
-            href="{{ url_for('epl.index') }}"
-            class="flex flex-col justify-between p-4 sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02] aspect-square"
-          >
-            <div class="flex flex-col items-center text-center w-full my-auto">
-              <div class="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-[#00ff87] mb-3">
-                <i class="fa-solid fa-crown text-2xl"></i>
-              </div>
-              <h4 class="font-bold text-xs md:text-sm text-white/95 uppercase tracking-wide leading-tight">
-                Ngoại Hạng Anh
-              </h4>
-              <p class="text-white/50 text-[9px] mt-1 line-clamp-2 leading-relaxed">
-                Bảng xếp hạng & Kết quả vòng đấu
-              </p>
-            </div>
-          </a>
+              <!-- Item 3: EPL -->
+              <a
+                href="{{ url_for('epl.index') }}"
+                class="flex flex-col justify-between sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02]"
+              >
+                <div class="flex flex-col items-center text-center w-full">
+                  <div class="w-full aspect-square bg-emerald-500/10 flex items-center justify-center text-[#00ff87] mb-2 border-b border-white/5">
+                    <i class="fa-solid fa-crown text-3xl"></i>
+                  </div>
+                  
+                  <p class="font-bold text-[10px] md:text-[11px] leading-snug text-white/90 line-clamp-2 min-h-[2.2rem] px-3">
+                    Ngoại Hạng Anh (EPL)
+                  </p>
+                </div>
+                
+                <div class="mt-2 pb-3 px-3 w-full flex justify-center">
+                  <span class="text-[9px] font-black uppercase tracking-wider text-blue-500 bg-blue-500/10 group-hover:bg-blue-500 group-hover:text-white px-2.5 py-1.5 rounded-lg border border-blue-500/20 transition-colors w-full text-center">
+                    Xem ngay
+                  </span>
+                </div>
+              </a>
 
-          <a
-            href="{{ url_for('c1.index') }}"
-            class="flex flex-col justify-between p-4 sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02] aspect-square"
-          >
-            <div class="flex flex-col items-center text-center w-full my-auto">
-              <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center text-yellow-300 mb-3">
-                <i class="fa-solid fa-trophy text-2xl"></i>
-              </div>
-              <h4 class="font-bold text-xs md:text-sm text-white/95 uppercase tracking-wide leading-tight">
-                Champions League
-              </h4>
-              <p class="text-white/50 text-[9px] mt-1 line-clamp-2 leading-relaxed">
-                Cúp C1 Châu Âu - Kết quả trực tiếp
-              </p>
-            </div>
-          </a>
+              <!-- Item 4: C1 -->
+              <a
+                href="{{ url_for('c1.index') }}"
+                class="flex flex-col justify-between sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02]"
+              >
+                <div class="flex flex-col items-center text-center w-full">
+                  <div class="w-full aspect-square bg-blue-600/10 flex items-center justify-center text-yellow-300 mb-2 border-b border-white/5">
+                    <i class="fa-solid fa-medal text-3xl"></i>
+                  </div>
+                  
+                  <p class="font-bold text-[10px] md:text-[11px] leading-snug text-white/90 line-clamp-2 min-h-[2.2rem] px-3">
+                    Champions League (C1)
+                  </p>
+                </div>
+                
+                <div class="mt-2 pb-3 px-3 w-full flex justify-center">
+                  <span class="text-[9px] font-black uppercase tracking-wider text-blue-500 bg-blue-500/10 group-hover:bg-blue-500 group-hover:text-white px-2.5 py-1.5 rounded-lg border border-blue-500/20 transition-colors w-full text-center">
+                    Xem ngay
+                  </span>
+                </div>
+              </a>
 
-          <a
-            href="{{ url_for('blog.blog_list') }}"
-            class="flex flex-col justify-between p-4 sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02] aspect-square col-span-2 md:col-span-1"
-          >
-            <div class="flex flex-col items-center text-center w-full my-auto">
-              <div class="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-400 mb-3">
-                <i class="fa-solid fa-robot text-2xl"></i>
-              </div>
-              <h4 class="font-bold text-xs md:text-sm text-white/95 uppercase tracking-wide leading-tight">
-                AI & Kỹ thuật
-              </h4>
-              <p class="text-white/50 text-[9px] mt-1 line-clamp-2 leading-relaxed">
-                Kiến thức IT & Hướng dẫn tự động bởi AI
-              </p>
+              <!-- Item 5: Blog -->
+              <a
+                href="{{ url_for('blog.blog_list') }}"
+                class="flex flex-col justify-between sport-card rounded-2xl text-left hover:scale-[1.02] transition-all duration-300 border border-white/5 relative group overflow-hidden bg-white/[0.02]"
+              >
+                <div class="flex flex-col items-center text-center w-full">
+                  <div class="w-full aspect-square bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-2 border-b border-white/5">
+                    <i class="fa-solid fa-robot text-3xl"></i>
+                  </div>
+                  
+                  <p class="font-bold text-[10px] md:text-[11px] leading-snug text-white/90 line-clamp-2 min-h-[2.2rem] px-3">
+                    AI & Kỹ thuật Network
+                  </p>
+                </div>
+                
+                <div class="mt-2 pb-3 px-3 w-full flex justify-center">
+                  <span class="text-[9px] font-black uppercase tracking-wider text-blue-500 bg-blue-500/10 group-hover:bg-blue-500 group-hover:text-white px-2.5 py-1.5 rounded-lg border border-blue-500/20 transition-colors w-full text-center">
+                    Xem ngay
+                  </span>
+                </div>
+              </a>
             </div>
-          </a>
+          </div>
         </div>
       </div>
 
