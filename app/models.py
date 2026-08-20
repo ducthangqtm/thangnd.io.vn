@@ -94,3 +94,9 @@ class JumpRopeProgress(db.Model):
     video_url = db.Column(db.String(500), nullable=True) # Link video TikTok/Shorts/Reels
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     is_completed = db.Column(db.Boolean, default=True)
+
+# 9. Bảng VisitorCount (Đếm số lượt truy cập)
+class VisitorCount(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    count = db.Column(db.Integer, default=0)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

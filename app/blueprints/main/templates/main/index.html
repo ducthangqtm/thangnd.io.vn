@@ -315,8 +315,13 @@
     </div>
 
     <!-- Copyright Footer -->
-    <div class="w-full mt-16 border-t border-white/5 pt-8">
-      <div class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.3em] text-center">
+    <div class="w-full mt-16 border-t border-white/5 pt-8 flex flex-col items-center gap-2">
+      {% if visitor_count %}
+      <div class="text-slate-500/80 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-1.5 bg-white/[0.02] border border-white/5 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-chart-line text-blue-500 text-[9px]"></i> Lượt truy cập: <span class="text-blue-400 font-black">{{ "{:,}".format(visitor_count) }}</span>
+      </div>
+      {% endif %}
+      <div class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.3em] text-center mt-1">
         © 2026 THẮNG IT - THANGND.IO.VN • POWERED BY FLASK
       </div>
     </div>
