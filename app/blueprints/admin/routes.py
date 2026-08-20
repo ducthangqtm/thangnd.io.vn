@@ -6,7 +6,7 @@ from flask import current_app as app
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
-from app.models import Post, User, Link
+from app.models import Post, User, Link, AffiliateLink, JumpRopeProgress
 from app import db
 from app.utils import slugify, delete_image_files
 from . import admin_bp
@@ -19,7 +19,9 @@ def dashboard():
     posts = Post.query.order_by(Post.date_posted.desc()).all()
     users = User.query.all()
     links = Link.query.order_by(Link.order.asc()).all()
-    return render_template('admin/dashboard.html', posts=posts, users=users, links=links)
+    aff_links = AffiliateLink.query.order_by(AffiliateLink.order.asc()).all()
+    progress_entries = JumpRopeProgress.query.order_by(JumpRopeProgress.day_number.asc()).all()
+    return render_template('admin/dashboard.html', posts=posts, users=users, links=links, aff_links=aff_links, progress_entries=progress_entries)
 
 @admin_bp.route('/thangnd-admin/create-user', methods=['POST'])
 @login_required
@@ -174,4 +176,105 @@ def delete_link(id):
     db.session.delete(link)
     db.session.commit()
     flash('Đã xóa liên kết thành công!', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+# ==================== QUẢN LÝ THẮNG NHẢY DÂY ====================
+
+@admin_bp.route('/thangnd-admin/affiliate/create', methods=['POST'])
+@login_required
+def create_affiliate_link():
+    if current_user.role not in ['admin', 'mod']: abort(403)
+    title = request.form.get('title')
+    url = request.form.get('url')
+    category = request.form.get('category', 'Thiết bị')
+    icon_class = request.form.get('icon_class', 'fa-solid fa-cart-shopping')
+    image_url = request.form.get('image_url')
+    order = request.form.get('order', 0, type=int)
+    
+    if title and url:
+        new_link = AffiliateLink(title=title, url=url, category=category, icon_class=icon_class, image_url=image_url, order=order)
+        db.session.add(new_link)
+        db.session.commit()
+        flash('Đã thêm liên kết affiliate mới!', 'success')
+    else:
+        flash('Vui lòng điền đủ thông tin!', 'danger')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/thangnd-admin/affiliate/edit/<int:id>', methods=['POST'])
+@login_required
+def edit_affiliate_link(id):
+    if current_user.role not in ['admin', 'mod']: abort(403)
+    link = AffiliateLink.query.get_or_404(id)
+    link.title = request.form.get('title')
+    link.url = request.form.get('url')
+    link.category = request.form.get('category', 'Thiết bị')
+    link.icon_class = request.form.get('icon_class', 'fa-solid fa-cart-shopping')
+    link.image_url = request.form.get('image_url')
+    link.order = request.form.get('order', 0, type=int)
+    link.is_active = 'is_active' in request.form
+    db.session.commit()
+    flash('Đã cập nhật liên kết affiliate thành công!', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/thangnd-admin/affiliate/delete/<int:id>')
+@login_required
+def delete_affiliate_link(id):
+    if current_user.role != 'admin': abort(403)
+    link = AffiliateLink.query.get_or_404(id)
+    db.session.delete(link)
+    db.session.commit()
+    flash('Đã xóa liên kết affiliate thành công!', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/thangnd-admin/jumprope/create', methods=['POST'])
+@login_required
+def create_jumprope_progress():
+    if current_user.role not in ['admin', 'mod']: abort(403)
+    day_number = request.form.get('day_number', type=int)
+    title = request.form.get('title')
+    description = request.form.get('description')
+    video_url = request.form.get('video_url')
+    is_completed = 'is_completed' in request.form
+    
+    if day_number and title:
+        existing = JumpRopeProgress.query.filter_by(day_number=day_number).first()
+        if existing:
+            flash(f'Ngày nhảy dây số {day_number} đã tồn tại!', 'danger')
+        else:
+            new_progress = JumpRopeProgress(day_number=day_number, title=title, description=description, video_url=video_url, is_completed=is_completed)
+            db.session.add(new_progress)
+            db.session.commit()
+            flash(f'Đã thêm tiến độ ngày {day_number} thành công!', 'success')
+    else:
+        flash('Vui lòng điền số ngày và tiêu đề!', 'danger')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/thangnd-admin/jumprope/edit/<int:id>', methods=['POST'])
+@login_required
+def edit_jumprope_progress(id):
+    if current_user.role not in ['admin', 'mod']: abort(403)
+    progress = JumpRopeProgress.query.get_or_404(id)
+    new_day = request.form.get('day_number', type=int)
+    if new_day != progress.day_number:
+        existing = JumpRopeProgress.query.filter_by(day_number=new_day).first()
+        if existing:
+            flash(f'Lỗi: Số ngày {new_day} đã bị trùng!', 'danger')
+            return redirect(url_for('admin.dashboard'))
+    progress.day_number = new_day
+    progress.title = request.form.get('title')
+    progress.description = request.form.get('description')
+    progress.video_url = request.form.get('video_url')
+    progress.is_completed = 'is_completed' in request.form
+    db.session.commit()
+    flash('Đã cập nhật nhật ký nhảy dây thành công!', 'success')
+    return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/thangnd-admin/jumprope/delete/<int:id>')
+@login_required
+def delete_jumprope_progress(id):
+    if current_user.role != 'admin': abort(403)
+    progress = JumpRopeProgress.query.get_or_404(id)
+    db.session.delete(progress)
+    db.session.commit()
+    flash('Đã xóa nhật ký ngày nhảy dây thành công!', 'success')
     return redirect(url_for('admin.dashboard'))

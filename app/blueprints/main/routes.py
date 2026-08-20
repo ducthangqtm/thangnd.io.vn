@@ -1,14 +1,24 @@
 import os
 from flask import render_template, send_from_directory
 from flask import current_app as app
-from app.models import Link
+from app.models import Link, AffiliateLink
 from app.github_service import get_github_repositories
 from . import main_bp
 
 @main_bp.route('/')
 def index():
-    # Load Bio Links động từ Database
+    # Load Bio Links động từ Database cho IT
     links = Link.query.filter_by(is_active=True).order_by(Link.order.asc()).all()
+    
+    # Load các link Affiliate cho Nhảy Dây
+    aff_links = AffiliateLink.query.filter_by(is_active=True).order_by(AffiliateLink.order.asc()).all()
+    
+    # Phân nhóm các link affiliate theo danh mục
+    links_by_category = {}
+    for link in aff_links:
+        if link.category not in links_by_category:
+            links_by_category[link.category] = []
+        links_by_category[link.category].append(link)
     
     social_links = {
         "facebook": "https://www.facebook.com/ducthangqtm",
@@ -21,7 +31,7 @@ def index():
     }
     
     repos = get_github_repositories()
-    return render_template('main/index.html', links=links, social=social_links, repos=repos)
+    return render_template('main/index.html', links=links, social=social_links, repos=repos, links_by_category=links_by_category)
 
 @main_bp.route('/cv')
 def cv():

@@ -72,18 +72,29 @@
       <div
         class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between"
       >
-        <a href="{{ url_for('main.index') }}" class="flex items-center gap-2 flex-shrink-0">
-          <img
-            src="{{ url_for('static', filename='img/logo.png') }}"
-            alt="Logo"
-            class="w-8 h-8 object-contain"
-          />
-          <span
-            class="text-white font-black uppercase tracking-tighter text-[10px] md:text-xs"
-          >
-            Thắng IT
-          </span>
-        </a>
+        <div class="flex items-center gap-3 md:gap-4 flex-shrink-0">
+          <a href="{{ url_for('main.index') }}" onclick="if(window.switchBioTab) { switchBioTab('it'); event.preventDefault(); }" class="flex items-center gap-1.5">
+            <img
+              src="{{ url_for('static', filename='img/logo.png') }}"
+              alt="Logo"
+              class="w-7 h-7 object-contain"
+            />
+            <span
+              class="text-white font-black uppercase tracking-tighter text-[10px] md:text-xs hover:text-blue-400 transition-colors"
+            >
+              Thắng IT
+            </span>
+          </a>
+          <span class="text-white/10 text-xs">|</span>
+          <a href="{{ url_for('main.index') }}" onclick="if(window.switchBioTab) { switchBioTab('nhayday'); event.preventDefault(); }" class="flex items-center gap-1">
+            <i class="fa-solid fa-fire text-orange-500 text-[10px] md:text-xs"></i>
+            <span
+              class="text-white/80 hover:text-orange-500 font-black uppercase tracking-tight text-[10px] md:text-xs transition-colors"
+            >
+              Thắng Nhảy Dây
+            </span>
+          </a>
+        </div>
 
         <div class="flex items-center gap-2 md:gap-4">
           <!-- Theme Toggle Button -->

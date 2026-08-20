@@ -73,3 +73,24 @@ class Link(db.Model):
     icon_class = db.Column(db.String(100), nullable=False) # e.g. 'fa-brands fa-facebook'
     is_active = db.Column(db.Boolean, default=True)
     order = db.Column(db.Integer, default=0)
+
+# 7. Bảng AffiliateLink (Liên kết tiếp thị liên kết Thắng Nhảy Dây)
+class AffiliateLink(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150), nullable=False)
+    url = db.Column(db.String(500), nullable=False)
+    category = db.Column(db.String(100), nullable=False, default='Thiết bị') # e.g. 'Thiết bị', 'Trang phục', 'Dinh dưỡng'
+    icon_class = db.Column(db.String(100), nullable=False, default='fa-solid fa-cart-shopping')
+    image_url = db.Column(db.String(500), nullable=True) # URL ảnh sản phẩm từ Shopee
+    is_active = db.Column(db.Boolean, default=True)
+    order = db.Column(db.Integer, default=0)
+
+# 8. Bảng JumpRopeProgress (Nhật ký hành trình 100 ngày nhảy dây)
+class JumpRopeProgress(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    day_number = db.Column(db.Integer, nullable=False, unique=True) # 1 đến 100
+    title = db.Column(db.String(200), nullable=False) # Tiêu đề ngày nhảy dây, e.g. 'Ngày 1: Bắt đầu hành trình'
+    description = db.Column(db.Text, nullable=True) # Nội dung/Cảm nhận/Số lần nhảy
+    video_url = db.Column(db.String(500), nullable=True) # Link video TikTok/Shorts/Reels
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    is_completed = db.Column(db.Boolean, default=True)

@@ -68,7 +68,7 @@ def create_app(config_class=Config):
         db.create_all()
 
         # Tự động đồng bộ các link mặc định nếu database trống
-        from app.models import Link
+        from app.models import Link, AffiliateLink, JumpRopeProgress
         try:
             if Link.query.count() == 0:
                 default_links = [
@@ -81,8 +81,28 @@ def create_app(config_class=Config):
                 ]
                 db.session.bulk_save_objects(default_links)
                 db.session.commit()
+            
+            # Seed Affiliate links mặc định nếu trống
+            if AffiliateLink.query.count() == 0:
+                default_aff_links = [
+                    AffiliateLink(title="Dây Nhảy Sợi Cáp Đếm Số Tự Động", url="https://shopee.vn", category="Thiết bị", icon_class="fa-solid fa-bolt", order=1),
+                    AffiliateLink(title="Thảm Nhảy Dây Giảm Chấn Cao Cấp", url="https://shopee.vn", category="Thiết bị", icon_class="fa-solid fa-rug", order=2),
+                    AffiliateLink(title="Giày Thể Thao Êm Chân Chuyên Nhảy Dây", url="https://shopee.vn", category="Trang phục", icon_class="fa-solid fa-shoe-prints", order=3),
+                    AffiliateLink(title="Bình Nước Thể Thao 2L Lock&Lock", url="https://shopee.vn", category="Phụ kiện", icon_class="fa-solid fa-bottle-water", order=4)
+                ]
+                db.session.bulk_save_objects(default_aff_links)
+                db.session.commit()
+
+            # Seed Tiến trình Nhảy Dây mặc định nếu trống
+            if JumpRopeProgress.query.count() == 0:
+                default_progress = [
+                    JumpRopeProgress(day_number=1, title="Khởi động hành trình 100 ngày", description="Nhảy 500 cái nhẹ nhàng làm quen lại nhịp độ. Hơi mỏi chân nhẹ.", video_url="https://tiktok.com", is_completed=True),
+                    JumpRopeProgress(day_number=2, title="Tăng tốc ngày thứ hai", description="Tăng lên 800 cái. Bắt đầu quen nhịp dây.", video_url="https://tiktok.com", is_completed=True),
+                ]
+                db.session.bulk_save_objects(default_progress)
+                db.session.commit()
         except Exception as e:
             db.session.rollback()
-            print(f"Error seeding links: {e}")
+            print(f"Error seeding links or progress: {e}")
 
     return app
