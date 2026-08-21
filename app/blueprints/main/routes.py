@@ -1,7 +1,7 @@
 import os
-from flask import render_template, send_from_directory
+from flask import render_template, send_from_directory, Response
 from flask import current_app as app
-from app.models import Link, AffiliateLink, VisitorCount
+from app.models import Link, AffiliateLink, VisitorCount, Post
 from app import db
 from app.github_service import get_github_repositories
 from . import main_bp
@@ -55,3 +55,45 @@ def download_cv():
 @main_bp.route('/google954f6558285dd27a.html')
 def google_verify():
     return send_from_directory('static', 'google954f6558285dd27a.html')
+
+@main_bp.route('/robots.txt')
+def robots():
+    content = """User-agent: *
+Allow: /
+Sitemap: https://thangnhayday.com/sitemap.xml
+"""
+    return Response(content, mimetype='text/plain')
+
+@main_bp.route('/sitemap.xml')
+def sitemap():
+    base_url = "https://thangnhayday.com"
+    pages = [
+        {"loc": f"{base_url}/", "priority": "1.0", "changefreq": "daily"},
+        {"loc": f"{base_url}/cv", "priority": "0.7", "changefreq": "monthly"},
+        {"loc": f"{base_url}/blog", "priority": "0.8", "changefreq": "daily"},
+    ]
+    try:
+        posts = Post.query.order_by(Post.date_posted.desc()).all()
+        for p in posts:
+            pages.append({
+                "loc": f"{base_url}/blog/{p.slug}",
+                "priority": "0.6",
+                "changefreq": "weekly",
+                "lastmod": p.date_posted.strftime("%Y-%m-%d") if p.date_posted else None
+            })
+    except Exception:
+        pass
+
+    xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml_lines.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    for page in pages:
+        xml_lines.append('  <url>')
+        xml_lines.append(f'    <loc>{page["loc"]}</loc>')
+        if page.get("lastmod"):
+            xml_lines.append(f'    <lastmod>{page["lastmod"]}</lastmod>')
+        xml_lines.append(f'    <changefreq>{page.get("changefreq", "monthly")}</changefreq>')
+        xml_lines.append(f'    <priority>{page.get("priority", "0.5")}</priority>')
+        xml_lines.append('  </url>')
+    xml_lines.append('</urlset>')
+
+    return Response('\n'.join(xml_lines), mimetype='application/xml')

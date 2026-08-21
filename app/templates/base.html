@@ -13,32 +13,69 @@
       gtag('config', 'G-P4YNXJJG6K');
     </script>
 
-    <title>Nguyễn Đức Thắng</title>
+    <title>{% block title %}Thắng Nhảy Dây - Kỹ Thuật Nhảy Dây, Dây Nhảy Thể Lực & Phụ Kiện | thangnhayday.com{% endblock %}</title>
 
     <meta
       name="description"
-      content="Website cá nhân của Nguyễn Đức Thắng - Thắng Nhảy Dây chia sẻ hành trình nhảy dây và phụ kiện tập sức khỏe tại nhà."
+      content="Website chính thức của Thắng Nhảy Dây (thangnhayday.com). Kênh chia sẻ kinh nghiệm, giáo án kỹ thuật nhảy dây giảm cân, review dây nhảy thể lực và đồ tập thể thao."
     />
     <meta
       name="keywords"
-      content="Nguyễn Đức Thắng, Thắng Nhảy Dây, Giảm Cân, Dây Nhảy Thể Lực, Bắc Ninh"
+      content="Thắng Nhảy Dây, thangnhayday, thangnhayday.com, nhảy dây giảm cân, dây nhảy thể lực, kỹ thuật nhảy dây, phụ kiện nhảy dây, Thắng ND"
     />
-    <meta name="author" content="Nguyễn Đức Thắng" />
+    <meta name="author" content="Thắng Nhảy Dây" />
+    <link rel="canonical" href="https://thangnhayday.com{{ request.path }}" />
 
+    <!-- Open Graph / Facebook -->
     <meta
       property="og:title"
-      content="Nguyễn Đức Thắng"
+      content="Thắng Nhảy Dây - Kỹ Thuật Nhảy Dây & Dây Nhảy Thể Lực"
     />
     <meta
       property="og:description"
-      content="Thắng Nhảy Dây chia sẻ hành trình nhảy dây và phụ kiện tập sức khỏe tại nhà."
+      content="Kênh chia sẻ kinh nghiệm, kỹ thuật nhảy dây giảm cân và đồ tập thể lực tại nhà của Thắng Nhảy Dây."
     />
     <meta
       property="og:image"
-      content="{{ url_for('static', filename='img/thangnhayday.png') }}"
+      content="https://thangnhayday.com{{ url_for('static', filename='img/thangnhayday.png') }}"
     />
-    <meta property="og:url" content="https://thangnd.io.vn" />
+    <meta property="og:url" content="https://thangnhayday.com{{ request.path }}" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Thắng Nhảy Dây" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Thắng Nhảy Dây - thangnhayday.com" />
+    <meta name="twitter:description" content="Kênh chia sẻ kỹ thuật nhảy dây giảm cân và đồ tập thể lực tại nhà của Thắng Nhảy Dây." />
+    <meta name="twitter:image" content="https://thangnhayday.com{{ url_for('static', filename='img/thangnhayday.png') }}" />
+
+    <!-- Schema Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Thắng Nhảy Dây",
+      "alternateName": ["thangnhayday", "thangnhayday.com", "Thắng Nhảy Dây Official"],
+      "url": "https://thangnhayday.com",
+      "description": "Website chính thức của Thắng Nhảy Dây. Chia sẻ kỹ thuật nhảy dây giảm cân, phụ kiện thể lực và bio link."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Thắng Nhảy Dây",
+      "alternateName": "Nguyễn Đức Thắng",
+      "url": "https://thangnhayday.com",
+      "image": "https://thangnhayday.com{{ url_for('static', filename='img/thangnhayday.png') }}",
+      "sameAs": [
+        "https://www.tiktok.com/@thangnhayday",
+        "https://youtube.com/@thangnhayday",
+        "https://www.facebook.com/ducthangqtm"
+      ],
+      "jobTitle": "Content Creator & Jump Rope Enthusiast"
+    }
+    </script>
 
     <link
       rel="icon"
