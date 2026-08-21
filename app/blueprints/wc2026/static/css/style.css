@@ -1,25 +1,25 @@
-/* DESIGN TOKENS (LIGHT THEME) */
+/* DESIGN TOKENS (DARK THEME UNIFIED) */
 :root {
-    --bg-primary: #f8fafc;
-    --bg-secondary: #f1f5f9;
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --card-border: rgba(148, 163, 184, 0.22);
+    --bg-primary: #020617;
+    --bg-secondary: #0b132b;
+    --card-bg: rgba(15, 23, 42, 0.85);
+    --card-border: rgba(255, 255, 255, 0.08);
     --card-border-focus: rgba(59, 130, 246, 0.5);
     
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
     --text-muted: #64748b;
     
-    --purple: #7c3aed;
-    --purple-glow: rgba(124, 58, 237, 0.15);
-    --cyan: #0284c7;
-    --cyan-glow: rgba(2, 132, 199, 0.15);
-    --gold: #d97706;
-    --gold-glow: rgba(217, 119, 6, 0.15);
-    --green: #16a34a;
-    --green-glow: rgba(22, 163, 74, 0.15);
-    --red: #dc2626;
-    --red-glow: rgba(220, 38, 38, 0.15);
+    --purple: #a855f7;
+    --purple-glow: rgba(168, 85, 247, 0.2);
+    --cyan: #38bdf8;
+    --cyan-glow: rgba(56, 189, 248, 0.2);
+    --gold: #fbbf24;
+    --gold-glow: rgba(251, 191, 36, 0.2);
+    --green: #22c55e;
+    --green-glow: rgba(34, 197, 94, 0.2);
+    --red: #ef4444;
+    --red-glow: rgba(239, 68, 68, 0.2);
     
     --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -102,7 +102,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: radial-gradient(circle at 50% 0%, rgba(224, 231, 255, 0.5), rgba(248, 250, 252, 0.9));
+    background-image: radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.4), rgba(2, 6, 23, 0.98));
     z-index: -2;
     pointer-events: none;
 }
@@ -137,12 +137,12 @@ body {
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--card-border);
     border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     transition: var(--transition-smooth);
 }
 
 .glass-card:hover {
-    border-color: rgba(124, 58, 237, 0.3);
+    border-color: rgba(168, 85, 247, 0.4);
 }
 
 /* TEXT UTILITIES */
@@ -165,11 +165,11 @@ body {
     text-transform: uppercase;
 }
 
-.badge-purple { background: rgba(124, 58, 237, 0.1); color: var(--purple); border: 1px solid rgba(124, 58, 237, 0.2); }
-.badge-cyan { background: rgba(2, 132, 199, 0.1); color: var(--cyan); border: 1px solid rgba(2, 132, 199, 0.2); }
-.badge-gold { background: rgba(217, 119, 6, 0.1); color: var(--gold); border: 1px solid rgba(217, 119, 6, 0.2); }
-.badge-green { background: rgba(22, 163, 74, 0.1); color: var(--green); border: 1px solid rgba(22, 163, 74, 0.2); }
-.badge-danger { background: rgba(220, 38, 38, 0.1); color: var(--red); border: 1px solid rgba(220, 38, 38, 0.2); }
+.badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); border: 1px solid rgba(168, 85, 247, 0.3); }
+.badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
+.badge-gold { background: rgba(251, 191, 36, 0.15); color: var(--gold); border: 1px solid rgba(251, 191, 36, 0.3); }
+.badge-green { background: rgba(34, 197, 94, 0.15); color: var(--green); border: 1px solid rgba(34, 197, 94, 0.3); }
+.badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
 
 /* BUTTONS */
 .btn {
@@ -190,7 +190,7 @@ body {
 .btn-primary { background: linear-gradient(135deg, var(--purple), #6366f1); color: white; }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--purple-glow); }
 
-.btn-dark { background: #ffffff; color: var(--text-primary); border: 1px solid var(--card-border); }
+.btn-dark { background: rgba(15, 23, 42, 0.85); color: var(--text-primary); border: 1px solid var(--card-border); }
 .btn-dark:hover { background: var(--bg-secondary); }
 
 .btn-icon { width: 42px; height: 42px; padding: 0; border-radius: 50%; }
@@ -207,14 +207,14 @@ body {
     position: sticky;
     top: 0;
     z-index: 800;
-    background: rgba(248, 250, 252, 0.85);
+    background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--card-border);
     padding: 12px 20px;
     border-radius: 16px;
     margin-bottom: 25px;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .main-header {
@@ -270,9 +270,11 @@ body {
     padding: 8px 12px;
     z-index: 900;
     border-radius: 30px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid var(--card-border);
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .nav-item {
@@ -314,7 +316,7 @@ body {
     gap: 8px;
     border-radius: 14px;
     margin-bottom: 25px;
-    background: #ffffff;
+    background: rgba(15, 23, 42, 0.85);
     border: 1px solid var(--card-border);
 }
 
@@ -338,7 +340,7 @@ body {
 
 .sub-tab-btn:hover {
     color: var(--text-primary);
-    background: var(--bg-secondary);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .sub-tab-btn.active {
@@ -355,21 +357,28 @@ body {
 }
 
 .match-card {
-    background: #ffffff;
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--card-border);
     border-radius: 18px;
     padding: 16px 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.match-card:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    transform: translateY(-2px);
 }
 
 .match-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--bg-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     padding-bottom: 10px;
 }
 
@@ -382,17 +391,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
     padding: 10px 0;
-    gap: 15px;
+    gap: 6px;
 }
 
 .match-team {
-    flex: 1;
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 8px;
-    min-width: 0;
 }
 
 .match-team.team-a {
@@ -413,21 +424,23 @@ body {
 }
 
 .match-team-name {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     font-weight: 700;
     color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 130px;
 }
 
 .match-score-center {
+    flex: 0 0 94px;
+    width: 94px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    min-width: 80px;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
 }
 
 .score-display {
@@ -446,8 +459,9 @@ body {
 .vs-text {
     font-size: 0.8rem;
     font-weight: 800;
-    color: var(--text-muted);
-    background: var(--bg-secondary);
+    color: var(--gold);
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.2);
     padding: 4px 12px;
     border-radius: 20px;
 }
@@ -467,15 +481,19 @@ body {
 }
 
 .group-standings-card {
-    background: #ffffff;
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
     border-radius: 18px;
     padding: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .group-standings-card .card-header {
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 1px solid var(--bg-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .group-standings-card h2 {
@@ -491,17 +509,18 @@ body {
 }
 
 .standings-table th {
-    padding: 8px;
+    padding: 10px 8px;
     color: var(--text-muted);
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.72rem;
     text-transform: uppercase;
     text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .standings-table td {
-    padding: 8px;
-    border-bottom: 1px solid var(--bg-secondary);
+    padding: 10px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     vertical-align: middle;
 }
 
@@ -513,19 +532,29 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
+}
+
+.team-display-name {
     font-weight: 700;
     color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.88rem;
 }
 
 .team-logo-small {
     width: 20px;
     height: 20px;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 .table-pts-value {
     font-weight: 800;
     color: var(--gold);
+    font-size: 0.95rem;
 }
 
 .rank-badge {
@@ -536,14 +565,14 @@ body {
     height: 22px;
     border-radius: 50%;
     font-size: 0.75rem;
-    font-weight: 700;
-    background: var(--bg-secondary);
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.06);
     color: var(--text-secondary);
 }
 
-.rank-1 { background: rgba(217, 119, 6, 0.1); color: var(--gold); }
-.rank-2 { background: rgba(2, 132, 199, 0.1); color: var(--cyan); }
-.rank-3 { background: rgba(100, 116, 139, 0.1); color: var(--text-muted); }
+.rank-1 { background: rgba(251, 191, 36, 0.2); color: var(--gold); border: 1px solid rgba(251, 191, 36, 0.3); }
+.rank-2 { background: rgba(56, 189, 248, 0.2); color: var(--cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
+.rank-3 { background: rgba(148, 163, 184, 0.15); color: var(--text-secondary); }
 
 /* HORIZONTAL TREE BRACKET LAYOUT */
 .bracket-container {
@@ -557,10 +586,12 @@ body {
     overflow-y: hidden;
     padding: 15px 8px 30px 8px;
     min-height: 700px;
-    background: #ffffff;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: 16px;
     border: 1px solid var(--card-border);
-    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.01);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
     -webkit-overflow-scrolling: touch;
 }
 
@@ -575,14 +606,14 @@ body {
 .bracket-zoom-controls {
     display: flex;
     gap: 6px;
-    background: var(--bg-secondary);
+    background: rgba(15, 23, 42, 0.9);
     padding: 4px;
     border-radius: 10px;
     border: 1px solid var(--card-border);
 }
 
 .btn-zoom {
-    background: #ffffff;
+    background: rgba(2, 6, 23, 0.8);
     color: var(--text-primary);
     border: 1px solid var(--card-border);
     width: 32px;
@@ -649,21 +680,21 @@ body {
 
 /* BRACKET MATCH BOX CARD */
 .bracket-match-card {
-    background: #ffffff;
+    background: rgba(2, 6, 23, 0.85);
     border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 6px 8px;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: var(--transition-smooth);
     min-width: 125px;
 }
 
 .bracket-match-card:hover {
     border-color: var(--cyan);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
 }
 
 .bracket-match-time-header {
@@ -675,7 +706,7 @@ body {
     justify-content: center;
     gap: 4px;
     margin-bottom: 4px;
-    border-bottom: 1px solid var(--bg-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     padding-bottom: 2px;
 }
 
@@ -783,7 +814,7 @@ body {
     color: var(--text-muted);
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid var(--bg-secondary);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
     padding-top: 5px;
     margin-top: 2px;
 }
@@ -806,12 +837,14 @@ body {
 
 .toast {
     min-width: 250px;
-    background: #ffffff;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
     border-left: 4px solid var(--purple);
+    border: 1px solid var(--card-border);
     color: var(--text-primary);
     padding: 12px 16px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -891,7 +924,7 @@ body {
 
 .schedule-group-subheader {
     margin: 16px 0 8px 0;
-    background: var(--bg-secondary);
+    background: rgba(15, 23, 42, 0.8);
     padding: 8px 16px;
     border-radius: 8px;
     border: 1px solid var(--card-border);
@@ -905,9 +938,9 @@ body {
 }
 
 .match-played {
-    opacity: 0.7;
-    background: #f8fafc;
-    border-color: rgba(15, 23, 42, 0.05);
+    opacity: 0.75;
+    background: rgba(15, 23, 42, 0.5);
+    border-color: rgba(255, 255, 255, 0.05);
 }
 
 .match-played:hover {
@@ -920,7 +953,7 @@ body {
     gap: 8px;
     margin-bottom: 20px;
     padding: 4px;
-    background: var(--bg-secondary);
+    background: rgba(15, 23, 42, 0.85);
     border-radius: 10px;
     border: 1px solid var(--card-border);
 }
@@ -939,9 +972,9 @@ body {
 }
 
 .schedule-subtab.active {
-    background: #ffffff;
-    color: var(--purple);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    background: var(--purple);
+    color: #ffffff;
+    box-shadow: 0 2px 10px var(--purple-glow);
 }
 
 /* BRACKET HORIZONTAL ROW (cờ trái, tên phải) */

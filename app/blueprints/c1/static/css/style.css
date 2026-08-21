@@ -1,41 +1,26 @@
-/* EPL BRANDING DESIGN TOKENS */
+/* C1 BRANDING DESIGN TOKENS (DARK MODE UNIFIED) */
 :root {
-    --bg-primary: #0b0712;
-    --bg-secondary: #140d21;
-    --card-bg: rgba(28, 18, 46, 0.65);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --text-primary: #f3f1f6;
-    --text-secondary: #a39cb5;
-    --text-muted: #6e6582;
+    --bg-primary: #020617;
+    --bg-secondary: #0a1128;
+    --card-bg: rgba(13, 27, 62, 0.85);
+    --card-border: rgba(56, 189, 248, 0.15);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
     
-    --purple: #3d195b;
-    --purple-light: #8f34eb;
-    --purple-glow: rgba(143, 52, 235, 0.15);
+    --purple: #1e3a8a;
+    --purple-light: #38bdf8;
+    --purple-glow: rgba(56, 189, 248, 0.2);
     
-    --green: #00ff87;
-    --green-dark: #00cc6c;
-    --green-glow: rgba(0, 255, 135, 0.15);
+    --green: #00f0ff;
+    --green-dark: #0284c7;
+    --green-glow: rgba(0, 240, 255, 0.2);
     
-    --red: #ff2882;
-    --red-glow: rgba(255, 40, 130, 0.15);
+    --red: #f43f5e;
+    --red-glow: rgba(244, 63, 94, 0.2);
     
     --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* LIGHT THEME OVERRIDES */
-html.light {
-    --bg-primary: #f5f3f7;
-    --bg-secondary: #eae6f0;
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --card-border: rgba(61, 25, 91, 0.1);
-    --text-primary: #2d1d3d;
-    --text-secondary: #605170;
-    --text-muted: #8c7e9c;
-    --purple-glow: rgba(61, 25, 91, 0.08);
-    --green: #107a41; /* Darker readable green */
-    --green-dark: #0b592f;
-    --green-glow: rgba(16, 122, 65, 0.1);
 }
 
 /* GENERAL RESETS */
@@ -227,15 +212,17 @@ html.light .mini-topnav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    width: 100%;
+    gap: 6px;
 }
 
 .team-section {
-    flex: 1;
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
     display: flex;
     align-items: center;
-    gap: 10px;
-    max-width: 42%;
+    gap: 8px;
 }
 
 .team-section.home {
@@ -255,6 +242,7 @@ html.light .mini-topnav {
     background: rgba(255,255,255,0.05);
     border-radius: 50%;
     padding: 4px;
+    flex-shrink: 0;
 }
 
 .team-name {
@@ -266,11 +254,13 @@ html.light .mini-topnav {
 }
 
 .score-section {
+    flex: 0 0 94px;
+    width: 94px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 80px;
+    text-align: center;
     gap: 2px;
 }
 

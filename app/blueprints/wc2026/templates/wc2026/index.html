@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIFA World Cup 2026 - Lịch Thi Đấu &amp; Kết Quả</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/thangnhayday.png') }}">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,18 +13,19 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('wc2026.static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('wc2026.static', filename='css/style.css') }}?v=3.0">
 </head>
 <body>
 
     <!-- MINI TOP NAV -->
     <div class="mini-topnav">
         <a href="{{ url_for('main.index') }}" class="mini-topnav-brand">
-            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="mini-topnav-logo">
-            <span class="mini-topnav-name">Thắng IT</span>
+            <i class="fa-solid fa-chevron-left" style="color: #fbbf24; font-size: 0.85rem;"></i>
+            <img src="{{ url_for('static', filename='img/thangnhayday.png') }}" alt="Logo" class="mini-topnav-logo" style="border-radius: 50%;">
+            <span class="mini-topnav-name" style="color: #fff;">Trang chủ</span>
         </a>
-        <span class="mini-topnav-title">
-            <i class="fa-solid fa-trophy text-gold"></i> FIFA World Cup 2026
+        <span class="mini-topnav-title" style="color: #fbbf24; font-weight: 800;">
+            <i class="fa-solid fa-trophy"></i> FIFA World Cup 2026
         </span>
     </div>
 

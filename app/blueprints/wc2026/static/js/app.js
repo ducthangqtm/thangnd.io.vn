@@ -563,14 +563,16 @@ function renderStandings() {
             
             teamRowsHtml += `
                 <tr>
-                    <td class="text-center">${rankHtml}</td>
-                    <td class="team-name-cell">
-                        <img src="${t.logo}" onerror="this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'" class="team-logo-small" alt="${t.name}">
-                        <span class="team-display-name">${teamDisplayName}</span>
+                    <td class="text-center" style="width: 36px;">${rankHtml}</td>
+                    <td>
+                        <div class="team-name-cell">
+                            <img src="${t.logo}" onerror="this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'" class="team-logo-small" alt="${t.name}">
+                            <span class="team-display-name">${teamDisplayName}</span>
+                        </div>
                     </td>
-                    <td class="text-center">${t.played}</td>
-                    <td class="text-center">${gdSign}${t.gd}</td>
-                    <td class="text-right table-pts-value" style="padding-right: 15px;">${t.pts}</td>
+                    <td class="text-center" style="width: 48px; color: var(--text-secondary); font-weight: 600;">${t.played}</td>
+                    <td class="text-center" style="width: 48px; color: var(--text-secondary); font-weight: 600;">${gdSign}${t.gd}</td>
+                    <td class="text-right table-pts-value" style="width: 48px; padding-right: 12px;">${t.pts}</td>
                 </tr>
             `;
         });
