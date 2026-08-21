@@ -18,10 +18,11 @@ def dashboard():
         abort(403)
     posts = Post.query.order_by(Post.date_posted.desc()).all()
     users = User.query.all()
-    links = Link.query.order_by(Link.order.asc()).all()
+    it_links = Link.query.filter((Link.target == 'it') | (Link.target == None)).order_by(Link.order.asc()).all()
+    nhayday_links = Link.query.filter_by(target='nhayday').order_by(Link.order.asc()).all()
     aff_links = AffiliateLink.query.order_by(AffiliateLink.order.asc()).all()
     progress_entries = JumpRopeProgress.query.order_by(JumpRopeProgress.day_number.asc()).all()
-    return render_template('admin/dashboard.html', posts=posts, users=users, links=links, aff_links=aff_links, progress_entries=progress_entries)
+    return render_template('admin/dashboard.html', posts=posts, users=users, links=it_links, it_links=it_links, nhayday_links=nhayday_links, aff_links=aff_links, progress_entries=progress_entries)
 
 @admin_bp.route('/thangnd-admin/create-user', methods=['POST'])
 @login_required
@@ -144,9 +145,10 @@ def create_link():
     url = request.form.get('url')
     icon_class = request.form.get('icon_class', 'fa-solid fa-link')
     order = request.form.get('order', 0, type=int)
+    target = request.form.get('target', 'it')
     
     if title and url:
-        new_link = Link(title=title, url=url, icon_class=icon_class, order=order)
+        new_link = Link(title=title, url=url, icon_class=icon_class, order=order, target=target)
         db.session.add(new_link)
         db.session.commit()
         flash('Đã thêm liên kết mới thành công!', 'success')
@@ -163,6 +165,8 @@ def edit_link(id):
     link.url = request.form.get('url')
     link.icon_class = request.form.get('icon_class', 'fa-solid fa-link')
     link.order = request.form.get('order', 0, type=int)
+    if 'target' in request.form:
+        link.target = request.form.get('target')
     link.is_active = 'is_active' in request.form
     db.session.commit()
     flash('Đã cập nhật liên kết thành công!', 'success')

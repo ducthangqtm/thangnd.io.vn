@@ -67,19 +67,37 @@ def create_app(config_class=Config):
         # Tự động tạo db nếu chưa có
         db.create_all()
 
+        # Tự động nâng cấp cột target nếu bảng Link đã tồn tại từ trước
+        try:
+            with db.engine.connect() as conn:
+                conn.execute(db.text("ALTER TABLE link ADD COLUMN target VARCHAR(20) DEFAULT 'it'"))
+                conn.commit()
+        except Exception:
+            pass
+
         # Tự động đồng bộ các link mặc định nếu database trống
         from app.models import Link, AffiliateLink, JumpRopeProgress
         try:
-            if Link.query.count() == 0:
+            if Link.query.filter_by(target='it').count() == 0 and Link.query.count() == 0:
                 default_links = [
-                    Link(title="Facebook", url="https://www.facebook.com/ducthangqtm", icon_class="fab fa-facebook", order=1),
-                    Link(title="Zalo", url="https://zalo.me/0986192092", icon_class="fa-solid fa-comment-sms", order=2),
-                    Link(title="Telegram", url="https://t.me/ducthangqtm", icon_class="fab fa-telegram", order=3),
-                    Link(title="Discord", url="https://discord.com/users/thangqtm", icon_class="fab fa-discord", order=4),
-                    Link(title="Whatsapp", url="https://wa.me/84986192092", icon_class="fab fa-whatsapp", order=5),
-                    Link(title="X (Twitter)", url="https://x.com/ducthangqtm", icon_class="fa-brands fa-x-twitter", order=6)
+                    Link(title="Facebook", url="https://www.facebook.com/ducthangqtm", icon_class="fab fa-facebook", order=1, target='it'),
+                    Link(title="Zalo", url="https://zalo.me/0986192092", icon_class="fa-solid fa-comment-sms", order=2, target='it'),
+                    Link(title="Telegram", url="https://t.me/ducthangqtm", icon_class="fab fa-telegram", order=3, target='it'),
+                    Link(title="Discord", url="https://discord.com/users/thangqtm", icon_class="fab fa-discord", order=4, target='it'),
+                    Link(title="Whatsapp", url="https://wa.me/84986192092", icon_class="fab fa-whatsapp", order=5, target='it'),
+                    Link(title="X (Twitter)", url="https://x.com/ducthangqtm", icon_class="fa-brands fa-x-twitter", order=6, target='it')
                 ]
                 db.session.bulk_save_objects(default_links)
+                db.session.commit()
+
+            # Seed Bio links Thắng Nhảy Dây nếu chưa có
+            if Link.query.filter_by(target='nhayday').count() == 0:
+                default_nhayday_links = [
+                    Link(title="TikTok", url="https://www.tiktok.com/@thangnhayday", icon_class="fab fa-tiktok", order=1, target='nhayday'),
+                    Link(title="YouTube", url="https://youtube.com/@thangnhayday", icon_class="fab fa-youtube", order=2, target='nhayday'),
+                    Link(title="Facebook", url="https://www.facebook.com/thangnhayday", icon_class="fab fa-facebook", order=3, target='nhayday')
+                ]
+                db.session.bulk_save_objects(default_nhayday_links)
                 db.session.commit()
             
             # Seed Affiliate links mặc định nếu trống

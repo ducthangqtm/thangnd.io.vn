@@ -66,11 +66,14 @@
       <button onclick="switchTab('tab-posts')" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider" id="btn-tab-posts">
         <i class="fa-solid fa-newspaper mr-1.5"></i> Bài viết
       </button>
+      <button onclick="switchTab('tab-nhayday-links')" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider" id="btn-tab-nhayday-links">
+        <i class="fa-solid fa-fire mr-1.5 text-orange-500"></i> Bio Links (Nhảy Dây)
+      </button>
       <button onclick="switchTab('tab-links')" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider" id="btn-tab-links">
-        <i class="fa-solid fa-link mr-1.5"></i> Bio Links (IT)
+        <i class="fa-solid fa-network-wired mr-1.5 text-blue-400"></i> Bio Links (IT)
       </button>
       <button onclick="switchTab('tab-affiliate')" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider" id="btn-tab-affiliate">
-        <i class="fa-solid fa-cart-shopping mr-1.5"></i> Affiliate Links
+        <i class="fa-solid fa-cart-shopping mr-1.5 text-amber-400"></i> Affiliate Links
       </button>
       {% if current_user.role == 'admin' %}
       <button onclick="switchTab('tab-users')" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider" id="btn-tab-users">
@@ -130,22 +133,102 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 2: BIO LINKS (IT) ==================== -->
-    <div id="tab-links" class="tab-content-panel">
-      <div class="mb-6">
-        <h3 class="text-lg font-black text-white uppercase tracking-wider mb-1">Quản Lý Bio Links</h3>
-        <p class="text-white/40 text-[10px] font-bold uppercase tracking-wider">Hiển thị ở cột trái trang chủ (Thắng IT)</p>
+    <!-- ==================== TAB 2: BIO LINKS (THẮNG NHẢY DÂY) ==================== -->
+    <div id="tab-nhayday-links" class="tab-content-panel">
+      <div class="mb-6 flex justify-between items-center">
+        <div>
+          <h3 class="text-lg font-black text-white uppercase tracking-wider mb-1 text-orange-500">Quản Lý Bio Links (Nhảy Dây)</h3>
+          <p class="text-white/40 text-[10px] font-bold uppercase tracking-wider">Hiển thị các icon mạng xã hội & liên hệ ở tab Thắng Nhảy Dây</p>
+        </div>
+        <a href="{{ url_for('main.index') }}" onclick="if(window.switchBioTab) { switchBioTab('nhayday'); }" class="px-4 py-2 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 rounded-xl text-orange-400 text-xs font-bold uppercase tracking-wider transition-all">
+          <i class="fa-solid fa-fire mr-1"></i> Xem trang Nhảy Dây
+        </a>
       </div>
 
       <div class="glass-card p-6 rounded-[2rem] mb-8 border border-white/5 shadow-2xl">
-        <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4 text-[#d4af37]">Thêm liên kết mới</h4>
+        <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4 text-orange-500">Thêm liên kết Nhảy Dây mới</h4>
         <form action="{{ url_for('admin.create_link') }}" method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <input type="text" name="title" placeholder="Tiêu đề (e.g. Zalo)" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
+          <input type="hidden" name="target" value="nhayday">
+          <input type="text" name="title" placeholder="Tiêu đề (e.g. TikTok, YouTube, Zalo)" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-orange-500 transition-all">
+          <input type="url" name="url" placeholder="URL liên kết (e.g. https://tiktok.com/@...)" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-orange-500 transition-all">
+          <input type="text" name="icon_class" placeholder="Icon (e.g. fab fa-tiktok, fab fa-youtube)" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-orange-500 transition-all">
+          <input type="number" name="order" placeholder="Thứ tự hiển thị" value="0" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-orange-500 transition-all">
+          <button type="submit" class="md:col-span-4 bg-orange-500 hover:bg-orange-600 text-white font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest">
+            Thêm liên kết cho Thắng Nhảy Dây
+          </button>
+        </form>
+      </div>
+
+      <div class="glass-card rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
+        <table class="w-full text-left text-white text-sm">
+          <thead class="bg-white/5 text-orange-500 text-[10px] uppercase tracking-[0.2em]">
+            <tr>
+              <th class="px-6 py-5">Icon</th>
+              <th class="px-6 py-5">Tiêu đề</th>
+              <th class="px-6 py-5">Liên kết URL</th>
+              <th class="px-6 py-5">Thứ tự</th>
+              <th class="px-6 py-5">Trạng thái</th>
+              <th class="px-6 py-5 text-right">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            {% for link in nhayday_links %}
+            <tr class="hover:bg-white/[0.02] transition-all group">
+              <td class="px-6 py-5">
+                <span class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-orange-500">
+                  <i class="{{ link.icon_class }} text-lg"></i>
+                </span>
+              </td>
+              <td class="px-6 py-5 font-bold">{{ link.title }}</td>
+              <td class="px-6 py-5 text-white/40 text-xs font-mono truncate max-w-[200px]" title="{{ link.url }}">
+                {{ link.url }}
+              </td>
+              <td class="px-6 py-5 text-white/70">{{ link.order }}</td>
+              <td class="px-6 py-5">
+                {% if link.is_active %}
+                <span class="bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border border-green-500/20">Hoạt động</span>
+                {% else %}
+                <span class="bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter border border-red-500/20">Tạm ẩn</span>
+                {% endif %}
+              </td>
+              <td class="px-6 py-5 text-right">
+                <button onclick="openEditModal('{{ link.id }}', '{{ link.title }}', '{{ link.url }}', '{{ link.icon_class }}', '{{ link.order }}', '{{ link.is_active }}', 'nhayday')" class="text-blue-400 hover:text-blue-300 transition-colors mr-3">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                {% if current_user.role == 'admin' %}
+                <a href="{{ url_for('admin.delete_link', id=link.id) }}" onclick="return confirm('Chắc chắn muốn xóa liên kết này chứ?');" class="text-red-500/50 hover:text-red-500 transition-colors">
+                  <i class="fa-solid fa-trash-can"></i>
+                </a>
+                {% endif %}
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="6" class="px-6 py-10 text-center text-white/30 text-xs italic">Chưa có liên kết nào.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: BIO LINKS (IT) ==================== -->
+    <div id="tab-links" class="tab-content-panel">
+      <div class="mb-6">
+        <h3 class="text-lg font-black text-white uppercase tracking-wider mb-1 text-blue-400">Quản Lý Bio Links (IT)</h3>
+        <p class="text-white/40 text-[10px] font-bold uppercase tracking-wider">Hiển thị các icon mạng xã hội & liên hệ ở tab Thắng IT</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-[2rem] mb-8 border border-white/5 shadow-2xl">
+        <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4 text-[#d4af37]">Thêm liên kết IT mới</h4>
+        <form action="{{ url_for('admin.create_link') }}" method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <input type="hidden" name="target" value="it">
+          <input type="text" name="title" placeholder="Tiêu đề (e.g. Zalo, GitHub)" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
           <input type="url" name="url" placeholder="URL liên kết" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
           <input type="text" name="icon_class" placeholder="Icon Class (e.g. fab fa-facebook)" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
           <input type="number" name="order" placeholder="Thứ tự hiển thị" value="0" required class="bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
           <button type="submit" class="md:col-span-4 bg-[#d4af37] text-[#0f172a] font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest">
-            Thêm liên kết mới
+            Thêm liên kết cho Thắng IT
           </button>
         </form>
       </div>
@@ -163,7 +246,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-white/5">
-            {% for link in links %}
+            {% for link in it_links %}
             <tr class="hover:bg-white/[0.02] transition-all group">
               <td class="px-6 py-5">
                 <span class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-[#d4af37]">
@@ -183,7 +266,7 @@
                 {% endif %}
               </td>
               <td class="px-6 py-5 text-right">
-                <button onclick="openEditModal('{{ link.id }}', '{{ link.title }}', '{{ link.url }}', '{{ link.icon_class }}', '{{ link.order }}', '{{ link.is_active }}')" class="text-blue-400 hover:text-blue-300 transition-colors mr-3">
+                <button onclick="openEditModal('{{ link.id }}', '{{ link.title }}', '{{ link.url }}', '{{ link.icon_class }}', '{{ link.order }}', '{{ link.is_active }}', 'it')" class="text-blue-400 hover:text-blue-300 transition-colors mr-3">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
                 {% if current_user.role == 'admin' %}
@@ -379,15 +462,16 @@
 
 <!-- ==================== MODALS CHỈNH SỬA ==================== -->
 
-<!-- Modal 1: Edit Bio Link (IT) -->
+<!-- Modal 1: Edit Bio Link (IT / Nhảy Dây) -->
 <div id="edit-link-modal" class="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
   <div class="glass-card p-6 rounded-[2rem] w-full max-w-lg border border-white/10 shadow-2xl relative">
     <button onclick="closeEditModal()" class="absolute top-6 right-6 text-white/50 hover:text-white">
       <i class="fa-solid fa-xmark text-lg"></i>
     </button>
-    <h3 class="text-lg font-black text-white uppercase tracking-wider mb-6 text-center text-[#d4af37]">Sửa liên kết Bio</h3>
+    <h3 id="edit-modal-title" class="text-lg font-black text-white uppercase tracking-wider mb-6 text-center text-[#d4af37]">Sửa liên kết Bio</h3>
     
     <form id="edit-link-form" method="POST" class="space-y-4">
+      <input type="hidden" id="edit-target" name="target" value="it">
       <div>
         <label class="block text-[10px] font-bold uppercase text-white/40 tracking-wider mb-1.5">Tiêu đề</label>
         <input type="text" id="edit-title" name="title" required class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm outline-none focus:border-[#d4af37] transition-all">
@@ -408,7 +492,7 @@
         <input type="checkbox" id="edit-active" name="is_active" class="w-4 h-4 bg-white/5 border border-white/10 rounded">
         <label for="edit-active" class="text-sm text-white/80">Kích hoạt liên kết</label>
       </div>
-      <button type="submit" class="w-full bg-[#d4af37] text-[#0f172a] font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest">Lưu thay đổi</button>
+      <button id="edit-link-submit-btn" type="submit" class="w-full bg-[#d4af37] text-[#0f172a] font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest">Lưu thay đổi</button>
     </form>
   </div>
 </div>
@@ -457,8 +541,6 @@
   </div>
 </div>
 
-
-
 <script>
   // Tab Switcher Logic
   function switchTab(tabId) {
@@ -470,18 +552,15 @@
     });
     
     const targetPanel = document.getElementById(tabId);
-    const targetBtn = document.getElementById('btn-' + tabId); // Wait, button IDs are like: btn-tab-posts, btn-tab-links, btn-tab-affiliate, btn-tab-jumprope, btn-tab-users.
-    // Yes! Let's map targetBtn correctly.
-    const realBtnId = tabId.replace('tab-', 'btn-tab-');
-    const actualBtn = document.getElementById(realBtnId);
+    const targetBtn = document.getElementById('btn-' + tabId);
     
-    targetPanel.classList.add('active');
+    if(targetPanel) targetPanel.classList.add('active');
     
     // Style sport tabs differently for Nhảy dây
-    if (tabId === 'tab-affiliate') {
-      if(actualBtn) actualBtn.classList.add('active-sport');
+    if (tabId === 'tab-affiliate' || tabId === 'tab-nhayday-links') {
+      if(targetBtn) targetBtn.classList.add('active-sport');
     } else {
-      if(actualBtn) actualBtn.classList.add('active');
+      if(targetBtn) targetBtn.classList.add('active');
     }
     
     localStorage.setItem('admin_dashboard_active_tab', tabId);
@@ -490,16 +569,16 @@
   // Restore Active Tab on page load
   document.addEventListener('DOMContentLoaded', () => {
     const savedTab = localStorage.getItem('admin_dashboard_active_tab') || 'tab-posts';
-    const realBtnId = savedTab.replace('tab-', 'btn-tab-');
-    if (document.getElementById(realBtnId)) {
+    const targetBtn = document.getElementById('btn-' + savedTab);
+    if (targetBtn) {
       switchTab(savedTab);
     } else {
       switchTab('tab-posts');
     }
   });
 
-  // Modal 1: Bio Link (IT)
-  function openEditModal(id, title, url, icon, order, isActive) {
+  // Modal 1: Bio Link (IT / Nhảy Dây)
+  function openEditModal(id, title, url, icon, order, isActive, target='it') {
     const modal = document.getElementById('edit-link-modal');
     const form = document.getElementById('edit-link-form');
     form.action = `/thangnd-admin/links/edit/${id}`;
@@ -507,7 +586,22 @@
     document.getElementById('edit-url').value = url;
     document.getElementById('edit-icon').value = icon;
     document.getElementById('edit-order').value = order;
+    document.getElementById('edit-target').value = target;
     document.getElementById('edit-active').checked = isActive === 'True';
+
+    const modalTitle = document.getElementById('edit-modal-title');
+    const submitBtn = document.getElementById('edit-link-submit-btn');
+
+    if (target === 'nhayday') {
+      modalTitle.textContent = 'Sửa Bio Link (Thắng Nhảy Dây)';
+      modalTitle.className = 'text-lg font-black uppercase tracking-wider mb-6 text-center text-orange-500';
+      submitBtn.className = 'w-full bg-orange-500 hover:bg-orange-600 text-white font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest';
+    } else {
+      modalTitle.textContent = 'Sửa Bio Link (Thắng IT)';
+      modalTitle.className = 'text-lg font-black uppercase tracking-wider mb-6 text-center text-[#d4af37]';
+      submitBtn.className = 'w-full bg-[#d4af37] text-[#0f172a] font-black py-3 rounded-xl hover:scale-[1.01] transition-all text-[10px] uppercase tracking-widest';
+    }
+
     modal.classList.remove('hidden');
     modal.classList.add('flex');
   }
@@ -539,6 +633,5 @@
     modal.classList.add('hidden');
     modal.classList.remove('flex');
   }
-
 </script>
 {% endblock %}

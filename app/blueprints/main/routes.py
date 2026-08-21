@@ -18,7 +18,10 @@ def index():
     db.session.commit()
     
     # Load Bio Links động từ Database cho IT
-    links = Link.query.filter_by(is_active=True).order_by(Link.order.asc()).all()
+    it_links = Link.query.filter((Link.target == 'it') | (Link.target == None)).filter_by(is_active=True).order_by(Link.order.asc()).all()
+    
+    # Load Bio Links động từ Database cho Nhảy Dây
+    nhayday_links = Link.query.filter_by(target='nhayday', is_active=True).order_by(Link.order.asc()).all()
     
     # Load các link Affiliate cho Nhảy Dây
     aff_links = AffiliateLink.query.filter_by(is_active=True).order_by(AffiliateLink.order.asc()).all()
@@ -41,7 +44,7 @@ def index():
     }
     
     repos = get_github_repositories()
-    return render_template('main/index.html', links=links, social=social_links, repos=repos, links_by_category=links_by_category, visitor_count=visitor.count)
+    return render_template('main/index.html', links=it_links, nhayday_links=nhayday_links, social=social_links, repos=repos, links_by_category=links_by_category, visitor_count=visitor.count)
 
 @main_bp.route('/cv')
 def cv():
