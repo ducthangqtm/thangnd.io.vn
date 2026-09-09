@@ -306,9 +306,14 @@
               </div>
             </div>
 
-            <button id="restartBtn" class="btn-neon w-full max-w-xs py-3 mb-3">
-              NHẢY LẠI 🔁
-            </button>
+            <div class="w-full max-w-xs grid grid-cols-2 gap-2.5 mb-3">
+              <button id="restartBtn" class="btn-neon py-3 text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-lg">
+                <span>🔁</span><span>NHẢY LẠI</span>
+              </button>
+              <button onclick="closeArcadeModal()" class="py-3 text-xs sm:text-sm font-bold bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-2xl transition flex items-center justify-center gap-1.5 shadow-md">
+                <span>🏠</span><span>VỀ TRANG CHỦ</span>
+              </button>
+            </div>
 
             <div class="w-full max-w-xs space-y-2 mt-1 font-sans">
               <a href="https://thangnhayday.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-emerald-500/30 text-xs font-semibold text-emerald-300 transition">
@@ -342,17 +347,51 @@
             </div>
           </div>
 
-          <div class="border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+          <div class="relative border border-slate-800 rounded-xl overflow-hidden shadow-xl">
             <canvas id="snakeCanvas"></canvas>
+
+            <!-- Snake Game Over Overlay -->
+            <div id="snakeGameOverOverlay" class="absolute inset-0 bg-black/85 backdrop-blur-sm hidden flex flex-col items-center justify-center p-4 z-20 font-sans">
+              <div class="text-3xl mb-1">💥</div>
+              <h3 class="vn-arcade-font text-xl text-rose-500 mb-1">ĐÂM ĐUÔI RỒI!</h3>
+              <p class="text-[11px] text-slate-400 mb-3 font-mono">Cyber Snake Over</p>
+
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 w-full max-w-xs mb-3.5 grid grid-cols-2 gap-2 text-center font-sans">
+                <div class="border-r border-slate-800 pr-2">
+                  <div class="text-[10px] font-semibold text-slate-400 uppercase">Điểm số</div>
+                  <div id="snakeFinalScore" class="text-2xl font-black text-emerald-400">0</div>
+                </div>
+                <div class="pl-2">
+                  <div class="text-[10px] font-semibold text-slate-400 uppercase">Kỷ lục</div>
+                  <div id="snakeFinalHighScore" class="text-2xl font-black text-amber-400">0</div>
+                </div>
+              </div>
+
+              <div class="w-full max-w-xs grid grid-cols-2 gap-2">
+                <button id="snakeRestartBtn" class="btn-neon py-2.5 text-xs font-black flex items-center justify-center gap-1 shadow-lg">
+                  <span>🔁</span><span>CHƠI LẠI</span>
+                </button>
+                <button onclick="closeArcadeModal()" class="py-2.5 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl transition flex items-center justify-center gap-1">
+                  <span>🏠</span><span>VỀ TRANG CHỦ</span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- D-Pad for Mobile -->
-          <div class="mt-4 flex flex-col items-center gap-1 sm:hidden">
-            <button id="snakeUp" class="dpad-btn">▲</button>
-            <div class="flex gap-4">
-              <button id="snakeLeft" class="dpad-btn">◀</button>
-              <button id="snakeDown" class="dpad-btn">▼</button>
-              <button id="snakeRight" class="dpad-btn">▶</button>
+          <!-- D-Pad for Mobile: Large Buttons & Separated Down Arrow -->
+          <div class="mt-4 flex flex-col items-center gap-2 sm:hidden touch-none select-none">
+            <!-- UP -->
+            <button id="snakeUp" class="dpad-btn" title="Lên">▲</button>
+            
+            <!-- LEFT & RIGHT with generous gap -->
+            <div class="flex items-center justify-between w-full max-w-[260px] px-1">
+              <button id="snakeLeft" class="dpad-btn" title="Trái">◀</button>
+              <button id="snakeRight" class="dpad-btn" title="Phải">▶</button>
+            </div>
+            
+            <!-- DOWN (Separated further down!) -->
+            <div class="pt-1">
+              <button id="snakeDown" class="dpad-btn" title="Xuống">▼</button>
             </div>
           </div>
           <p class="hidden sm:block text-xs text-slate-400 mt-3 text-center font-mono">
@@ -366,21 +405,35 @@
         <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center font-sans">
           <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
             <span class="text-slate-300 arcade-font text-xs">🔢 2048 NEON</span>
-            <div class="flex gap-3 text-xs font-mono">
-              <div class="bg-slate-800 px-3 py-1 rounded-lg">
+            <div class="flex gap-2.5 text-xs font-mono">
+              <div class="bg-slate-800/90 border border-slate-700/60 px-2.5 py-1 rounded-lg">
                 <span class="text-slate-400">Điểm:</span> <b id="score2048" class="text-emerald-400">0</b>
               </div>
-              <div class="bg-slate-800 px-3 py-1 rounded-lg">
+              <div class="bg-slate-800/90 border border-slate-700/60 px-2.5 py-1 rounded-lg">
                 <span class="text-slate-400">Kỷ lục:</span> <b id="high2048" class="text-amber-400">0</b>
               </div>
             </div>
           </div>
 
-          <div id="grid2048" class="grid-2048"></div>
+          <div id="grid2048" class="grid-2048 touch-none select-none"></div>
 
-          <div class="flex justify-between items-center w-full mt-4 text-xs text-slate-400 font-mono">
-            <span>Vuốt cảm ứng hoặc dùng phím mũi tên</span>
-            <button onclick="window.game2048.restart()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg font-semibold transition">Chơi Lại</button>
+          <!-- Mini D-Pad for 2048 on Mobile -->
+          <div class="mt-3 flex flex-col items-center gap-1.5 sm:hidden touch-none select-none">
+            <button id="btn2048Up" class="dpad-btn-mini" title="Lên">▲</button>
+            <div class="flex items-center justify-between w-full max-w-[210px] px-2">
+              <button id="btn2048Left" class="dpad-btn-mini" title="Trái">◀</button>
+              <button id="btn2048Right" class="dpad-btn-mini" title="Phải">▶</button>
+            </div>
+            <button id="btn2048Down" class="dpad-btn-mini" title="Xuống">▼</button>
+          </div>
+
+          <div class="flex justify-between items-center w-full mt-4 text-xs font-sans gap-2">
+            <button onclick="closeArcadeModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5">
+              <span>🏠</span><span>Về Trang Chủ</span>
+            </button>
+            <button onclick="window.game2048 && window.game2048.restart()" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-4 py-2 rounded-xl font-bold transition flex items-center gap-1.5">
+              <span>🔁</span><span>Chơi Lại</span>
+            </button>
           </div>
         </div>
       </section>

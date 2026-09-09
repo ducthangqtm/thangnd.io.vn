@@ -79,9 +79,20 @@ class SnakeGame {
     bindBtn('snakeDown', 0, 1);
     bindBtn('snakeLeft', -1, 0);
     bindBtn('snakeRight', 1, 0);
+
+    const restartBtn = document.getElementById('snakeRestartBtn');
+    if (restartBtn) {
+      restartBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.start();
+      });
+    }
   }
 
   start() {
+    const overEl = document.getElementById('snakeGameOverOverlay');
+    if (overEl) overEl.classList.add('hidden');
+
     this.snake = [
       { x: 10, y: 10 },
       { x: 10, y: 11 },
@@ -127,6 +138,14 @@ class SnakeGame {
         localStorage.setItem('snake_high_score', this.highScore);
       }
       this.updateUI();
+
+      // Show sleek HTML Game Over overlay
+      const overEl = document.getElementById('snakeGameOverOverlay');
+      const fScoreEl = document.getElementById('snakeFinalScore');
+      const fHighEl = document.getElementById('snakeFinalHighScore');
+      if (fScoreEl) fScoreEl.innerText = this.score;
+      if (fHighEl) fHighEl.innerText = this.highScore;
+      if (overEl) overEl.classList.remove('hidden');
 
       // Submit score to Cloudflare D1 Leaderboard
       if (window.leaderboard && this.score > 0) {
