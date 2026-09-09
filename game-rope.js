@@ -69,20 +69,16 @@ class RopeGame {
     this.jumpSprite = new Image();
     this.jumpSprite.src = 'assets/thang-jump.png';
 
-    this.tripSprite = new Image();
-    this.tripSprite.src = 'assets/thang-tripped.png';
-
     let loadedCount = 0;
     const onLoad = () => {
       loadedCount++;
-      if (loadedCount >= 3) {
+      if (loadedCount >= 2) {
         this.assetsLoaded = true;
       }
     };
 
     this.bgImg.onload = onLoad;
     this.jumpSprite.onload = onLoad;
-    this.tripSprite.onload = onLoad;
   }
 
   setupCanvas() {
