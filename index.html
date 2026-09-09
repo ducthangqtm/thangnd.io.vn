@@ -3,249 +3,336 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Thắng ND (.IO) — Thắng Nhảy Dây: Thử Thách Hành Lang 1m5</title>
-  <meta name="description" content="Tựa game Thắng Nhảy Dây thuần HTML5 - Thử thách nhịp điệu và phản xạ trong hành lang 1.5 mét. Khám phá hệ sinh thái thangnd.io.vn, thangnhayday.com và thangit.com.">
-  <meta name="theme-color" content="#070a12">
+  <title>Thắng ND Arcade (.IO) — Select Your Game</title>
+  <meta name="description" content="Thang ND Arcade - Khu trò chơi web retro 8-bit & Thắng Nhảy Dây hành lang 1.5m. Lấy cảm hứng từ phong cách White House Arcade.">
+  <meta name="theme-color" content="#060714">
   
-  <!-- Open Graph / Social Media Meta -->
-  <meta property="og:title" content="Thắng Nhảy Dây: Thử Thách Hành Lang 1m5">
-  <meta property="og:description" content="Chạm để nhảy qua dây! Bạn có thể nhảy được bao nhiêu cái trong hành lang 1.5m?">
-  <meta property="og:image" content="assets/thang-avatar.jpg">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Thắng ND Arcade (.IO) — Select Your Game">
+  <meta property="og:description" content="Khu trò chơi Arcade Retro: Thắng Nhảy Dây, Cyber Snake, 2048 Neon. Chơi trực tiếp trên web!">
+  <meta property="og:image" content="assets/thang-rope-thumb.jpg">
   <meta property="og:type" content="website">
 
-  <!-- Tailwind CSS CDN for rapid responsive layout utilities + Custom Vanilla style.css -->
+  <!-- Tailwind CSS CDN + Custom Synthwave style.css -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#070a12] text-slate-100 flex flex-col min-h-screen selection:bg-emerald-500 selection:text-slate-950">
+<body class="bg-[#060714] text-slate-100 flex flex-col min-h-screen">
 
-  <!-- Top Navigation Bar -->
-  <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
-    <div class="max-w-4xl mx-auto flex items-center justify-between">
+  <!-- Perspective Retro Grid Floor Background -->
+  <div class="retro-grid-bg"></div>
+
+  <!-- Header Bar -->
+  <header class="px-4 py-3 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <img src="assets/thang-avatar.jpg" alt="Thắng ND" class="w-10 h-10 rounded-full border-2 border-emerald-400 object-cover shadow-sm shadow-emerald-500/30">
+        <img src="assets/thang-avatar.jpg" alt="Thắng ND" class="w-10 h-10 rounded-full border-2 border-emerald-400 object-cover shadow-md shadow-emerald-500/30">
         <div>
-          <a href="#" class="font-extrabold text-lg tracking-tight hover:opacity-90 transition-opacity">
-            THANG ND <span class="text-emerald-400">.IO.VN</span>
+          <a href="#" class="font-extrabold text-base tracking-wider arcade-font text-white hover:text-emerald-400 transition">
+            THANG ND <span class="text-emerald-400">.IO</span>
           </a>
-          <p class="text-[11px] text-slate-400 font-medium">Arcade & Personal Lab</p>
+          <p class="text-[10px] text-slate-400 font-mono tracking-widest uppercase">Ecosystem Arcade</p>
         </div>
       </div>
 
       <!-- Controls & Player Name -->
       <div class="flex items-center space-x-2">
-        <button id="playerNameBtn" class="flex items-center space-x-1 text-xs bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-full border border-slate-700 transition">
+        <button id="playerNameBtn" class="flex items-center space-x-1 text-xs bg-slate-900/90 hover:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 transition">
           <span class="text-slate-400">👤</span>
-          <span id="navPlayerName" class="font-semibold text-slate-200 truncate max-w-[100px]">VĐV Hành Lang</span>
+          <span id="navPlayerName" class="font-bold text-slate-200 truncate max-w-[110px]">VĐV Hành Lang</span>
           <span class="text-[10px] text-emerald-400 ml-0.5">✏️</span>
         </button>
 
-        <button id="soundToggleBtn" class="w-9 h-9 rounded-full bg-slate-800/80 hover:bg-slate-700 border border-slate-700 flex items-center justify-center text-sm transition" title="Bật/Tắt âm thanh">
+        <button id="soundToggleBtn" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700 flex items-center justify-center text-sm transition" title="Bật/Tắt âm thanh">
           <span id="soundIcon">🔊</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Game Selector Tabs -->
-  <div class="max-w-md mx-auto w-full px-4 pt-4 pb-2">
-    <div class="flex bg-slate-900/80 p-1 rounded-2xl border border-slate-800/80 text-xs font-bold">
-      <button id="tabRope" class="tab-btn active flex-1 py-2 rounded-xl flex items-center justify-center space-x-1.5 transition">
-        <span>⭐</span>
-        <span>Thắng Nhảy Dây</span>
-      </button>
-      <button id="tabSnake" class="tab-btn flex-1 py-2 rounded-xl flex items-center justify-center space-x-1.5 transition">
-        <span>🐍</span>
-        <span>Rắn Săn Mồi</span>
-      </button>
-      <button id="tab2048" class="tab-btn flex-1 py-2 rounded-xl flex items-center justify-center space-x-1.5 transition">
-        <span>🔢</span>
-        <span>2048</span>
-      </button>
+  <!-- Main Arcade Stage -->
+  <main class="relative z-10 flex-1 flex flex-col items-center px-4 pt-6 pb-12 max-w-6xl mx-auto w-full">
+
+    <!-- White House Arcade Style Title Section -->
+    <div class="text-center my-6">
+      <div class="text-[11px] font-bold text-cyan-400 tracking-[0.3em] uppercase mb-2 arcade-font">
+        NOW PLAYING
+      </div>
+      <h1 class="synth-title">
+        ARCADE
+      </h1>
+      <div class="synth-divider"></div>
+      <p class="mt-4 text-xs sm:text-sm text-slate-400 font-mono tracking-widest uppercase">
+        Select Your Game
+      </p>
     </div>
-  </div>
 
-  <!-- Main Content Container -->
-  <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-4 max-w-4xl mx-auto w-full">
-
-    <!-- ================= SECTION 1: THẮNG NHẢY DÂY ================= -->
-    <section id="ropeGameSection" class="w-full flex flex-col items-center">
-      <div class="game-viewport-wrap pulse-glow">
-        
-        <!-- Live In-game HUD -->
-        <div id="gameHUD" class="game-hud hidden">
-          <div class="hud-pill">
-            <span class="text-xs text-slate-400 uppercase tracking-wider">Số lần nhảy</span>
-            <span id="hudScore" class="text-xl font-black text-emerald-400 ml-1">0</span>
-          </div>
-          <div id="hudCombo" class="hud-pill hidden bg-amber-500/20 text-amber-300 border-amber-500/40 text-sm animate-bounce">
-            x2 Combo!
-          </div>
+    <!-- ================= HORIZONTAL ARCADE CARDS ================= -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full my-6">
+      
+      <!-- Card 1: Thắng Nhảy Dây -->
+      <div id="cardRope" class="arcade-card active" onclick="switchGame('rope')">
+        <div class="arcade-card-header">
+          <span class="arcade-font text-[9px] text-pink-400 tracking-wider">1.5M HALLWAY</span>
+          <span class="text-emerald-400 text-xs font-bold">★ HERO</span>
         </div>
-
-        <!-- Canvas -->
-        <canvas id="ropeCanvas"></canvas>
-
-        <!-- Start Overlay Screen -->
-        <div id="startOverlay" class="game-overlay">
-          <div class="relative mb-3">
-            <img src="assets/thang-avatar.jpg" alt="Thắng Nhảy Dây" class="w-24 h-24 rounded-full border-4 border-emerald-400 shadow-xl shadow-emerald-500/30 object-cover mx-auto">
-            <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">PRO</span>
+        <div class="arcade-card-screen">
+          <img src="assets/thang-rope-thumb.jpg" alt="Thắng Nhảy Dây">
+          <div class="crt-scanlines"></div>
+        </div>
+        <div class="arcade-card-body">
+          <div>
+            <h3 class="arcade-font text-xs text-white mb-2 leading-snug">THẮNG NHẢY DÂY</h3>
+            <p class="text-xs text-slate-400 leading-relaxed font-sans">
+              Nhảy qua dây trong hành lang 1.5m. Căn đúng nhịp để bất tử!
+            </p>
           </div>
+          <button class="arcade-play-btn">PLAY ▶</button>
+        </div>
+      </div>
+
+      <!-- Card 2: Cyber Snake -->
+      <div id="cardSnake" class="arcade-card" onclick="switchGame('snake')">
+        <div class="arcade-card-header">
+          <span class="arcade-font text-[9px] text-cyan-400 tracking-wider">RETRO 8-BIT</span>
+          <span class="text-slate-400 text-xs">CLASSIC</span>
+        </div>
+        <div class="arcade-card-screen">
+          <img src="assets/cyber-snake-thumb.jpg" alt="Cyber Snake">
+          <div class="crt-scanlines"></div>
+        </div>
+        <div class="arcade-card-body">
+          <div>
+            <h3 class="arcade-font text-xs text-white mb-2 leading-snug">CYBER SNAKE</h3>
+            <p class="text-xs text-slate-400 leading-relaxed font-sans">
+              Rắn săn mồi phong cách neon cyber. Điều khiển phản xạ nhạy bén.
+            </p>
+          </div>
+          <button class="arcade-play-btn">PLAY ▶</button>
+        </div>
+      </div>
+
+      <!-- Card 3: 2048 Neon -->
+      <div id="card2048" class="arcade-card" onclick="switchGame('2048')">
+        <div class="arcade-card-header">
+          <span class="arcade-font text-[9px] text-amber-400 tracking-wider">PUZZLE LAB</span>
+          <span class="text-slate-400 text-xs">BRAIN</span>
+        </div>
+        <div class="arcade-card-screen">
+          <img src="assets/neon-2048-thumb.jpg" alt="2048 Neon">
+          <div class="crt-scanlines"></div>
+        </div>
+        <div class="arcade-card-body">
+          <div>
+            <h3 class="arcade-font text-xs text-white mb-2 leading-snug">2048 NEON</h3>
+            <p class="text-xs text-slate-400 leading-relaxed font-sans">
+              Ghép các khối số theo cấp số nhân để chinh phục mốc 2048.
+            </p>
+          </div>
+          <button class="arcade-play-btn">PLAY ▶</button>
+        </div>
+      </div>
+
+      <!-- Card 4: Coming Soon -->
+      <div class="arcade-card opacity-60 cursor-not-allowed">
+        <div class="arcade-card-header">
+          <span class="arcade-font text-[9px] text-slate-500 tracking-wider">SECRET STAGE</span>
+          <span class="text-slate-600 text-xs">SOON</span>
+        </div>
+        <div class="arcade-card-screen bg-slate-950 flex items-center justify-center">
+          <div class="arcade-font text-3xl text-slate-700 animate-pulse">?</div>
+          <div class="crt-scanlines"></div>
+        </div>
+        <div class="arcade-card-body">
+          <div>
+            <h3 class="arcade-font text-xs text-slate-400 mb-2 leading-snug">COMING SOON</h3>
+            <p class="text-xs text-slate-500 leading-relaxed font-sans">
+              Một cuộc phiêu lưu công nghệ mới đang được ấp ủ.
+            </p>
+          </div>
+          <button class="arcade-play-btn opacity-40" disabled>STAY TUNED</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= ACTIVE GAME ARENA ================= -->
+    <div id="gameArenaAnchor" class="w-full flex flex-col items-center mt-8">
+
+      <!-- SECTION 1: THẮNG NHẢY DÂY -->
+      <section id="ropeGameSection" class="w-full flex flex-col items-center">
+        <div class="game-viewport-wrap">
           
-          <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1">
-            THẮNG NHẢY DÂY
-          </h1>
-          <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-3">
-            ⚡ Thử Thách Hành Lang 1.5m ⚡
+          <!-- HUD -->
+          <div id="gameHUD" class="game-hud hidden">
+            <div class="hud-pill">
+              <span class="text-[10px] text-slate-400 uppercase font-mono">NHẢY</span>
+              <span id="hudScore" class="text-xl font-black text-emerald-400 ml-1">0</span>
+            </div>
+            <div id="hudCombo" class="hud-pill hidden bg-amber-500/20 text-amber-300 border-amber-500/40 text-xs animate-bounce">
+              x2 Combo!
+            </div>
+          </div>
+
+          <!-- Canvas -->
+          <canvas id="ropeCanvas"></canvas>
+
+          <!-- Start Overlay -->
+          <div id="startOverlay" class="game-overlay">
+            <div class="relative mb-3">
+              <img src="assets/thang-avatar.jpg" alt="Thắng Nhảy Dây" class="w-24 h-24 rounded-full border-4 border-emerald-400 shadow-xl shadow-emerald-500/30 object-cover mx-auto">
+              <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">PRO</span>
+            </div>
+            
+            <h2 class="arcade-font text-base sm:text-lg text-white mb-2 leading-relaxed">
+              THẮNG NHẢY DÂY
+            </h2>
+            <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-3 font-mono">
+              ⚡ Thử Thách Hành Lang 1.5m ⚡
+            </p>
+
+            <p class="text-slate-300 text-xs max-w-xs mb-4 leading-relaxed font-sans">
+              Hành lang hẹp 1.5m không ngăn được đam mê! Căn đúng nhịp dây chạm sàn để nhảy qua.
+            </p>
+
+            <!-- Nickname input -->
+            <div class="w-full max-w-xs mb-4 ui-interactive font-sans">
+              <label class="block text-left text-[11px] font-semibold text-slate-400 mb-1">Tên của bạn:</label>
+              <div class="flex">
+                <input type="text" id="playerInput" maxlength="20" placeholder="Nhập tên..." class="w-full bg-slate-900 border border-slate-700 rounded-l-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400">
+                <button id="saveNameBtn" class="bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-r-xl border border-l-0 border-slate-700 text-xs font-bold text-emerald-400">Lưu</button>
+              </div>
+            </div>
+
+            <button id="startBtn" class="btn-neon w-full max-w-xs py-3.5 mb-3">
+              BẮT ĐẦU NHẢY 🚀
+            </button>
+
+            <p class="text-[11px] text-slate-400 flex items-center justify-center gap-1.5 font-sans">
+              <span>💡</span>
+              <span>Chạm màn hình hoặc bấm phím <b>Space</b></span>
+            </p>
+          </div>
+
+          <!-- Game Over Overlay -->
+          <div id="gameOverOverlay" class="game-overlay hidden">
+            <div class="text-3xl mb-1">💥</div>
+            <h2 class="arcade-font text-sm text-rose-500 mb-2">VẤP DÂY RỒI!</h2>
+            <div id="finalTitle" class="text-xs font-bold text-amber-300 mb-4 uppercase tracking-wider font-sans">
+              ⭐ Chuyên Gia Bắt Nhịp
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full max-w-xs mb-4 grid grid-cols-2 gap-3 text-center font-sans">
+              <div class="border-r border-slate-800 pr-2">
+                <div class="text-[11px] font-semibold text-slate-400 uppercase">Số lần nhảy</div>
+                <div id="finalScore" class="text-3xl font-black text-emerald-400">0</div>
+              </div>
+              <div class="pl-2">
+                <div class="text-[11px] font-semibold text-slate-400 uppercase">Kỷ lục của bạn</div>
+                <div id="finalHighScore" class="text-3xl font-black text-amber-400">0</div>
+              </div>
+            </div>
+
+            <button id="restartBtn" class="btn-neon w-full max-w-xs py-3 mb-3">
+              NHẢY LẠI 🔁
+            </button>
+
+            <div class="w-full max-w-xs space-y-2 mt-1 font-sans">
+              <a href="https://thangnhayday.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-emerald-500/30 text-xs font-semibold text-emerald-300 transition">
+                <span class="flex items-center gap-2">
+                  <span>🪢</span>
+                  <span>Bí kíp nhảy dây tại <b>thangnhayday.com</b></span>
+                </span>
+                <span>↗</span>
+              </a>
+              <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-sky-500/30 text-xs font-semibold text-sky-300 transition">
+                <span class="flex items-center gap-2">
+                  <span>💻</span>
+                  <span>Ghé góc IT & Tech <b>thangit.com</b></span>
+                </span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="w-full max-w-[480px] mt-6 bg-slate-900/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 font-sans">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-2">
+              <span class="text-base">🏆</span>
+              <h3 class="font-extrabold text-sm text-slate-200 uppercase tracking-wide">Bảng Vàng Hành Lang 1m5</h3>
+            </div>
+            <span class="text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+              Cloudflare D1 Ready
+            </span>
+          </div>
+
+          <div id="leaderboardList" class="space-y-1.5">
+            <div class="text-xs text-slate-400 text-center py-2">Đang tải bảng xếp hạng...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: CYBER SNAKE -->
+      <section id="snakeGameSection" class="w-full max-w-md hidden flex flex-col items-center">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center font-sans">
+          <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
+            <span class="text-slate-300 arcade-font text-xs">🐍 CYBER SNAKE</span>
+            <div class="flex gap-4 text-xs font-mono">
+              <span class="text-slate-400">Điểm: <b id="snakeScore" class="text-emerald-400">0</b></span>
+              <span class="text-slate-400">Kỷ lục: <b id="snakeHighScore" class="text-amber-400">0</b></span>
+            </div>
+          </div>
+
+          <div class="border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+            <canvas id="snakeCanvas"></canvas>
+          </div>
+
+          <!-- D-Pad -->
+          <div class="mt-4 flex flex-col items-center gap-1 sm:hidden">
+            <button id="snakeUp" class="dpad-btn">▲</button>
+            <div class="flex gap-4">
+              <button id="snakeLeft" class="dpad-btn">◀</button>
+              <button id="snakeDown" class="dpad-btn">▼</button>
+              <button id="snakeRight" class="dpad-btn">▶</button>
+            </div>
+          </div>
+          <p class="hidden sm:block text-xs text-slate-400 mt-3 text-center font-mono">
+            Phím <b>W, A, S, D</b> hoặc <b>Phím Mũi Tên</b> để điều khiển
           </p>
+        </div>
+      </section>
 
-          <p class="text-slate-300 text-xs sm:text-sm max-w-xs mb-4 leading-relaxed">
-            Hành lang hẹp 1.5m không ngăn được đam mê! Căn đúng thời điểm dây chạm sàn để nhảy qua.
-          </p>
-
-          <!-- Player Nickname input -->
-          <div class="w-full max-w-xs mb-4 ui-interactive">
-            <label class="block text-left text-[11px] font-semibold text-slate-400 mb-1">Tên / Biệt danh của bạn:</label>
-            <div class="flex">
-              <input type="text" id="playerInput" maxlength="20" placeholder="Nhập tên của bạn..." class="w-full bg-slate-900 border border-slate-700 rounded-l-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400">
-              <button id="saveNameBtn" class="bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-r-xl border border-l-0 border-slate-700 text-xs font-bold text-emerald-400">Lưu</button>
+      <!-- SECTION 3: 2048 -->
+      <section id="game2048Section" class="w-full max-w-md hidden flex flex-col items-center">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center font-sans">
+          <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
+            <span class="text-slate-300 arcade-font text-xs">🔢 2048 NEON</span>
+            <div class="flex gap-3 text-xs font-mono">
+              <div class="bg-slate-800 px-3 py-1 rounded-lg">
+                <span class="text-slate-400">Điểm:</span> <b id="score2048" class="text-emerald-400">0</b>
+              </div>
+              <div class="bg-slate-800 px-3 py-1 rounded-lg">
+                <span class="text-slate-400">Kỷ lục:</span> <b id="high2048" class="text-amber-400">0</b>
+              </div>
             </div>
           </div>
 
-          <button id="startBtn" class="btn-neon text-sm sm:text-base font-extrabold w-full max-w-xs py-3.5 mb-3">
-            BẮT ĐẦU NHẢY NGAY 🚀
-          </button>
+          <div id="grid2048" class="grid-2048"></div>
 
-          <p class="text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
-            <span>💡</span>
-            <span>Chạm màn hình hoặc gõ phím <b>Space</b> để nhảy</span>
-          </p>
-        </div>
-
-        <!-- Game Over Overlay Screen -->
-        <div id="gameOverOverlay" class="game-overlay hidden">
-          <div class="text-3xl mb-1">💥</div>
-          <h2 class="text-xl sm:text-2xl font-black text-rose-500 mb-1">VẤP DÂY RỒI!</h2>
-          <div id="finalTitle" class="text-xs font-bold text-amber-300 mb-4 uppercase tracking-wider">
-            ⭐ Chuyên Gia Bắt Nhịp
-          </div>
-
-          <!-- Score Card -->
-          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full max-w-xs mb-4 grid grid-cols-2 gap-3 text-center">
-            <div class="border-r border-slate-800 pr-2">
-              <div class="text-[11px] font-semibold text-slate-400 uppercase">Số lần nhảy</div>
-              <div id="finalScore" class="text-3xl font-black text-emerald-400">0</div>
-            </div>
-            <div class="pl-2">
-              <div class="text-[11px] font-semibold text-slate-400 uppercase">Kỷ lục của bạn</div>
-              <div id="finalHighScore" class="text-3xl font-black text-amber-400">0</div>
-            </div>
-          </div>
-
-          <!-- Action buttons -->
-          <button id="restartBtn" class="btn-neon text-sm font-extrabold w-full max-w-xs py-3 mb-3">
-            NHẢY LẠI 🔁
-          </button>
-
-          <!-- Ecosystem Links -->
-          <div class="w-full max-w-xs space-y-2 mt-1">
-            <a href="https://thangnhayday.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-emerald-500/30 text-xs font-semibold text-emerald-300 transition">
-              <span class="flex items-center gap-2">
-                <span>🪢</span>
-                <span>Học kỹ thuật chuẩn tại <b>thangnhayday.com</b></span>
-              </span>
-              <span>↗</span>
-            </a>
-            <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-sky-500/30 text-xs font-semibold text-sky-300 transition">
-              <span class="flex items-center gap-2">
-                <span>💻</span>
-                <span>Ghé góc IT & Công nghệ <b>thangit.com</b></span>
-              </span>
-              <span>↗</span>
-            </a>
+          <div class="flex justify-between items-center w-full mt-4 text-xs text-slate-400 font-mono">
+            <span>Vuốt cảm ứng hoặc dùng phím mũi tên</span>
+            <button onclick="window.game2048.restart()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg font-semibold transition">Chơi Lại</button>
           </div>
         </div>
+      </section>
 
-      </div>
+    </div>
 
-      <!-- Quick Leaderboard Widget -->
-      <div class="w-full max-w-[480px] mt-6 bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center space-x-2">
-            <span class="text-base">🏆</span>
-            <h3 class="font-extrabold text-sm text-slate-200 uppercase tracking-wide">Bảng Vàng Hành Lang 1m5</h3>
-          </div>
-          <span class="text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
-            Cloudflare D1 Ready
-          </span>
-        </div>
-
-        <div id="leaderboardList" class="space-y-1.5">
-          <!-- Dynamically populated by leaderboard.js -->
-          <div class="text-xs text-slate-400 text-center py-2">Đang tải bảng xếp hạng...</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= SECTION 2: RẮN SĂN MỒI ================= -->
-    <section id="snakeGameSection" class="w-full max-w-md hidden flex flex-col items-center">
-      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center">
-        <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
-          <span class="text-slate-300">🐍 RẮN SĂN MỒI NEON</span>
-          <div class="flex gap-4">
-            <span class="text-slate-400">Điểm: <b id="snakeScore" class="text-emerald-400">0</b></span>
-            <span class="text-slate-400">Kỷ lục: <b id="snakeHighScore" class="text-amber-400">0</b></span>
-          </div>
-        </div>
-
-        <div class="border border-slate-800 rounded-xl overflow-hidden shadow-xl">
-          <canvas id="snakeCanvas"></canvas>
-        </div>
-
-        <!-- Virtual D-Pad for Mobile Touch -->
-        <div class="mt-4 flex flex-col items-center gap-1 sm:hidden">
-          <button id="snakeUp" class="dpad-btn">▲</button>
-          <div class="flex gap-4">
-            <button id="snakeLeft" class="dpad-btn">◀</button>
-            <button id="snakeDown" class="dpad-btn">▼</button>
-            <button id="snakeRight" class="dpad-btn">▶</button>
-          </div>
-        </div>
-        <p class="hidden sm:block text-xs text-slate-400 mt-3 text-center">
-          Dùng các phím mũi tên <b>W, A, S, D</b> hoặc <b>Phím Mũi Tên</b> để điều khiển
-        </p>
-      </div>
-    </section>
-
-    <!-- ================= SECTION 3: 2048 ================= -->
-    <section id="game2048Section" class="w-full max-w-md hidden flex flex-col items-center">
-      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center">
-        <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
-          <span class="text-slate-300">🔢 2048 RETRO NEON</span>
-          <div class="flex gap-3">
-            <div class="bg-slate-800 px-3 py-1 rounded-lg text-xs">
-              <span class="text-slate-400">Điểm:</span> <b id="score2048" class="text-emerald-400">0</b>
-            </div>
-            <div class="bg-slate-800 px-3 py-1 rounded-lg text-xs">
-              <span class="text-slate-400">Kỷ lục:</span> <b id="high2048" class="text-amber-400">0</b>
-            </div>
-          </div>
-        </div>
-
-        <div id="grid2048" class="grid-2048">
-          <!-- Populated by game-2048.js -->
-        </div>
-
-        <div class="flex justify-between items-center w-full mt-4 text-xs text-slate-400">
-          <span>Vuốt màn hình hoặc dùng phím mũi tên</span>
-          <button onclick="window.game2048.restart()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg font-semibold transition">Chơi Lại</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= STORY & INSPIRATION ================= -->
-    <article class="max-w-[480px] w-full mt-8 bg-slate-900/40 border border-slate-800/60 rounded-2xl p-5 text-slate-300 text-xs leading-relaxed">
+    <!-- Story & Inspiration -->
+    <article class="max-w-[480px] w-full mt-10 bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 text-slate-300 text-xs leading-relaxed font-sans">
       <h4 class="font-extrabold text-sm text-emerald-400 mb-2 flex items-center gap-2">
         <span>📖</span>
         <span>Câu chuyện: Nhảy dây trong hành lang 1m5</span>
@@ -261,16 +348,16 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-slate-800/80 bg-slate-950/80 py-6 px-4 mt-8 text-center text-xs text-slate-500">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+  <footer class="relative z-10 border-t border-slate-800/80 bg-slate-950/90 py-6 px-4 text-center text-xs text-slate-500 font-mono">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center space-x-2">
         <span class="font-bold text-slate-300">thangnd.io.vn</span>
         <span>—</span>
-        <span>Hệ sinh thái Thắng ND</span>
+        <span>Nguyễn Đức Thắng Ecosystem</span>
       </div>
       <div class="flex items-center space-x-4">
         <a href="https://thangnhayday.com" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition font-medium">thangnhayday.com</a>
-        <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 transition font-medium">thangit.com</a>
+        <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition font-medium">thangit.com</a>
         <a href="https://github.com/ducthangqtm/thangnd.io.vn" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition">GitHub</a>
       </div>
     </div>
@@ -283,17 +370,58 @@
   <script src="game-snake.js"></script>
   <script src="game-2048.js"></script>
 
-  <!-- Main Orchestrator -->
+  <!-- Arcade Game Switcher Logic -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. Initialize Rope Game
-      const ropeGame = new RopeGame('ropeCanvas');
-      window.ropeGame = ropeGame;
+    let ropeGameInstance = null;
+    let snakeGameInstance = null;
+    let game2048Instance = null;
 
-      // 2. Initialize Leaderboard
+    function switchGame(gameType) {
+      const cardRope = document.getElementById('cardRope');
+      const cardSnake = document.getElementById('cardSnake');
+      const card2048 = document.getElementById('card2048');
+
+      const secRope = document.getElementById('ropeGameSection');
+      const secSnake = document.getElementById('snakeGameSection');
+      const sec2048 = document.getElementById('game2048Section');
+
+      [cardRope, cardSnake, card2048].forEach(c => c.classList.remove('active'));
+      [secRope, secSnake, sec2048].forEach(s => s.classList.add('hidden'));
+
+      if (gameType === 'rope') {
+        cardRope.classList.add('active');
+        secRope.classList.remove('hidden');
+      } else if (gameType === 'snake') {
+        cardSnake.classList.add('active');
+        secSnake.classList.remove('hidden');
+        if (!snakeGameInstance) {
+          snakeGameInstance = new SnakeGame('snakeCanvas');
+          window.snakeGame = snakeGameInstance;
+        }
+      } else if (gameType === '2048') {
+        card2048.classList.add('active');
+        sec2048.classList.remove('hidden');
+        if (!game2048Instance) {
+          game2048Instance = new Game2048('grid2048');
+          window.game2048 = game2048Instance;
+        }
+      }
+
+      // Smooth scroll to active arena on mobile
+      if (window.innerWidth < 768) {
+        document.getElementById('gameArenaAnchor').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize Rope Game
+      ropeGameInstance = new RopeGame('ropeCanvas');
+      window.ropeGame = ropeGameInstance;
+
+      // Initialize Leaderboard
       window.leaderboard.renderLeaderboardTable();
 
-      // 3. Initialize Sound Toggle
+      // Sound Toggle
       const soundBtn = document.getElementById('soundToggleBtn');
       const soundIcon = document.getElementById('soundIcon');
       const updateSoundUI = () => {
@@ -308,7 +436,7 @@
         updateSoundUI();
       });
 
-      // 4. Player Name Persistence
+      // Player Name
       const playerInput = document.getElementById('playerInput');
       const navPlayerName = document.getElementById('navPlayerName');
       const saveNameBtn = document.getElementById('saveNameBtn');
@@ -321,7 +449,7 @@
       const saveName = () => {
         const val = playerInput.value.trim() || 'VĐV Hành Lang';
         localStorage.setItem('thang_player_name', val);
-        ropeGame.playerName = val;
+        ropeGameInstance.playerName = val;
         navPlayerName.innerText = val;
       };
 
@@ -333,57 +461,24 @@
       });
 
       playerNameBtn.addEventListener('click', () => {
-        const newName = prompt('Nhập tên hoặc biệt danh của bạn:', ropeGame.playerName);
+        const newName = prompt('Nhập tên hoặc biệt danh của bạn:', ropeGameInstance.playerName);
         if (newName && newName.trim()) {
           playerInput.value = newName.trim();
           saveName();
         }
       });
 
-      // 5. Start and Restart Buttons
+      // Start & Restart Buttons
       document.getElementById('startBtn').addEventListener('click', (e) => {
         e.stopPropagation();
         saveName();
-        ropeGame.startGame();
+        ropeGameInstance.startGame();
       });
 
       document.getElementById('restartBtn').addEventListener('click', (e) => {
         e.stopPropagation();
-        ropeGame.restartGame();
+        ropeGameInstance.restartGame();
       });
-
-      // 6. Navigation Tabs
-      const tabRope = document.getElementById('tabRope');
-      const tabSnake = document.getElementById('tabSnake');
-      const tab2048 = document.getElementById('tab2048');
-
-      const secRope = document.getElementById('ropeGameSection');
-      const secSnake = document.getElementById('snakeGameSection');
-      const sec2048 = document.getElementById('game2048Section');
-
-      let snakeGameInstance = null;
-      let game2048Instance = null;
-
-      const switchTab = (activeTab, showSec) => {
-        [tabRope, tabSnake, tab2048].forEach(t => t.classList.remove('active'));
-        [secRope, secSnake, sec2048].forEach(s => s.classList.add('hidden'));
-
-        activeTab.classList.add('active');
-        showSec.classList.remove('hidden');
-
-        if (showSec === secSnake && !snakeGameInstance) {
-          snakeGameInstance = new SnakeGame('snakeCanvas');
-          window.snakeGame = snakeGameInstance;
-        }
-        if (showSec === sec2048 && !game2048Instance) {
-          game2048Instance = new Game2048('grid2048');
-          window.game2048 = game2048Instance;
-        }
-      };
-
-      tabRope.addEventListener('click', () => switchTab(tabRope, secRope));
-      tabSnake.addEventListener('click', () => switchTab(tabSnake, secSnake));
-      tab2048.addEventListener('click', () => switchTab(tab2048, sec2048));
     });
   </script>
 </body>
