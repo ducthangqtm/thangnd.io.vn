@@ -364,27 +364,212 @@ class RopeGame {
   drawHallwayBackground() {
     const w = this.width;
     const h = this.height;
+    const vanishX = w / 2;
+    const vanishY = h * 0.30; // Deep perspective horizon
 
-    if (this.bgImg.complete && this.bgImg.naturalWidth > 0) {
-      // Draw Cover Image with subtle vignette
-      this.ctx.drawImage(this.bgImg, 0, 0, w, h);
+    const comboBoost = Math.min(1, this.combo * 0.08);
 
-      // Subtle atmospheric dark vignette on edges
-      const grad = this.ctx.createRadialGradient(w / 2, h * 0.45, w * 0.25, w / 2, h * 0.45, w * 0.85);
-      grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      grad.addColorStop(1, 'rgba(6, 7, 20, 0.55)');
-      this.ctx.fillStyle = grad;
-      this.ctx.fillRect(0, 0, w, h);
-    } else {
-      // Fallback
-      this.ctx.fillStyle = '#0f172a';
-      this.ctx.fillRect(0, 0, w, h);
+    // 1. CEILING (Deep synthwave violet ceiling with glowing perspective grid)
+    const ceilGrad = this.ctx.createLinearGradient(0, 0, 0, vanishY);
+    ceilGrad.addColorStop(0, '#0a081a');
+    ceilGrad.addColorStop(1, '#16102e');
+    this.ctx.fillStyle = ceilGrad;
+    this.ctx.fillRect(0, 0, w, vanishY);
+
+    // Perspective Synthwave Grid on Ceiling (Cyan & Amber lines)
+    this.ctx.save();
+    this.ctx.lineWidth = 1.2;
+    this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+    for (let x = -60; x <= w + 60; x += 35) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(vanishX, vanishY);
+      this.ctx.lineTo(x, 0);
+      this.ctx.stroke();
     }
+
+    // Horizontal ceiling neon crossbars (Warm amber / violet)
+    for (let i = 1; i <= 5; i++) {
+      const frac = Math.pow(i / 5, 1.8);
+      const y = vanishY * (1 - frac);
+      this.ctx.strokeStyle = `rgba(255, 158, 0, ${0.2 + frac * 0.3})`;
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, y);
+      this.ctx.lineTo(w, y);
+      this.ctx.stroke();
+    }
+
+    // Overhead central neon fluorescent tube
+    this.ctx.strokeStyle = '#ffffff';
+    this.ctx.shadowColor = '#00f0ff';
+    this.ctx.shadowBlur = 16;
+    this.ctx.lineWidth = 2.5;
+    this.ctx.beginPath();
+    this.ctx.moveTo(vanishX, vanishY);
+    this.ctx.lineTo(vanishX, 0);
+    this.ctx.stroke();
+    this.ctx.restore();
+
+    // 2. END OF CORRIDOR BULKHEAD (Closed metal door in distance)
+    this.ctx.save();
+    this.ctx.fillStyle = '#0e1124';
+    this.ctx.fillRect(vanishX - 60, vanishY - 50, 120, 100);
+
+    // Cyan door rim
+    this.ctx.strokeStyle = '#00f0ff';
+    this.ctx.lineWidth = 2;
+    this.ctx.shadowColor = '#00f0ff';
+    this.ctx.shadowBlur = 10;
+    this.ctx.strokeRect(vanishX - 32, vanishY - 35, 64, 85);
+
+    // Digital status badge
+    this.ctx.fillStyle = 'rgba(0, 240, 255, 0.12)';
+    this.ctx.fillRect(vanishX - 32, vanishY - 35, 64, 85);
+    this.ctx.fillStyle = '#00f0ff';
+    this.ctx.font = 'bold 8px "Chakra Petch", monospace';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('⚡ 1.5M HALLWAY', vanishX, vanishY - 18);
+    this.ctx.fillText('● TiT ARCADE', vanishX, vanishY);
+    this.ctx.restore();
+
+    // 3. LEFT & RIGHT INDUSTRIAL CORRIDOR WALLS
+    // Left Wall (Deep indigo with metallic panels)
+    const leftWall = this.ctx.createLinearGradient(0, 0, w * 0.35, 0);
+    leftWall.addColorStop(0, '#0c0e22');
+    leftWall.addColorStop(1, '#181b3b');
+    this.ctx.fillStyle = leftWall;
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, 0);
+    this.ctx.lineTo(vanishX - 60, vanishY - 50);
+    this.ctx.lineTo(vanishX - 60, vanishY + 50);
+    this.ctx.lineTo(0, h);
+    this.ctx.closePath();
+    this.ctx.fill();
+
+    // Right Wall
+    const rightWall = this.ctx.createLinearGradient(w * 0.65, 0, w, 0);
+    rightWall.addColorStop(0, '#181b3b');
+    rightWall.addColorStop(1, '#0c0e22');
+    this.ctx.fillStyle = rightWall;
+    this.ctx.beginPath();
+    this.ctx.moveTo(w, 0);
+    this.ctx.lineTo(vanishX + 60, vanishY - 50);
+    this.ctx.lineTo(vanishX + 60, vanishY + 50);
+    this.ctx.lineTo(w, h);
+    this.ctx.closePath();
+    this.ctx.fill();
+
+    // WALL FIXTURES & PIPES (Matching JUMP MASTER '86!)
+    this.ctx.save();
+    // Conduit pipes on left wall
+    this.ctx.strokeStyle = '#2f3559';
+    this.ctx.lineWidth = 4;
+    this.ctx.beginPath();
+    this.ctx.moveTo(w * 0.12, 0);
+    this.ctx.lineTo(w * 0.12, h * 0.7);
+    this.ctx.lineTo(0, h * 0.75);
+    this.ctx.stroke();
+
+    // Conduit pipes on right wall
+    this.ctx.beginPath();
+    this.ctx.moveTo(w * 0.88, 0);
+    this.ctx.lineTo(w * 0.88, h * 0.7);
+    this.ctx.lineTo(w, h * 0.75);
+    this.ctx.stroke();
+
+    // LEFT WALL AMBER / ORANGE NEON LAMP (Exact like in JUMP MASTER '86!)
+    this.ctx.shadowColor = '#ff9e00';
+    this.ctx.shadowBlur = 18 + comboBoost * 10;
+    this.ctx.fillStyle = '#ff9e00';
+    this.ctx.fillRect(w * 0.16, h * 0.17, 36, 10);
+    this.ctx.fillStyle = '#fff4a6';
+    this.ctx.fillRect(w * 0.18, h * 0.18, 32, 8);
+
+    // Left door frame
+    this.ctx.strokeStyle = 'rgba(255, 158, 0, 0.4)';
+    this.ctx.lineWidth = 1.5;
+    this.ctx.strokeRect(w * 0.14, h * 0.22, 45, h * 0.45);
+
+    // RIGHT WALL CYAN NEON LAMP (Exact like in JUMP MASTER '86!)
+    this.ctx.shadowColor = '#00f0ff';
+    this.ctx.shadowBlur = 18 + comboBoost * 10;
+    this.ctx.fillStyle = '#00f0ff';
+    this.ctx.fillRect(w * 0.74, h * 0.17, 36, 10);
+    this.ctx.fillStyle = '#e0ffff';
+    this.ctx.fillRect(w * 0.74, h * 0.18, 32, 8);
+
+    // Right door frame
+    this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+    this.ctx.lineWidth = 1.5;
+    this.ctx.strokeRect(w * 0.76, h * 0.22, 45, h * 0.45);
+
+    // Right wall Keypad / Control Panel with LED grid
+    this.ctx.fillStyle = '#1e2440';
+    this.ctx.fillRect(w * 0.86, h * 0.24, 28, 48);
+    this.ctx.strokeStyle = '#394370';
+    this.ctx.strokeRect(w * 0.86, h * 0.24, 28, 48);
+    // Amber/Red LEDs
+    for (let row = 0; row < 5; row++) {
+      for (let col = 0; col < 3; col++) {
+        this.ctx.fillStyle = (row + col) % 2 === 0 ? '#ff3b30' : '#ff9500';
+        this.ctx.fillRect(w * 0.88 + col * 6, h * 0.26 + row * 6, 3, 3);
+      }
+    }
+    this.ctx.restore();
+
+    // 4. REFLECTIVE INDUSTRIAL CORRIDOR FLOOR
+    const floorGrad = this.ctx.createLinearGradient(0, vanishY + 50, 0, h);
+    floorGrad.addColorStop(0, '#12162a');
+    floorGrad.addColorStop(0.5, '#202642');
+    floorGrad.addColorStop(1, '#0e1122');
+    this.ctx.fillStyle = floorGrad;
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, h);
+    this.ctx.lineTo(vanishX - 60, vanishY + 50);
+    this.ctx.lineTo(vanishX + 60, vanishY + 50);
+    this.ctx.lineTo(w, h);
+    this.ctx.closePath();
+    this.ctx.fill();
+
+    // Floor Perspective Joints & Tile seams
+    this.ctx.save();
+    this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.25)';
+    this.ctx.lineWidth = 1.2;
+    for (let x = -40; x <= w + 40; x += 40) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(vanishX, vanishY + 50);
+      this.ctx.lineTo(x, h);
+      this.ctx.stroke();
+    }
+
+    // Horizontal tile seams
+    for (let r = 1; r <= 7; r++) {
+      const frac = Math.pow(r / 7, 2.2);
+      const ly = (vanishY + 50) + (h - (vanishY + 50)) * frac;
+      const spread = 60 + (w / 2 - 60) * frac;
+      this.ctx.beginPath();
+      this.ctx.moveTo(vanishX - spread, ly);
+      this.ctx.lineTo(vanishX + spread, ly);
+      this.ctx.stroke();
+    }
+
+    // Floor neon light reflections
+    const amberReflect = this.ctx.createRadialGradient(w * 0.3, h * 0.65, 5, w * 0.3, h * 0.65, 80);
+    amberReflect.addColorStop(0, 'rgba(255, 158, 0, 0.16)');
+    amberReflect.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    this.ctx.fillStyle = amberReflect;
+    this.ctx.fillRect(w * 0.1, h * 0.45, w * 0.4, h * 0.45);
+
+    const cyanReflect = this.ctx.createRadialGradient(w * 0.7, h * 0.65, 5, w * 0.7, h * 0.65, 80);
+    cyanReflect.addColorStop(0, 'rgba(0, 240, 255, 0.16)');
+    cyanReflect.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    this.ctx.fillStyle = cyanReflect;
+    this.ctx.fillRect(w * 0.5, h * 0.45, w * 0.4, h * 0.45);
+    this.ctx.restore();
   }
 
   drawShadow() {
     const x = this.char.x;
-    const y = this.char.baseY + 148;
+    const y = this.char.baseY + 160;
     const jump = this.char.jumpHeight;
 
     const scale = Math.max(0.4, 1 - jump / 45);
@@ -392,15 +577,15 @@ class RopeGame {
 
     this.ctx.save();
     this.ctx.beginPath();
-    this.ctx.ellipse(x, y, 78 * scale, 20 * scale, 0, 0, Math.PI * 2);
+    this.ctx.ellipse(x, y, 75 * scale, 18 * scale, 0, 0, Math.PI * 2);
     this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
     this.ctx.fill();
 
-    // Soft warm reflection on red terracotta tiles
+    // Floor neon amber reflection under shoes
     if (jump < 20) {
       this.ctx.beginPath();
-      this.ctx.ellipse(x, y + 2, 55 * scale, 12 * scale, 0, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(57, 255, 20, ${0.18 * (1 - jump / 20)})`;
+      this.ctx.ellipse(x, y + 2, 50 * scale, 10 * scale, 0, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(255, 158, 0, ${0.22 * (1 - jump / 20)})`;
       this.ctx.fill();
     }
     this.ctx.restore();
@@ -414,82 +599,134 @@ class RopeGame {
     this.ctx.translate(cx, cy);
     this.ctx.scale(this.char.scaleX, this.char.scaleY);
 
-    // Front-facing, large, sharp sprite (100% opaque, 320px)
-    const spriteSize = 320;
+    // Pixel character dimensions (Sharp, high fidelity pixel scaling)
+    const spriteW = 240;
+    const spriteH = 328;
 
     if (this.state === 'GAMEOVER') {
-      if (this.tripSprite.complete && this.tripSprite.naturalWidth > 0) {
-        this.ctx.drawImage(this.tripSprite, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
+      // Tripped pose: tilted with dizzyness & rope tangle
+      this.ctx.rotate(0.18);
+      if (this.jumpSprite.complete && this.jumpSprite.naturalWidth > 0) {
+        this.ctx.drawImage(this.jumpSprite, -spriteW / 2, -spriteH / 2 + 15, spriteW, spriteH);
       }
+      this.drawDizzyStars(0, -spriteH / 2 - 12);
     } else {
       if (this.jumpSprite.complete && this.jumpSprite.naturalWidth > 0) {
-        this.ctx.drawImage(this.jumpSprite, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
+        this.ctx.drawImage(this.jumpSprite, -spriteW / 2, -spriteH / 2, spriteW, spriteH);
       }
     }
 
     this.ctx.restore();
   }
 
+  drawDizzyStars(cx, cy) {
+    this.ctx.save();
+    const now = performance.now() * 0.005;
+    for (let i = 0; i < 4; i++) {
+      const ang = now + (i * Math.PI) / 2;
+      const sx = cx + Math.cos(ang) * 35;
+      const sy = cy + Math.sin(ang) * 12;
+      this.ctx.fillStyle = i % 2 === 0 ? '#ffd60a' : '#ff9e00';
+      this.ctx.font = '16px sans-serif';
+      this.ctx.textAlign = 'center';
+      this.ctx.fillText('💫', sx, sy);
+    }
+    this.ctx.restore();
+  }
+
   drawRope() {
     const cx = this.char.x;
-    const cy = this.char.baseY - 5;
+    const cy = this.char.baseY + 12;
     const angle = this.rope.angle;
 
-    // 3D Ellipse Radii tuned to loop under feet (dưới bàn chân)
-    const radiusY = 162;
-    const radiusX = 135;
-
+    // True aerodynamic vertical ellipse for jump rope
+    const radiusY = 168;
     const ropeY = cy + Math.sin(angle) * radiusY;
     const ropeZ = Math.cos(angle);
 
-    // Handle anchors at hands extended to both sides
-    const leftHandleX = cx - 110;
-    const leftHandleY = this.char.y + 8;
-    const rightHandleX = cx + 110;
-    const rightHandleY = this.char.y + 8;
+    // Precise handle anchors at hands of pixel character
+    const leftHandleX = cx - 106;
+    const leftHandleY = this.char.y + 14;
+    const rightHandleX = cx + 115;
+    const rightHandleY = this.char.y + 16;
 
     this.ctx.save();
 
     const isFront = ropeZ >= 0;
     const lineWidth = isFront ? 4.8 : 2.8;
-    const alpha = isFront ? 0.98 : 0.62;
+    const alpha = isFront ? 1.0 : 0.65;
 
-    // Glowing Neon Lime speed rope
-    this.ctx.strokeStyle = `rgba(57, 255, 20, ${alpha})`;
+    // Glowing Neon Amber / Orange speed rope matching JUMP MASTER '86!
+    this.ctx.strokeStyle = `rgba(255, 158, 0, ${alpha})`;
     this.ctx.lineWidth = lineWidth;
     this.ctx.lineCap = 'round';
-    this.ctx.shadowColor = '#39ff14';
-    this.ctx.shadowBlur = isFront ? 16 : 4;
+    this.ctx.shadowColor = '#ff6a00';
+    this.ctx.shadowBlur = isFront ? 20 : 6;
 
+    // Authentic vertical ellipse
+    const isBottom = Math.sin(angle) >= 0;
+    const curveApexY = ropeY;
+    const midSpread = 72 * (1 + 0.12 * ropeZ);
+    const sag = isBottom ? 18 : -18;
+
+    // Motion trail rings when swinging fast
+    if (isFront && this.state === 'PLAYING') {
+      this.ctx.save();
+      this.ctx.strokeStyle = 'rgba(255, 180, 20, 0.28)';
+      this.ctx.lineWidth = 1.8;
+      this.ctx.beginPath();
+      this.ctx.moveTo(leftHandleX, leftHandleY - 10);
+      this.ctx.bezierCurveTo(
+        leftHandleX - 14, leftHandleY + (curveApexY - leftHandleY) * 0.45 - 8,
+        cx - midSpread - 8, curveApexY + sag - 8,
+        cx, curveApexY - 8
+      );
+      this.ctx.bezierCurveTo(
+        cx + midSpread + 8, curveApexY + sag - 8,
+        rightHandleX + 14, rightHandleY + (curveApexY - rightHandleY) * 0.45 - 8,
+        rightHandleX, rightHandleY - 10
+      );
+      this.ctx.stroke();
+      this.ctx.restore();
+    }
+
+    // Main rope curve: Left Handle -> Apex under shoes / above head -> Right Handle
     this.ctx.beginPath();
     this.ctx.moveTo(leftHandleX, leftHandleY);
-
-    const ctrlSpread = radiusX * (1 + 0.22 * ropeZ);
     this.ctx.bezierCurveTo(
-      cx - ctrlSpread,
-      ropeY,
-      cx + ctrlSpread,
-      ropeY,
+      leftHandleX - 10 + 14 * ropeZ,
+      leftHandleY + (curveApexY - leftHandleY) * 0.45,
+      cx - midSpread,
+      curveApexY + sag,
+      cx,
+      curveApexY
+    );
+    this.ctx.bezierCurveTo(
+      cx + midSpread,
+      curveApexY + sag,
+      rightHandleX + 10 - 14 * ropeZ,
+      rightHandleY + (curveApexY - rightHandleY) * 0.45,
       rightHandleX,
       rightHandleY
     );
     this.ctx.stroke();
 
-    // Inner bright core
+    // Inner bright golden-white hot core
     if (isFront) {
-      this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+      this.ctx.strokeStyle = '#fff8bd';
       this.ctx.lineWidth = 1.8;
-      this.ctx.shadowBlur = 0;
+      this.ctx.shadowBlur = 4;
+      this.ctx.shadowColor = '#ffd60a';
       this.ctx.stroke();
     }
 
-    // Floor contact flash (under feet on the red tile floor)
+    // Floor contact flash (under feet)
     if (Math.abs(angle - Math.PI / 2) < 0.22 && this.char.jumpHeight > 2) {
-      this.ctx.fillStyle = 'rgba(57, 255, 20, 0.65)';
-      this.ctx.shadowColor = '#39ff14';
-      this.ctx.shadowBlur = 24;
+      this.ctx.fillStyle = 'rgba(255, 180, 0, 0.75)';
+      this.ctx.shadowColor = '#ff9e00';
+      this.ctx.shadowBlur = 18;
       this.ctx.beginPath();
-      this.ctx.ellipse(cx, cy + radiusY - 4, 48, 8, 0, 0, Math.PI * 2);
+      this.ctx.ellipse(cx, curveApexY, 36, 6, 0, 0, Math.PI * 2);
       this.ctx.fill();
     }
 
