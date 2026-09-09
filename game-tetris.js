@@ -112,20 +112,21 @@ class TetrisGame {
     if (!parent) return;
 
     const isMobile = window.innerWidth < 640;
-    const maxW = Math.min(window.innerWidth - 24, isMobile ? 240 : 280);
-    const maxH = isMobile ? Math.min(window.innerHeight - 230, 400) : 460;
+    // Sidebar on right takes ~95px on mobile, modal header takes ~45px, controls take ~80px
+    const maxW = Math.min(window.innerWidth - (isMobile ? 115 : 140), isMobile ? 250 : 300);
+    const maxH = isMobile ? Math.min(window.innerHeight - 175, 480) : 520;
 
     // Maintain 1:2 aspect ratio (10:20 grid)
     let cell = Math.floor(Math.min(maxW / this.COLS, maxH / this.ROWS));
-    cell = Math.max(16, Math.min(cell, 24)); // clamp between 16px and 24px
+    cell = Math.max(18, Math.min(cell, 24)); // clamp between 18px and 24px for a grand, tall display
 
     this.cellSize = cell;
     this.canvas.width = this.COLS * cell;
     this.canvas.height = this.ROWS * cell;
 
     if (this.nextCanvas) {
-      this.nextCanvas.width = 40;
-      this.nextCanvas.height = 40;
+      this.nextCanvas.width = 56;
+      this.nextCanvas.height = 56;
     }
   }
 
@@ -732,7 +733,7 @@ class TetrisGame {
     const shape = this.nextPiece.shape;
     const cols = shape[0].length;
     const rows = shape.length;
-    const cell = Math.min(Math.floor((w - 4) / cols), Math.floor((h - 4) / rows), 10);
+    const cell = Math.min(Math.floor((w - 8) / cols), Math.floor((h - 8) / rows), 13);
     const shapeW = cols * cell;
     const shapeH = rows * cell;
     const ox = Math.floor((w - shapeW) / 2);
