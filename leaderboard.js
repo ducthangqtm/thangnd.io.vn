@@ -168,10 +168,10 @@ class LeaderboardManager {
 
     if (!list || list.length === 0) {
       container.innerHTML = `
-        <div class="text-center py-6 px-4 rounded-xl bg-slate-800/30 border border-dashed border-slate-700/60 font-sans">
-          <div class="text-2xl mb-1 animate-bounce">👑</div>
-          <div class="text-xs font-bold text-slate-200 mb-1">Chưa có kỷ lục nào!</div>
-          <div class="text-[11px] text-emerald-400 font-semibold">Chơi ngay để chiếm ngôi Quán quân Top 1! 🚀</div>
+        <div class="text-center py-3.5 sm:py-5 px-3 rounded-xl bg-slate-800/30 border border-dashed border-slate-700/60 font-sans">
+          <div class="text-xl sm:text-2xl mb-1 animate-bounce">👑</div>
+          <div class="text-xs font-bold text-slate-200 mb-0.5">Chưa có kỷ lục nào!</div>
+          <div class="text-[10px] sm:text-[11px] text-emerald-400 font-semibold">Chơi ngay để chiếm ngôi Quán quân Top 1! 🚀</div>
         </div>
       `;
       return;
@@ -199,12 +199,12 @@ class LeaderboardManager {
       }
 
       return `
-        <div class="flex items-center justify-between py-2 px-3 rounded-xl ${rowStyle} text-sm transition hover:border-emerald-500/30">
-          <div class="flex items-center space-x-2.5 min-w-0">
-            <span class="text-xs w-12 shrink-0 ${textBadge}">${medal}</span>
-            <span class="font-semibold text-slate-200 truncate max-w-[170px] sm:max-w-[240px]">${escapeHtml(item.name)}</span>
+        <div class="flex items-center justify-between py-1.5 px-2.5 sm:py-2 sm:px-3 rounded-lg sm:rounded-xl ${rowStyle} text-xs sm:text-sm transition hover:border-emerald-500/30">
+          <div class="flex items-center space-x-2 min-w-0">
+            <span class="text-[11px] sm:text-xs w-11 sm:w-12 shrink-0 ${textBadge}">${medal}</span>
+            <span class="font-semibold text-slate-200 truncate max-w-[140px] sm:max-w-[240px]">${escapeHtml(item.name)}</span>
           </div>
-          <span class="font-bold text-xs shrink-0 ${scoreColor}">${item.score} ${unit}</span>
+          <span class="font-bold text-[11px] sm:text-xs shrink-0 ${scoreColor}">${item.score} ${unit}</span>
         </div>
       `;
     }).join('');

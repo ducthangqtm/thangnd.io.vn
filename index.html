@@ -45,15 +45,15 @@
   <div class="retro-grid-bg"></div>
 
   <!-- Header Bar -->
-  <header class="px-3 py-2.5 sticky top-0 z-40">
+  <header class="px-3 py-1.5 sm:py-2.5 sticky top-0 z-40">
     <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 min-w-0">
-        <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" title="TiT Studio (thangit.com)" class="flex-shrink-0 transition-transform hover:scale-110">
-          <img src="assets/logo-tit.svg" alt="TiT Logo" class="w-8 h-8 sm:w-10 sm:h-10 drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]">
+        <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" title="TiT Studio (thangit.com)" class="flex-shrink-0 transition-transform hover:scale-105">
+          <img src="assets/logo-tit.svg" alt="TiT Logo" class="w-7 h-7 sm:w-10 sm:h-10 drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]">
         </a>
         <div class="min-w-0">
-          <a href="#" class="block whitespace-nowrap font-extrabold text-[11px] sm:text-base tracking-wider arcade-font text-white hover:text-emerald-400 transition leading-tight">
-            THANG ND <span class="text-emerald-400">.IO</span>
+          <a href="#" class="block whitespace-nowrap font-bold text-[10px] sm:text-sm tracking-wide arcade-font text-white hover:text-emerald-400 transition leading-tight">
+            THANGND<span class="text-emerald-400">.IO.VN</span>
           </a>
           <p class="hidden sm:block text-[10px] text-slate-400 font-mono tracking-widest uppercase">Ecosystem by TiT</p>
         </div>
@@ -61,13 +61,13 @@
 
       <!-- Controls & Player Name -->
       <div class="flex items-center gap-1.5 flex-shrink-0">
-        <button id="playerNameBtn" class="flex items-center gap-1 text-xs bg-slate-900/90 hover:bg-slate-800 px-2.5 py-1.5 rounded-full border border-slate-700 transition">
+        <button id="playerNameBtn" class="flex items-center gap-1 text-xs bg-slate-900/90 hover:bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 transition">
           <span class="text-slate-400">👤</span>
           <span id="navPlayerName" class="font-bold text-slate-200 truncate max-w-[70px] sm:max-w-[110px]">VĐV Hành Lang</span>
           <span class="text-[10px] text-emerald-400">✏️</span>
         </button>
 
-        <button id="soundToggleBtn" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700 flex items-center justify-center text-sm transition" title="Bật/Tắt âm thanh">
+        <button id="soundToggleBtn" class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700 flex items-center justify-center text-xs sm:text-sm transition" title="Bật/Tắt âm thanh">
           <span id="soundIcon">🔊</span>
         </button>
       </div>
@@ -75,38 +75,38 @@
   </header>
 
   <!-- Main Arcade Stage (Lobby View) -->
-  <main class="relative z-10 flex-1 flex flex-col items-center px-4 pt-6 pb-12 max-w-6xl mx-auto w-full">
+  <main class="relative z-10 flex-1 flex flex-col items-center px-3 sm:px-4 pt-2 sm:pt-6 pb-8 sm:pb-12 max-w-6xl mx-auto w-full">
 
 
     <!-- Title Section - compact on mobile -->
-    <div class="text-center my-3 sm:my-6">
-      <div class="text-[9px] sm:text-[11px] font-bold text-cyan-400 tracking-[0.3em] uppercase mb-1 arcade-font">
+    <div class="text-center my-1.5 sm:my-5">
+      <div class="text-[8px] sm:text-[11px] font-bold text-cyan-400 tracking-[0.25em] uppercase mb-0.5 arcade-font">
         NOW PLAYING
       </div>
-      <h1 class="synth-title" style="font-size:clamp(1.4rem,5vw,3.8rem)">
+      <h1 class="synth-title">
         ARCADE
       </h1>
       <div class="synth-divider"></div>
-      <p class="mt-2 text-[10px] sm:text-sm text-slate-400 font-mono tracking-widest uppercase">
+      <p class="mt-1 text-[9px] sm:text-xs text-slate-400 font-mono tracking-widest uppercase">
         Select Your Game
       </p>
     </div>
 
     <!-- ================= HORIZONTAL ARCADE CARDS ================= -->
-    <!-- Mobile: vuốt ngang (scroll-snap). Desktop: grid -->
-    <div class="w-full my-6 flex sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6
+    <!-- Mobile: vuốt ngang circular loop (scroll-snap). Desktop: 4-column grid -->
+    <div class="w-full my-2.5 sm:my-5 flex sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6
                 overflow-x-auto sm:overflow-visible
                 snap-x snap-mandatory sm:snap-none
-                gap-4 pb-3 sm:pb-0
-                px-4 sm:px-0 -mx-4 sm:mx-0"
+                gap-3 sm:gap-6 pb-2 sm:pb-0
+                px-4 sm:px-0"
          style="scrollbar-width:none; -ms-overflow-style:none;"
          id="gameCarousel">
 
       <!-- Card 1: Thắng Nhảy Dây -->
-      <div id="cardRope" class="arcade-card snap-start snap-always flex-shrink-0 w-[80vw] sm:w-auto" onclick="openArcadeModal('rope')">
+      <div id="cardRope" class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto" onclick="openArcadeModal('rope')">
         <div class="arcade-card-header">
-          <span class="arcade-font text-[9px] text-pink-400 tracking-wider">1.5M HALLWAY</span>
-          <span class="text-emerald-400 text-xs font-bold">★ HERO</span>
+          <span class="arcade-font text-[8px] text-pink-400 tracking-wider">1.5M HALLWAY</span>
+          <span class="text-emerald-400 text-[10px] font-bold">★ HERO</span>
         </div>
         <div class="arcade-card-screen">
           <img src="assets/thang-rope-thumb.jpg" alt="Thắng Nhảy Dây">
@@ -114,8 +114,8 @@
         </div>
         <div class="arcade-card-body">
           <div>
-            <h3 class="vn-arcade-font text-sm text-white mb-2 leading-snug">THẮNG NHẢY DÂY</h3>
-            <p class="text-xs text-slate-400 leading-relaxed font-sans">
+            <h3 class="vn-arcade-font text-xs sm:text-sm text-white mb-1 leading-snug">THẮNG NHẢY DÂY</h3>
+            <p class="text-[10px] sm:text-xs text-slate-400 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
               Nhảy qua dây trong hành lang 1.5m. Căn đúng nhịp để bất tử!
             </p>
           </div>
@@ -124,10 +124,10 @@
       </div>
 
       <!-- Card 2: Cyber Snake -->
-      <div id="cardSnake" class="arcade-card snap-start snap-always flex-shrink-0 w-[80vw] sm:w-auto" onclick="openArcadeModal('snake')">
+      <div id="cardSnake" class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto" onclick="openArcadeModal('snake')">
         <div class="arcade-card-header">
-          <span class="arcade-font text-[9px] text-cyan-400 tracking-wider">RETRO 8-BIT</span>
-          <span class="text-slate-400 text-xs">CLASSIC</span>
+          <span class="arcade-font text-[8px] text-cyan-400 tracking-wider">RETRO 8-BIT</span>
+          <span class="text-slate-400 text-[10px]">CLASSIC</span>
         </div>
         <div class="arcade-card-screen">
           <img src="assets/cyber-snake-thumb.jpg" alt="Cyber Snake">
@@ -135,9 +135,9 @@
         </div>
         <div class="arcade-card-body">
           <div>
-            <h3 class="arcade-font text-xs text-white mb-2 leading-snug">CYBER SNAKE</h3>
-            <p class="text-xs text-slate-400 leading-relaxed font-sans">
-              Rắn săn mồi phong cách neon cyber. Điều khiển phản xạ nhạy bén.
+            <h3 class="arcade-font text-[10px] sm:text-xs text-white mb-1 leading-snug">CYBER SNAKE</h3>
+            <p class="text-[10px] sm:text-xs text-slate-400 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
+              Rắn săn mồi phong cách neon cyber. Phản xạ nhạy bén.
             </p>
           </div>
           <button class="arcade-play-btn">CHƠI NGAY ▶</button>
@@ -145,10 +145,10 @@
       </div>
 
       <!-- Card 3: 2048 Neon -->
-      <div id="card2048" class="arcade-card snap-start snap-always flex-shrink-0 w-[80vw] sm:w-auto" onclick="openArcadeModal('2048')">
+      <div id="card2048" class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto" onclick="openArcadeModal('2048')">
         <div class="arcade-card-header">
-          <span class="arcade-font text-[9px] text-amber-400 tracking-wider">PUZZLE LAB</span>
-          <span class="text-slate-400 text-xs">BRAIN</span>
+          <span class="arcade-font text-[8px] text-amber-400 tracking-wider">PUZZLE LAB</span>
+          <span class="text-slate-400 text-[10px]">BRAIN</span>
         </div>
         <div class="arcade-card-screen">
           <img src="assets/neon-2048-thumb.jpg" alt="2048 Neon">
@@ -156,8 +156,8 @@
         </div>
         <div class="arcade-card-body">
           <div>
-            <h3 class="arcade-font text-xs text-white mb-2 leading-snug">2048 NEON</h3>
-            <p class="text-xs text-slate-400 leading-relaxed font-sans">
+            <h3 class="arcade-font text-[10px] sm:text-xs text-white mb-1 leading-snug">2048 NEON</h3>
+            <p class="text-[10px] sm:text-xs text-slate-400 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
               Ghép các khối số theo cấp số nhân để chinh phục mốc 2048.
             </p>
           </div>
@@ -166,64 +166,61 @@
       </div>
 
       <!-- Card 4: Coming Soon -->
-      <div class="arcade-card snap-start snap-always flex-shrink-0 w-[80vw] sm:w-auto opacity-60 cursor-not-allowed">
+      <div class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto opacity-60 cursor-not-allowed">
         <div class="arcade-card-header">
-          <span class="arcade-font text-[9px] text-slate-500 tracking-wider">SECRET STAGE</span>
-          <span class="text-slate-600 text-xs">SOON</span>
+          <span class="arcade-font text-[8px] text-slate-500 tracking-wider">SECRET STAGE</span>
+          <span class="text-slate-600 text-[10px]">SOON</span>
         </div>
         <div class="arcade-card-screen bg-slate-950 flex items-center justify-center">
-          <div class="arcade-font text-3xl text-slate-700 animate-pulse">?</div>
+          <div class="arcade-font text-2xl text-slate-700 animate-pulse">?</div>
           <div class="crt-scanlines"></div>
         </div>
         <div class="arcade-card-body">
           <div>
-            <h3 class="arcade-font text-xs text-slate-400 mb-2 leading-snug">COMING SOON</h3>
-            <p class="text-xs text-slate-500 leading-relaxed font-sans">
+            <h3 class="arcade-font text-[10px] sm:text-xs text-slate-400 mb-1 leading-snug">COMING SOON</h3>
+            <p class="text-[10px] sm:text-xs text-slate-500 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
               Một cuộc phiêu lưu công nghệ mới đang được ấp ủ.
             </p>
           </div>
           <button class="arcade-play-btn opacity-40" disabled>STAY TUNED</button>
         </div>
       </div>
-
-      <!-- Spacer cuối carousel để card cuối không bị sát mép -->
-      <div class="flex-shrink-0 w-4 sm:hidden"></div>
     </div>
 
     <!-- Dots indicator (chỉ hiện trên mobile) -->
-    <div class="flex sm:hidden items-center justify-center gap-2 mt-1 mb-2" id="carouselDots">
-      <span class="w-2 h-2 rounded-full bg-neon-cyan transition-all duration-300" style="background:var(--neon-cyan)"></span>
-      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300"></span>
-      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300"></span>
-      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300"></span>
+    <div class="flex sm:hidden items-center justify-center gap-2 mt-1 mb-1.5" id="carouselDots">
+      <span class="w-2 h-2 rounded-full transition-all duration-300 cursor-pointer" style="background:var(--neon-cyan)"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer"></span>
     </div>
 
     <!-- Quick Leaderboard on Lobby -->
-    <div class="w-full max-w-xl mt-6 bg-slate-900/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 font-sans">
-      <div class="flex items-center justify-between mb-3">
+    <div class="w-full max-w-xl mt-2 sm:mt-5 bg-slate-900/85 backdrop-blur-md border border-slate-800/80 rounded-xl sm:rounded-2xl p-3 sm:p-5 font-sans">
+      <div class="flex items-center justify-between mb-2 sm:mb-3">
         <div class="flex items-center space-x-2">
-          <span class="text-lg">🏆</span>
-          <h3 class="font-extrabold text-sm text-slate-200 uppercase tracking-wide">Bảng Vàng Arcade</h3>
+          <span class="text-base sm:text-lg">🏆</span>
+          <h3 class="font-extrabold text-xs sm:text-sm text-slate-200 uppercase tracking-wide">Bảng Vàng Arcade</h3>
         </div>
-        <span class="text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">
+        <span class="text-[9px] sm:text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
           Cloudflare D1 Ready
         </span>
       </div>
 
       <!-- Game Selector Tabs -->
-      <div class="flex items-center gap-1.5 p-1 bg-slate-950/70 rounded-xl mb-3.5 border border-slate-800/80 text-xs">
-        <button class="lb-tab active flex-1 py-1.5 px-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-emerald-400 bg-slate-800/90 border border-emerald-500/40 shadow-sm" data-game="rope">
+      <div class="flex items-center gap-1 p-0.5 sm:p-1 bg-slate-950/70 rounded-lg sm:rounded-xl mb-2 sm:mb-3.5 border border-slate-800/80 text-[11px] sm:text-xs">
+        <button class="lb-tab active flex-1 py-1 sm:py-1.5 px-1.5 sm:px-2 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-emerald-400 bg-slate-800/90 border border-emerald-500/40 shadow-sm" data-game="rope">
           <span>🪢</span><span>Nhảy Dây</span>
         </button>
-        <button class="lb-tab flex-1 py-1.5 px-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="snake">
+        <button class="lb-tab flex-1 py-1 sm:py-1.5 px-1.5 sm:px-2 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="snake">
           <span>🐍</span><span>Rắn Săn Mồi</span>
         </button>
-        <button class="lb-tab flex-1 py-1.5 px-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="2048">
+        <button class="lb-tab flex-1 py-1 sm:py-1.5 px-1.5 sm:px-2 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="2048">
           <span>🔢</span><span>2048 Neon</span>
         </button>
       </div>
 
-      <div id="leaderboardList" class="space-y-2">
+      <div id="leaderboardList" class="space-y-1.5 sm:space-y-2">
         <div class="text-xs text-slate-400 text-center py-2">Đang tải bảng xếp hạng...</div>
       </div>
     </div>
@@ -478,40 +475,173 @@
   <script src="game-snake.js"></script>
   <script src="game-2048.js"></script>
   <script>
-    // Carousel: dots indicator + infinite loop (card 4 → card 1)
+    // Infinite Circular Carousel for Mobile (Seamless ring, no rewind)
     (function() {
       const carousel = document.getElementById('gameCarousel');
       const dots = document.querySelectorAll('#carouselDots span');
       if (!carousel) return;
 
-      const CARD_COUNT = 4;
-      let isLooping = false;
+      const isMobile = () => window.innerWidth < 640;
+      const originalCards = Array.from(carousel.querySelectorAll('.arcade-card'));
+      const COUNT = originalCards.length;
+      if (COUNT !== 4) return;
 
-      function updateDots() {
-        const cardW = carousel.clientWidth * 0.80 + 16; // 80vw + gap
-        const idx = Math.min(Math.round(carousel.scrollLeft / cardW), CARD_COUNT - 1);
+      // Create clones: 4 before, 4 after for seamless circular swiping
+      const clonesBefore = [];
+      const clonesAfter = [];
+
+      originalCards.forEach((card, idx) => {
+        const prevClone = card.cloneNode(true);
+        prevClone.id = `card-prev-clone-${idx}`;
+        prevClone.classList.add('carousel-clone', 'sm:hidden');
+        const onclick = card.getAttribute('onclick');
+        if (onclick) prevClone.setAttribute('onclick', onclick);
+        clonesBefore.push(prevClone);
+
+        const nextClone = card.cloneNode(true);
+        nextClone.id = `card-next-clone-${idx}`;
+        nextClone.classList.add('carousel-clone', 'sm:hidden');
+        if (onclick) nextClone.setAttribute('onclick', onclick);
+        clonesAfter.push(nextClone);
+      });
+
+      // Prepend clones before
+      clonesBefore.forEach(c => carousel.insertBefore(c, originalCards[0]));
+      // Append clones after
+      clonesAfter.forEach(c => carousel.appendChild(c));
+
+      let itemWidth = 0;
+      let setDistance = 0;
+      let canonicalStart = 0;
+      let isTouching = false;
+      let isAdjusting = false;
+      let settleTimer = null;
+
+      function calcMetrics() {
+        if (!isMobile()) return;
+        const allCards = carousel.querySelectorAll('.arcade-card');
+        if (allCards.length >= COUNT * 2) {
+          const firstCard = allCards[0];
+          const firstOriginal = allCards[COUNT];
+          const secondOriginal = allCards[COUNT + 1];
+          itemWidth = secondOriginal.offsetLeft - firstOriginal.offsetLeft;
+          setDistance = itemWidth * COUNT;
+          canonicalStart = firstOriginal.offsetLeft - firstCard.offsetLeft;
+        }
+      }
+
+      function updateDots(activeDot) {
+        const norm = ((activeDot % COUNT) + COUNT) % COUNT;
         dots.forEach((d, i) => {
-          const active = i === idx;
+          const active = (i === norm);
           d.style.background = active ? 'var(--neon-cyan)' : 'rgb(71,85,105)';
-          d.style.width = active ? '8px' : '6px';
-          d.style.height = active ? '8px' : '6px';
+          d.style.width = active ? '8px' : '5px';
+          d.style.height = active ? '8px' : '5px';
+          d.style.boxShadow = active ? '0 0 8px var(--neon-cyan)' : 'none';
         });
       }
 
-      carousel.addEventListener('scroll', () => {
-        if (isLooping) return;
-        updateDots();
-
-        // Loop: if scrolled to (or past) the end spacer, snap back to start
-        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-        if (carousel.scrollLeft >= maxScroll - 8) {
-          isLooping = true;
-          setTimeout(() => {
-            carousel.scrollTo({ left: 0, behavior: 'smooth' });
-            setTimeout(() => { isLooping = false; updateDots(); }, 400);
-          }, 350);
+      function initialPosition() {
+        if (!isMobile()) return;
+        calcMetrics();
+        if (itemWidth <= 0) {
+          requestAnimationFrame(initialPosition);
+          return;
         }
+        carousel.style.scrollSnapType = 'none';
+        carousel.style.scrollBehavior = 'auto';
+        carousel.scrollLeft = canonicalStart;
+        carousel.style.scrollSnapType = 'x mandatory';
+        updateDots(0);
+      }
+
+      function checkLoop() {
+        if (!isMobile() || isTouching || isAdjusting || itemWidth <= 0) return;
+
+        const currentRelative = carousel.scrollLeft - canonicalStart;
+        const activeIdx = Math.round(currentRelative / itemWidth);
+        updateDots(activeIdx);
+
+        // If swiped into next clones (activeIdx >= COUNT)
+        if (activeIdx >= COUNT) {
+          isAdjusting = true;
+          carousel.style.scrollSnapType = 'none';
+          carousel.style.scrollBehavior = 'auto';
+          carousel.scrollLeft -= setDistance;
+          void carousel.offsetWidth;
+          requestAnimationFrame(() => {
+            carousel.style.scrollSnapType = 'x mandatory';
+            isAdjusting = false;
+            const newRelative = carousel.scrollLeft - canonicalStart;
+            updateDots(Math.round(newRelative / itemWidth));
+          });
+        }
+        // If swiped into prev clones (activeIdx < 0)
+        else if (activeIdx < 0) {
+          isAdjusting = true;
+          carousel.style.scrollSnapType = 'none';
+          carousel.style.scrollBehavior = 'auto';
+          carousel.scrollLeft += setDistance;
+          void carousel.offsetWidth;
+          requestAnimationFrame(() => {
+            carousel.style.scrollSnapType = 'x mandatory';
+            isAdjusting = false;
+            const newRelative = carousel.scrollLeft - canonicalStart;
+            updateDots(Math.round(newRelative / itemWidth));
+          });
+        }
+      }
+
+      carousel.addEventListener('touchstart', () => {
+        isTouching = true;
       }, { passive: true });
+
+      carousel.addEventListener('touchend', () => {
+        isTouching = false;
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(checkLoop, 100);
+      }, { passive: true });
+
+      carousel.addEventListener('scroll', () => {
+        if (!isMobile() || isAdjusting || itemWidth <= 0) return;
+        const currentRelative = carousel.scrollLeft - canonicalStart;
+        const activeIdx = Math.round(currentRelative / itemWidth);
+        updateDots(activeIdx);
+
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(checkLoop, 80);
+      }, { passive: true });
+
+      if ('onscrollend' in window) {
+        carousel.addEventListener('scrollend', checkLoop);
+      }
+
+      // Tap on dots to scroll to that game
+      dots.forEach((dot, dotIdx) => {
+        dot.style.cursor = 'pointer';
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!isMobile() || itemWidth <= 0) return;
+          carousel.scrollTo({
+            left: canonicalStart + dotIdx * itemWidth,
+            behavior: 'smooth'
+          });
+        });
+      });
+
+      window.addEventListener('resize', () => {
+        if (!isMobile()) return;
+        const oldRelative = carousel.scrollLeft - canonicalStart;
+        const curIdx = itemWidth > 0 ? Math.round(oldRelative / itemWidth) : 0;
+        calcMetrics();
+        if (itemWidth > 0) {
+          const normIdx = ((curIdx % COUNT) + COUNT) % COUNT;
+          carousel.scrollLeft = canonicalStart + normIdx * itemWidth;
+        }
+      });
+
+      setTimeout(initialPosition, 60);
+      window.addEventListener('load', initialPosition);
     })();
   </script>
 
