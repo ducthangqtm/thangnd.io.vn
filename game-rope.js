@@ -1,10 +1,14 @@
 // Game: Thắng Nhảy Dây - Thử Thách Hành Lang 1m5
-// 100% Canvas 2D + Vanilla JS
+// High-Fidelity Canvas 2D Engine with High-Res Assets & Physics
 
 class RopeGame {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d');
+
+    // Load High-Res Graphic Assets
+    this.assetsLoaded = false;
+    this.loadAssets();
 
     // Game state
     this.state = 'START'; // 'START', 'PLAYING', 'GAMEOVER'
@@ -19,30 +23,24 @@ class RopeGame {
       y: 0,
       baseY: 0,
       vy: 0,
-      jumpForce: -13.5,
-      gravity: 0.75,
+      jumpForce: -13.8,
+      gravity: 0.72,
       isGrounded: true,
       jumpHeight: 0,
-      squash: 1, // Stretch/squash factor
-      blinkTimer: 0,
-      isBlinking: false
+      scaleX: 1,
+      scaleY: 1,
+      targetScaleX: 1,
+      targetScaleY: 1
     };
 
     // Rope rotation mechanics
     this.rope = {
       angle: -Math.PI / 2, // Starts at the top
-      baseSpeed: 0.075,     // Speed in radians per frame (~100-110 RPM)
-      speed: 0.075,
+      baseSpeed: 0.076,
+      speed: 0.076,
       passedBottom: false,
       isDangerZone: false,
-      swingCount: 0
-    };
-
-    // Hallway visual elements
-    this.hallway = {
-      wallColorLeft: '#1e293b',
-      wallColorRight: '#0f172a',
-      floorTilesOffset: 0
+      glowIntensity: 1
     };
 
     // Screen shake on hit
@@ -50,6 +48,7 @@ class RopeGame {
 
     // Confetti / Particle system
     this.particles = [];
+    this.floatingTexts = [];
 
     // Setup canvas dimensions and initial coords
     this.setupCanvas();
@@ -63,10 +62,34 @@ class RopeGame {
     requestAnimationFrame(this.loop);
   }
 
+  loadAssets() {
+    this.bgImg = new Image();
+    this.bgImg.src = 'assets/hallway-bg.jpg';
+
+    this.jumpSprite = new Image();
+    this.jumpSprite.src = 'assets/thang-jump.png';
+
+    this.tripSprite = new Image();
+    this.tripSprite.src = 'assets/thang-tripped.png';
+
+    let loadedCount = 0;
+    const onLoad = () => {
+      loadedCount++;
+      if (loadedCount >= 3) {
+        this.assetsLoaded = true;
+      }
+    };
+
+    this.bgImg.onload = onLoad;
+    this.jumpSprite.onload = onLoad;
+    this.tripSprite.onload = onLoad;
+  }
+
   setupCanvas() {
-    const rect = this.canvas.parentElement.getBoundingClientRect();
-    const width = Math.min(rect.width, 480);
-    const height = Math.min(window.innerHeight * 0.72, 640);
+    const parent = this.canvas.parentElement;
+    const rect = parent.getBoundingClientRect();
+    const width = Math.min(rect.width || 460, 460);
+    const height = Math.min(window.innerHeight * 0.75, 660);
 
     const dpr = window.devicePixelRatio || 1;
     this.canvas.width = width * dpr;
@@ -80,14 +103,13 @@ class RopeGame {
 
     // Set character coordinates
     this.char.x = this.width / 2;
-    this.char.baseY = this.height * 0.74;
+    this.char.baseY = this.height * 0.70;
     this.char.y = this.char.baseY;
   }
 
   initEvents() {
     window.addEventListener('resize', () => this.setupCanvas());
 
-    // Tap / Click to jump
     const handleAction = (e) => {
       if (e.target.closest('#nameModal') || e.target.closest('.ui-interactive')) return;
       if (this.state === 'START') {
@@ -95,7 +117,6 @@ class RopeGame {
       } else if (this.state === 'PLAYING') {
         this.jump();
       } else if (this.state === 'GAMEOVER') {
-        // Can tap to restart after small cooldown
         if (this.canRestart) {
           this.restartGame();
         }
@@ -104,7 +125,6 @@ class RopeGame {
 
     this.canvas.addEventListener('pointerdown', handleAction);
 
-    // Keyboard Space / Up Arrow
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space' || e.code === 'ArrowUp') {
         e.preventDefault();
@@ -117,7 +137,8 @@ class RopeGame {
     if (this.char.isGrounded) {
       this.char.vy = this.char.jumpForce;
       this.char.isGrounded = false;
-      this.char.squash = 1.25; // Stretch upwards
+      this.char.targetScaleX = 0.9;
+      this.char.targetScaleY = 1.15; // Stretch up
       window.soundEngine.playJump();
     }
   }
@@ -134,7 +155,6 @@ class RopeGame {
     this.char.isGrounded = true;
     this.canRestart = false;
 
-    // Update UI
     this.updateHUD();
     document.getElementById('startOverlay').classList.add('hidden');
     document.getElementById('gameOverOverlay').classList.add('hidden');
@@ -147,28 +167,25 @@ class RopeGame {
 
   gameOver() {
     this.state = 'GAMEOVER';
-    this.shake = 15;
+    this.shake = 16;
     window.soundEngine.playTrip();
 
-    // Check high score
     if (this.score > this.highScore) {
       this.highScore = this.score;
       localStorage.setItem('thang_high_score', this.highScore);
     }
 
-    // Submit to leaderboard if available
     if (window.leaderboard) {
       window.leaderboard.submitScore(this.playerName, this.score);
     }
 
-    // Show Game Over UI after brief moment
     setTimeout(() => {
       this.canRestart = true;
       document.getElementById('finalScore').innerText = this.score;
       document.getElementById('finalHighScore').innerText = this.highScore;
       document.getElementById('finalTitle').innerText = this.getTitle(this.score);
       document.getElementById('gameOverOverlay').classList.remove('hidden');
-    }, 400);
+    }, 450);
   }
 
   getTitle(score) {
@@ -195,34 +212,36 @@ class RopeGame {
   }
 
   spawnScoreParticles(x, y) {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 10; i++) {
       this.particles.push({
-        x: x + (Math.random() - 0.5) * 40,
+        x: x + (Math.random() - 0.5) * 60,
         y: y + (Math.random() - 0.5) * 20,
-        vx: (Math.random() - 0.5) * 4,
-        vy: -Math.random() * 3 - 2,
-        color: ['#39ff14', '#facc15', '#38bdf8', '#ffffff'][Math.floor(Math.random() * 4)],
-        size: Math.random() * 4 + 2,
+        vx: (Math.random() - 0.5) * 5,
+        vy: -Math.random() * 4 - 2,
+        color: ['#39ff14', '#00f0ff', '#facc15', '#ffffff'][Math.floor(Math.random() * 4)],
+        size: Math.random() * 5 + 2,
         life: 1,
-        decay: 0.03
+        decay: 0.035
       });
     }
+
+    // Floating text "+1"
+    this.floatingTexts.push({
+      x: x + 40,
+      y: y - 20,
+      text: '+1',
+      life: 1,
+      decay: 0.03
+    });
   }
 
   update(dt) {
-    // Screen shake decay
     if (this.shake > 0) this.shake *= 0.88;
     if (this.shake < 0.2) this.shake = 0;
 
-    // Character blink timer
-    this.char.blinkTimer++;
-    if (this.char.blinkTimer > 180) {
-      this.char.isBlinking = true;
-      if (this.char.blinkTimer > 190) {
-        this.char.isBlinking = false;
-        this.char.blinkTimer = 0;
-      }
-    }
+    // Smooth squash/stretch return
+    this.char.scaleX += (this.char.targetScaleX - this.char.scaleX) * 0.18;
+    this.char.scaleY += (this.char.targetScaleY - this.char.scaleY) * 0.18;
 
     // Update particles
     for (let i = this.particles.length - 1; i >= 0; i--) {
@@ -231,6 +250,14 @@ class RopeGame {
       p.y += p.vy;
       p.life -= p.decay;
       if (p.life <= 0) this.particles.splice(i, 1);
+    }
+
+    // Update floating texts
+    for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
+      const ft = this.floatingTexts[i];
+      ft.y -= 1.2;
+      ft.life -= ft.decay;
+      if (ft.life <= 0) this.floatingTexts.splice(i, 1);
     }
 
     if (this.state !== 'PLAYING') return;
@@ -244,23 +271,24 @@ class RopeGame {
       this.char.vy = 0;
       if (!this.char.isGrounded) {
         this.char.isGrounded = true;
-        this.char.squash = 0.85; // Squash on landing
+        this.char.targetScaleX = 1.15; // Squash on landing
+        this.char.targetScaleY = 0.85;
+        setTimeout(() => {
+          this.char.targetScaleX = 1;
+          this.char.targetScaleY = 1;
+        }, 80);
       }
     }
 
-    // Return squash to normal
-    this.char.squash += (1 - this.char.squash) * 0.15;
     this.char.jumpHeight = this.char.baseY - this.char.y;
 
     // 2. Rope Rotation Physics
-    // Rope rotates clockwise: Top (-PI/2) -> Front (0) -> Bottom (PI/2) -> Back (PI)
     const prevAngle = this.rope.angle;
     this.rope.angle += this.rope.speed;
 
-    // Normalize angle to [-PI, PI]
     if (this.rope.angle > Math.PI) {
       this.rope.angle -= Math.PI * 2;
-      this.rope.passedBottom = false; // Reset for next rotation
+      this.rope.passedBottom = false;
     }
 
     // Play whoosh when rope sweeps down in front
@@ -268,36 +296,30 @@ class RopeGame {
       window.soundEngine.playWhoosh(1 + this.score * 0.01);
     }
 
-    // 3. Danger Zone / Collision Detection
-    // The bottom-most point is angle = Math.PI / 2 (90 degrees, hitting the floor)
+    // 3. Collision Detection at bottom
     const hitAngle = Math.PI / 2;
-    const dangerRange = 0.28; // Arc around the floor
+    const dangerRange = 0.28;
     const isAtBottom = Math.abs(this.rope.angle - hitAngle) < dangerRange;
 
     if (isAtBottom && !this.rope.passedBottom) {
-      // Must jump high enough off the floor to clear rope (min clearance 16px)
       const isCleared = this.char.jumpHeight >= 15;
 
       if (!isCleared) {
-        // TRIPPED!
         this.gameOver();
         return;
       } else {
-        // SUCCESSFUL JUMP!
         this.rope.passedBottom = true;
         this.score++;
         this.combo++;
         this.updateHUD();
         window.soundEngine.playScore();
-        this.spawnScoreParticles(this.char.x, this.char.baseY + 15);
+        this.spawnScoreParticles(this.char.x, this.char.baseY + 30);
 
-        // Milestone fanfare every 25 points
         if (this.score % 25 === 0) {
           window.soundEngine.playCelebration();
         }
 
-        // Slight speed progression (starts at 0.075, caps at 0.135 for crazy challenge)
-        this.rope.speed = Math.min(0.135, this.rope.baseSpeed + Math.floor(this.score / 5) * 0.004);
+        this.rope.speed = Math.min(0.138, this.rope.baseSpeed + Math.floor(this.score / 5) * 0.004);
       }
     }
   }
@@ -305,372 +327,106 @@ class RopeGame {
   draw() {
     this.ctx.save();
 
-    // Apply screen shake
     if (this.shake > 0) {
       const sx = (Math.random() - 0.5) * this.shake;
       const sy = (Math.random() - 0.5) * this.shake;
       this.ctx.translate(sx, sy);
     }
 
-    // Clear background
     this.ctx.clearRect(0, 0, this.width, this.height);
 
-    // 1. Draw 1.5m Hallway Perspective
-    this.drawHallway();
+    // 1. Draw Beautiful 1.5m Hallway Background
+    this.drawHallwayBackground();
 
-    // 2. Draw Rope Layer Behind Character
-    // When rope is between PI/2 and -PI/2 (behind back), draw first
+    // 2. Rope behind character
     const isRopeBehind = this.rope.angle > Math.PI / 2 || this.rope.angle < -Math.PI / 2;
     if (isRopeBehind) {
       this.drawRope();
     }
 
-    // 3. Draw Character Shadow & Character (Thắng)
+    // 3. Draw Character Shadow & Thắng Character
     this.drawShadow();
-    this.drawThang();
+    this.drawThangCharacter();
 
-    // 4. Draw Rope Layer in Front of Character
+    // 4. Rope in front of character
     if (!isRopeBehind) {
       this.drawRope();
     }
 
-    // 5. Draw Particles
+    // 5. Particles & Popups
     this.drawParticles();
+    this.drawFloatingTexts();
 
     this.ctx.restore();
   }
 
-  drawHallway() {
+  drawHallwayBackground() {
     const w = this.width;
     const h = this.height;
-    const vanishX = w / 2;
-    const vanishY = h * 0.32; // Horizon vanishing point
 
-    // Ceiling gradient
-    const ceilGrad = this.ctx.createLinearGradient(0, 0, 0, vanishY);
-    ceilGrad.addColorStop(0, '#090d16');
-    ceilGrad.addColorStop(1, '#1e293b');
-    this.ctx.fillStyle = ceilGrad;
-    this.ctx.fillRect(0, 0, w, vanishY);
+    if (this.bgImg.complete && this.bgImg.naturalWidth > 0) {
+      // Draw Cover Image with subtle vignette
+      this.ctx.drawImage(this.bgImg, 0, 0, w, h);
 
-    // Back wall (end of hallway)
-    this.ctx.fillStyle = '#1e293b';
-    this.ctx.fillRect(vanishX - 80, vanishY - 60, 160, 120);
-
-    // Hallway End Window / Door with light
-    const lightGrad = this.ctx.createRadialGradient(vanishX, vanishY, 5, vanishX, vanishY, 90);
-    lightGrad.addColorStop(0, 'rgba(56, 189, 248, 0.45)');
-    lightGrad.addColorStop(0.5, 'rgba(56, 189, 248, 0.15)');
-    lightGrad.addColorStop(1, 'rgba(30, 41, 59, 0)');
-    this.ctx.fillStyle = lightGrad;
-    this.ctx.fillRect(vanishX - 90, vanishY - 70, 180, 140);
-
-    // Window frame
-    this.ctx.strokeStyle = '#475569';
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeRect(vanishX - 35, vanishY - 45, 70, 90);
-    this.ctx.beginPath();
-    this.ctx.moveTo(vanishX, vanishY - 45);
-    this.ctx.lineTo(vanishX, vanishY + 45);
-    this.ctx.moveTo(vanishX - 35, vanishY);
-    this.ctx.lineTo(vanishX + 35, vanishY);
-    this.ctx.stroke();
-
-    // Left Corridor Wall
-    const leftWall = this.ctx.createLinearGradient(0, 0, w * 0.25, 0);
-    leftWall.addColorStop(0, '#0f172a');
-    leftWall.addColorStop(1, '#1e293b');
-    this.ctx.fillStyle = leftWall;
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, 0);
-    this.ctx.lineTo(vanishX - 80, vanishY - 60);
-    this.ctx.lineTo(vanishX - 80, vanishY + 60);
-    this.ctx.lineTo(0, h);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // Right Corridor Wall
-    const rightWall = this.ctx.createLinearGradient(w * 0.75, 0, w, 0);
-    rightWall.addColorStop(0, '#1e293b');
-    rightWall.addColorStop(1, '#0f172a');
-    this.ctx.fillStyle = rightWall;
-    this.ctx.beginPath();
-    this.ctx.moveTo(w, 0);
-    this.ctx.lineTo(vanishX + 80, vanishY - 60);
-    this.ctx.lineTo(vanishX + 80, vanishY + 60);
-    this.ctx.lineTo(w, h);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // Wall Perspective Lines & Door Moldings
-    this.ctx.strokeStyle = 'rgba(71, 85, 105, 0.4)';
-    this.ctx.lineWidth = 1.5;
-    // Left door line
-    this.ctx.beginPath();
-    this.ctx.moveTo(w * 0.12, h * 0.85);
-    this.ctx.lineTo(w * 0.12, h * 0.25);
-    this.ctx.lineTo(w * 0.22, h * 0.28);
-    this.ctx.lineTo(w * 0.22, h * 0.75);
-    this.ctx.stroke();
-
-    // Signboard on left wall: "HÀNH LANG 1.5M"
-    this.ctx.save();
-    this.ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
-    this.ctx.strokeStyle = '#10b981';
-    this.ctx.lineWidth = 1;
-    this.ctx.beginPath();
-    this.ctx.moveTo(10, h * 0.38);
-    this.ctx.lineTo(75, h * 0.39);
-    this.ctx.lineTo(75, h * 0.46);
-    this.ctx.lineTo(10, h * 0.44);
-    this.ctx.closePath();
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    this.ctx.fillStyle = '#39ff14';
-    this.ctx.font = 'bold 9px "Segoe UI", sans-serif';
-    this.ctx.fillText('HÀNH LANG 1.5M', 14, h * 0.42);
-    this.ctx.restore();
-
-    // Floor (Tiled corridor floor)
-    const floorGrad = this.ctx.createLinearGradient(0, vanishY + 60, 0, h);
-    floorGrad.addColorStop(0, '#1a2333');
-    floorGrad.addColorStop(1, '#0b0f17');
-    this.ctx.fillStyle = floorGrad;
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, h);
-    this.ctx.lineTo(vanishX - 80, vanishY + 60);
-    this.ctx.lineTo(vanishX + 80, vanishY + 60);
-    this.ctx.lineTo(w, h);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // Floor tile perspective lines
-    this.ctx.strokeStyle = 'rgba(51, 65, 85, 0.35)';
-    this.ctx.lineWidth = 1;
-    for (let x = -100; x <= w + 100; x += 55) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(vanishX, vanishY + 60);
-      this.ctx.lineTo(x, h);
-      this.ctx.stroke();
+      // Subtle atmospheric dark vignette on edges
+      const grad = this.ctx.createRadialGradient(w / 2, h * 0.45, w * 0.25, w / 2, h * 0.45, w * 0.85);
+      grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      grad.addColorStop(1, 'rgba(6, 7, 20, 0.55)');
+      this.ctx.fillStyle = grad;
+      this.ctx.fillRect(0, 0, w, h);
+    } else {
+      // Fallback
+      this.ctx.fillStyle = '#0f172a';
+      this.ctx.fillRect(0, 0, w, h);
     }
   }
 
   drawShadow() {
     const x = this.char.x;
-    const y = this.char.baseY + 22;
+    const y = this.char.baseY + 54;
     const jump = this.char.jumpHeight;
 
-    // Shadow gets smaller and lighter when jumping high
-    const scale = Math.max(0.3, 1 - jump / 130);
-    const alpha = Math.max(0.15, 0.45 - jump / 200);
+    const scale = Math.max(0.35, 1 - jump / 140);
+    const alpha = Math.max(0.18, 0.65 - jump / 180);
 
     this.ctx.save();
     this.ctx.beginPath();
-    this.ctx.ellipse(x, y, 42 * scale, 12 * scale, 0, 0, Math.PI * 2);
+    this.ctx.ellipse(x, y, 52 * scale, 15 * scale, 0, 0, Math.PI * 2);
     this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
     this.ctx.fill();
+
+    // Soft colored floor reflection of lime shirt & shoes
+    if (jump < 40) {
+      this.ctx.beginPath();
+      this.ctx.ellipse(x, y + 2, 35 * scale, 8 * scale, 0, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(57, 255, 20, ${0.15 * (1 - jump / 40)})`;
+      this.ctx.fill();
+    }
     this.ctx.restore();
   }
 
-  drawThang() {
+  drawThangCharacter() {
     this.ctx.save();
     const cx = this.char.x;
     const cy = this.char.y;
-    const sq = this.char.squash;
 
     this.ctx.translate(cx, cy);
-    this.ctx.scale(1 / Math.sqrt(sq), sq); // Squash & stretch around center
+    this.ctx.scale(this.char.scaleX, this.char.scaleY);
 
-    // If Tripped/GameOver: Rotate slightly
+    // Desired sprite size
+    const spriteSize = 210;
+
     if (this.state === 'GAMEOVER') {
-      this.ctx.rotate(0.18);
-    }
-
-    // Character dimensions
-    const headRadius = 22;
-    const bodyWidth = 38;
-    const bodyHeight = 44;
-
-    // 1. LEGS & SNEAKERS
-    const legOffset = this.char.jumpHeight > 5 ? -6 : 0; // Tuck legs slightly in air
-    this.ctx.fillStyle = '#1e293b'; // Athletic shorts
-    this.ctx.fillRect(-18, 5, 36, 18);
-
-    // Left leg
-    this.ctx.fillStyle = '#f8b48f'; // Skin tone
-    this.ctx.fillRect(-14, 23, 10, 16 + legOffset);
-    // Left Shoe (Neon Green sneaker)
-    this.ctx.fillStyle = '#39ff14';
-    this.ctx.beginPath();
-    this.ctx.roundRect(-17, 39 + legOffset, 15, 8, 3);
-    this.ctx.fill();
-
-    // Right leg
-    this.ctx.fillStyle = '#f8b48f';
-    this.ctx.fillRect(4, 23, 10, 16 + legOffset);
-    // Right Shoe
-    this.ctx.fillStyle = '#39ff14';
-    this.ctx.beginPath();
-    this.ctx.roundRect(2, 39 + legOffset, 15, 8, 3);
-    this.ctx.fill();
-
-    // 2. TORSO / T-SHIRT (Signature Lime Green / Neon Green)
-    const shirtGrad = this.ctx.createLinearGradient(0, -bodyHeight, 0, 8);
-    shirtGrad.addColorStop(0, '#5aff1a');
-    shirtGrad.addColorStop(1, '#32d60a');
-    this.ctx.fillStyle = shirtGrad;
-    this.ctx.beginPath();
-    this.ctx.roundRect(-bodyWidth / 2, -bodyHeight, bodyWidth, bodyHeight, [8, 8, 2, 2]);
-    this.ctx.fill();
-
-    // Lightning bolt sports icon on chest
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.beginPath();
-    this.ctx.moveTo(1, -28);
-    this.ctx.lineTo(-7, -18);
-    this.ctx.lineTo(-1, -18);
-    this.ctx.lineTo(-4, -8);
-    this.ctx.lineTo(6, -20);
-    this.ctx.lineTo(0, -20);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // 3. ARMS & ROPE HANDLES
-    // Arms positioned at hips, holding black handles
-    this.ctx.fillStyle = '#f8b48f';
-    // Left Arm
-    this.ctx.beginPath();
-    this.ctx.arc(-24, -14, 6, 0, Math.PI * 2);
-    this.ctx.fill();
-    // Left Handle (Black grip)
-    this.ctx.fillStyle = '#111827';
-    this.ctx.beginPath();
-    this.ctx.roundRect(-27, -18, 6, 16, 2);
-    this.ctx.fill();
-
-    // Right Arm
-    this.ctx.fillStyle = '#f8b48f';
-    this.ctx.beginPath();
-    this.ctx.arc(24, -14, 6, 0, Math.PI * 2);
-    this.ctx.fill();
-    // Right Handle
-    this.ctx.fillStyle = '#111827';
-    this.ctx.beginPath();
-    this.ctx.roundRect(21, -18, 6, 16, 2);
-    this.ctx.fill();
-
-    // 4. NECK & HEAD
-    this.ctx.fillStyle = '#e59d79'; // Neck shadow
-    this.ctx.fillRect(-7, -bodyHeight - 5, 14, 8);
-
-    // Head
-    this.ctx.fillStyle = '#f8b48f';
-    this.ctx.beginPath();
-    this.ctx.arc(0, -bodyHeight - 20, headRadius, 0, Math.PI * 2);
-    this.ctx.fill();
-
-    // Modern Stylish Hair (Short black hair with texture)
-    this.ctx.fillStyle = '#18181b';
-    this.ctx.beginPath();
-    this.ctx.arc(0, -bodyHeight - 25, headRadius + 2, Math.PI * 0.9, Math.PI * 2.1);
-    this.ctx.lineTo(headRadius + 2, -bodyHeight - 20);
-    this.ctx.lineTo(-headRadius - 2, -bodyHeight - 20);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // Spiky front tuft
-    this.ctx.beginPath();
-    this.ctx.moveTo(-10, -bodyHeight - 40);
-    this.ctx.lineTo(0, -bodyHeight - 46);
-    this.ctx.lineTo(8, -bodyHeight - 42);
-    this.ctx.lineTo(14, -bodyHeight - 38);
-    this.ctx.lineTo(-8, -bodyHeight - 38);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // 5. FACIAL EXPRESSION
-    if (this.state === 'GAMEOVER') {
-      // Tripped / Dizzy expression: 'X' eyes & sad mouth
-      this.ctx.strokeStyle = '#18181b';
-      this.ctx.lineWidth = 2.5;
-      // Left X eye
-      this.ctx.beginPath();
-      this.ctx.moveTo(-11, -bodyHeight - 23);
-      this.ctx.lineTo(-5, -bodyHeight - 17);
-      this.ctx.moveTo(-5, -bodyHeight - 23);
-      this.ctx.lineTo(-11, -bodyHeight - 17);
-      this.ctx.stroke();
-      // Right X eye
-      this.ctx.beginPath();
-      this.ctx.moveTo(5, -bodyHeight - 23);
-      this.ctx.lineTo(11, -bodyHeight - 17);
-      this.ctx.moveTo(11, -bodyHeight - 23);
-      this.ctx.lineTo(5, -bodyHeight - 17);
-      this.ctx.stroke();
-      // O mouth
-      this.ctx.beginPath();
-      this.ctx.arc(0, -bodyHeight - 10, 5, 0, Math.PI * 2);
-      this.ctx.stroke();
-
-      // Spinning stars around head
-      const now = performance.now() * 0.005;
-      for (let s = 0; s < 3; s++) {
-        const starAngle = now + (s * Math.PI * 2) / 3;
-        const sx = Math.cos(starAngle) * 32;
-        const sy = -bodyHeight - 42 + Math.sin(starAngle) * 9;
-        this.ctx.fillStyle = '#facc15';
-        this.ctx.font = '13px sans-serif';
-        this.ctx.fillText('⭐', sx - 6, sy);
+      // Draw Tripped / Game Over sprite
+      if (this.tripSprite.complete && this.tripSprite.naturalWidth > 0) {
+        this.ctx.drawImage(this.tripSprite, -spriteSize / 2, -spriteSize / 2 - 15, spriteSize, spriteSize);
       }
     } else {
-      // Friendly, energetic smile!
-      // Eyes
-      if (this.char.isBlinking) {
-        // Blinking line
-        this.ctx.strokeStyle = '#18181b';
-        this.ctx.lineWidth = 2;
-        this.ctx.beginPath();
-        this.ctx.moveTo(-10, -bodyHeight - 20);
-        this.ctx.lineTo(-4, -bodyHeight - 20);
-        this.ctx.moveTo(4, -bodyHeight - 20);
-        this.ctx.lineTo(10, -bodyHeight - 20);
-        this.ctx.stroke();
-      } else {
-        // Cheerful open eyes
-        this.ctx.fillStyle = '#18181b';
-        this.ctx.beginPath();
-        this.ctx.arc(-7, -bodyHeight - 20, 2.8, 0, Math.PI * 2);
-        this.ctx.arc(7, -bodyHeight - 20, 2.8, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // Eye highlights
-        this.ctx.fillStyle = '#ffffff';
-        this.ctx.beginPath();
-        this.ctx.arc(-8, -bodyHeight - 21, 1, 0, Math.PI * 2);
-        this.ctx.arc(6, -bodyHeight - 21, 1, 0, Math.PI * 2);
-        this.ctx.fill();
+      // Draw Jumping / Athletic sprite
+      if (this.jumpSprite.complete && this.jumpSprite.naturalWidth > 0) {
+        // Draw crisp character
+        this.ctx.drawImage(this.jumpSprite, -spriteSize / 2, -spriteSize / 2 - 15, spriteSize, spriteSize);
       }
-
-      // Rosy cheeks
-      this.ctx.fillStyle = 'rgba(244, 63, 94, 0.35)';
-      this.ctx.beginPath();
-      this.ctx.arc(-12, -bodyHeight - 14, 4, 0, Math.PI * 2);
-      this.ctx.arc(12, -bodyHeight - 14, 4, 0, Math.PI * 2);
-      this.ctx.fill();
-
-      // Broad friendly smile
-      this.ctx.strokeStyle = '#18181b';
-      this.ctx.lineWidth = 2;
-      this.ctx.beginPath();
-      this.ctx.arc(0, -bodyHeight - 15, 8, 0.2, Math.PI - 0.2);
-      this.ctx.stroke();
-
-      // White teeth
-      this.ctx.fillStyle = '#ffffff';
-      this.ctx.beginPath();
-      this.ctx.arc(0, -bodyHeight - 15, 6, 0.2, Math.PI - 0.2);
-      this.ctx.fill();
     }
 
     this.ctx.restore();
@@ -678,47 +434,39 @@ class RopeGame {
 
   drawRope() {
     const cx = this.char.x;
-    const cy = this.char.baseY; // Center of rotation near hips
+    const cy = this.char.baseY + 10;
     const angle = this.rope.angle;
 
-    // 3D Ellipse projection:
-    // Vertical radius (height of loop above and below hands)
-    const radiusY = 92;
-    // Horizontal radius (width of loop around player)
-    const radiusX = 60;
+    // 3D Ellipse Radii
+    const radiusY = 110;
+    const radiusX = 75;
 
-    // The apex/sweep of the rope in 3D:
-    // sin(angle): height position (-1 is TOP, +1 is BOTTOM floor)
-    // cos(angle): depth position (-1 is behind, +1 is front)
-    const ropeY = cy - 20 + Math.sin(angle) * radiusY;
-    const ropeZ = Math.cos(angle); // Depth (-1 to 1)
+    const ropeY = cy - 25 + Math.sin(angle) * radiusY;
+    const ropeZ = Math.cos(angle);
 
-    // Handle anchor coordinates (held in Thắng's hands)
-    const leftHandleX = cx - 25;
-    const leftHandleY = this.char.y - 14;
-    const rightHandleX = cx + 25;
-    const rightHandleY = this.char.y - 14;
+    // Handle anchor coordinates near Thắng's hands
+    const leftHandleX = cx - 38;
+    const leftHandleY = this.char.y - 12;
+    const rightHandleX = cx + 38;
+    const rightHandleY = this.char.y - 12;
 
     this.ctx.save();
 
-    // Rope color and thickness vary with depth to give genuine 3D feel
     const isFront = ropeZ >= 0;
-    const lineWidth = isFront ? 3.8 : 2.4;
-    const alpha = isFront ? 0.95 : 0.55;
+    const lineWidth = isFront ? 4.5 : 2.6;
+    const alpha = isFront ? 0.98 : 0.6;
 
-    // Glowing Neon Yellow-Green rope
+    // Glowing Neon Lime speed rope
     this.ctx.strokeStyle = `rgba(57, 255, 20, ${alpha})`;
     this.ctx.lineWidth = lineWidth;
     this.ctx.lineCap = 'round';
     this.ctx.shadowColor = '#39ff14';
-    this.ctx.shadowBlur = isFront ? 8 : 2;
+    this.ctx.shadowBlur = isFront ? 14 : 4;
 
-    // Draw quadratic curve from left hand through rope bottom/top to right hand
     this.ctx.beginPath();
     this.ctx.moveTo(leftHandleX, leftHandleY);
 
-    // Control points curve outward
-    const ctrlSpread = radiusX * (1 + 0.2 * ropeZ);
+    const ctrlSpread = radiusX * (1 + 0.22 * ropeZ);
     this.ctx.bezierCurveTo(
       cx - ctrlSpread,
       ropeY,
@@ -729,11 +477,21 @@ class RopeGame {
     );
     this.ctx.stroke();
 
-    // Light flash when rope strikes the floor
-    if (Math.abs(angle - Math.PI / 2) < 0.2 && this.char.jumpHeight > 10) {
-      this.ctx.fillStyle = 'rgba(57, 255, 20, 0.4)';
+    // Inner bright core
+    if (isFront) {
+      this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+      this.ctx.lineWidth = 1.6;
+      this.ctx.shadowBlur = 0;
+      this.ctx.stroke();
+    }
+
+    // Floor contact flash
+    if (Math.abs(angle - Math.PI / 2) < 0.22 && this.char.jumpHeight > 10) {
+      this.ctx.fillStyle = 'rgba(57, 255, 20, 0.55)';
+      this.ctx.shadowColor = '#39ff14';
+      this.ctx.shadowBlur = 20;
       this.ctx.beginPath();
-      this.ctx.ellipse(cx, cy + radiusY - 18, 25, 4, 0, 0, Math.PI * 2);
+      this.ctx.ellipse(cx, cy + radiusY - 26, 36, 6, 0, 0, Math.PI * 2);
       this.ctx.fill();
     }
 
@@ -744,10 +502,24 @@ class RopeGame {
     this.ctx.save();
     for (const p of this.particles) {
       this.ctx.fillStyle = p.color;
+      this.ctx.shadowColor = p.color;
+      this.ctx.shadowBlur = 8;
       this.ctx.globalAlpha = Math.max(0, p.life);
       this.ctx.beginPath();
       this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
       this.ctx.fill();
+    }
+    this.ctx.restore();
+  }
+
+  drawFloatingTexts() {
+    this.ctx.save();
+    for (const ft of this.floatingTexts) {
+      this.ctx.font = 'bold 18px "Chakra Petch", sans-serif';
+      this.ctx.fillStyle = `rgba(57, 255, 20, ${ft.life})`;
+      this.ctx.shadowColor = '#39ff14';
+      this.ctx.shadowBlur = 10;
+      this.ctx.fillText(ft.text, ft.x, ft.y);
     }
     this.ctx.restore();
   }
