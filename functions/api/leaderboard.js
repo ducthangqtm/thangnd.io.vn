@@ -1,30 +1,6 @@
 // Cloudflare Pages Function: /api/leaderboard
 // Multi-game Leaderboard backed by Cloudflare D1 (Binding name: DB)
-// Supports scalable games ('rope', 'snake', '2048', or any custom future game)
-
-const DEFAULT_MOCKS = {
-  rope: [
-    { name: 'Thắng (Kỷ lục gia)', score: 128, date: '2026-09-08' },
-    { name: 'DoubleUnder_Pro', score: 85, date: '2026-09-08' },
-    { name: 'Nam Nhảy Dây', score: 64, date: '2026-09-07' },
-    { name: 'Lan Fitness', score: 48, date: '2026-09-07' },
-    { name: 'VĐV Hành Lang 1m5', score: 32, date: '2026-09-06' }
-  ],
-  snake: [
-    { name: 'Thắng Viper', score: 280, date: '2026-09-08' },
-    { name: 'CyberCobra', score: 190, date: '2026-09-08' },
-    { name: 'RetroGamer', score: 140, date: '2026-09-07' },
-    { name: 'NeonHunter', score: 90, date: '2026-09-07' },
-    { name: 'PixelSnake', score: 60, date: '2026-09-06' }
-  ],
-  '2048': [
-    { name: 'Thắng Master', score: 4096, date: '2026-09-08' },
-    { name: 'NeonGrid', score: 2048, date: '2026-09-08' },
-    { name: 'TileSwiper', score: 1536, date: '2026-09-07' },
-    { name: 'Logitech2048', score: 1024, date: '2026-09-07' },
-    { name: 'CubeMath', score: 512, date: '2026-09-06' }
-  ]
-};
+// 100% Clean: Only returns real player scores directly from D1 database
 
 export async function onRequestGet(context) {
   const { request, env } = context;
@@ -49,13 +25,8 @@ export async function onRequestGet(context) {
     }
   }
 
-  // Fallback mock scores when DB is not yet bound
-  const mockData = DEFAULT_MOCKS[game] || [
-    { name: 'Thắng Quán Quân', score: 100, date: '2026-09-08' },
-    { name: 'Người Chơi Mới', score: 50, date: '2026-09-08' }
-  ];
-
-  return new Response(JSON.stringify(mockData), {
+  // If DB is not bound yet, return clean empty list
+  return new Response(JSON.stringify([]), {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'

@@ -1,33 +1,23 @@
-// Cloudflare D1 Multi-Game Leaderboard Client with LocalStorage Fallback & Unique Player ID
+// Cloudflare D1 Multi-Game Leaderboard Client
+// Pure real-time data: Clean empty-state ready for real players to compete for Top 1!
 
 class LeaderboardManager {
   constructor() {
     this.apiBase = '/api/leaderboard';
     this.activeGame = 'rope';
     this.playerId = this.initPlayerId();
-    this.defaultMocks = {
-      rope: [
-        { name: 'Thắng (Kỷ lục gia)', score: 128, date: '2026-09-08' },
-        { name: 'DoubleUnder_Pro', score: 85, date: '2026-09-08' },
-        { name: 'Nam Nhảy Dây', score: 64, date: '2026-09-07' },
-        { name: 'Lan Fitness', score: 48, date: '2026-09-07' },
-        { name: 'VĐV Hành Lang 1m5', score: 32, date: '2026-09-06' }
-      ],
-      snake: [
-        { name: 'Thắng Viper', score: 280, date: '2026-09-08' },
-        { name: 'CyberCobra', score: 190, date: '2026-09-08' },
-        { name: 'RetroGamer', score: 140, date: '2026-09-07' },
-        { name: 'NeonHunter', score: 90, date: '2026-09-07' },
-        { name: 'PixelSnake', score: 60, date: '2026-09-06' }
-      ],
-      '2048': [
-        { name: 'Thắng Master', score: 4096, date: '2026-09-08' },
-        { name: 'NeonGrid', score: 2048, date: '2026-09-08' },
-        { name: 'TileSwiper', score: 1536, date: '2026-09-07' },
-        { name: 'Logitech2048', score: 1024, date: '2026-09-07' },
-        { name: 'CubeMath', score: 512, date: '2026-09-06' }
-      ]
-    };
+    this.purgeLegacyMockCache();
+  }
+
+  purgeLegacyMockCache() {
+    // Clean up any legacy mock data stored during development
+    ['rope', 'snake', '2048'].forEach(g => {
+      const item = localStorage.getItem(`thang_lb_${g}`);
+      if (item && (item.includes('DoubleUnder_Pro') || item.includes('CyberCobra') || item.includes('TileSwiper'))) {
+        localStorage.removeItem(`thang_lb_${g}`);
+      }
+    });
+    localStorage.removeItem('thang_leaderboard_data');
   }
 
   initPlayerId() {
@@ -76,13 +66,13 @@ class LeaderboardManager {
       const response = await fetch(`${this.apiBase}?game=${encodeURIComponent(game)}`, { method: 'GET' });
       if (response.ok) {
         const data = await response.json();
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           localStorage.setItem(`thang_lb_${game}`, JSON.stringify(data));
           return data;
         }
       }
     } catch (err) {
-      // Offline / Static fallback
+      // Offline / network fallback
     }
 
     // Fallback to local cached scores
@@ -90,11 +80,11 @@ class LeaderboardManager {
     if (local) {
       try {
         const parsed = JSON.parse(local);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       } catch (e) {}
     }
 
-    return this.defaultMocks[game] || this.defaultMocks.rope;
+    return [];
   }
 
   async submitScore(gameOrName, score, maybeName) {
@@ -102,9 +92,6 @@ class LeaderboardManager {
     let finalScore = 0;
     let name = this.getPlayerName();
 
-    // Determine parameters signature:
-    // Pattern 1: submitScore('snake', 280, 'Thắng') or submitScore('snake', 280)
-    // Pattern 2: submitScore('Thắng', 128) [legacy rope call]
     if (typeof gameOrName === 'string' && ['rope', 'snake', '2048'].includes(gameOrName.toLowerCase())) {
       game = gameOrName.toLowerCase();
       finalScore = parseInt(score, 10);
@@ -139,9 +126,7 @@ class LeaderboardManager {
     if (local) {
       try { list = JSON.parse(local); } catch (e) {}
     }
-    if (!list || !list.length) {
-      list = (this.defaultMocks[game] || this.defaultMocks.rope).slice();
-    }
+    if (!Array.isArray(list)) list = [];
 
     // Upsert player's best score in local list
     const existingIdx = list.findIndex(item => item.name === name);
@@ -158,7 +143,7 @@ class LeaderboardManager {
     list = list.slice(0, 10);
     localStorage.setItem(`thang_lb_${game}`, JSON.stringify(list));
 
-    // 3. If currently viewing this game's leaderboard, re-render
+    // 3. Re-render if viewing this game
     if (this.activeGame === game) {
       this.renderLeaderboardTable(game);
     }
@@ -180,6 +165,17 @@ class LeaderboardManager {
 
     const list = await this.fetchTopScores(game);
     const unit = this.getUnitForGame(game);
+
+    if (!list || list.length === 0) {
+      container.innerHTML = `
+        <div class="text-center py-6 px-4 rounded-xl bg-slate-800/30 border border-dashed border-slate-700/60 font-sans">
+          <div class="text-2xl mb-1 animate-bounce">👑</div>
+          <div class="text-xs font-bold text-slate-200 mb-1">Chưa có kỷ lục nào!</div>
+          <div class="text-[11px] text-emerald-400 font-semibold">Chơi ngay để chiếm ngôi Quán quân Top 1! 🚀</div>
+        </div>
+      `;
+      return;
+    }
 
     container.innerHTML = list.map((item, index) => {
       let medal = `#${index + 1}`;
