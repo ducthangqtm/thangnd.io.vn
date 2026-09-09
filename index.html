@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Thắng ND (.IO) — Thắng Nhảy Dây: Thử Thách Hành Lang 1m5</title>
+  <meta name="description" content="Tựa game Thắng Nhảy Dây thuần HTML5 - Thử thách nhịp điệu và phản xạ trong hành lang 1.5 mét. Khám phá hệ sinh thái thangnd.io.vn, thangnhayday.com và thangit.com.">
+  <meta name="theme-color" content="#070a12">
+  
+  <!-- Open Graph / Social Media Meta -->
+  <meta property="og:title" content="Thắng Nhảy Dây: Thử Thách Hành Lang 1m5">
+  <meta property="og:description" content="Chạm để nhảy qua dây! Bạn có thể nhảy được bao nhiêu cái trong hành lang 1.5m?">
+  <meta property="og:image" content="assets/thang-avatar.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Tailwind CSS CDN for rapid responsive layout utilities + Custom Vanilla style.css -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#070a12] text-slate-100 flex flex-col min-h-screen selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="assets/thang-avatar.jpg" alt="Thắng ND" class="w-10 h-10 rounded-full border-2 border-emerald-400 object-cover shadow-sm shadow-emerald-500/30">
+        <div>
+          <a href="#" class="font-extrabold text-lg tracking-tight hover:opacity-90 transition-opacity">
+            THANG ND <span class="text-emerald-400">.IO.VN</span>
+          </a>
+          <p class="text-[11px] text-slate-400 font-medium">Arcade & Personal Lab</p>
+        </div>
+      </div>
+
+      <!-- Controls & Player Name -->
+      <div class="flex items-center space-x-2">
+        <button id="playerNameBtn" class="flex items-center space-x-1 text-xs bg-slate-800/80 hover:bg-slate-700/80 px-3 py-1.5 rounded-full border border-slate-700 transition">
+          <span class="text-slate-400">👤</span>
+          <span id="navPlayerName" class="font-semibold text-slate-200 truncate max-w-[100px]">VĐV Hành Lang</span>
+          <span class="text-[10px] text-emerald-400 ml-0.5">✏️</span>
+        </button>
+
+        <button id="soundToggleBtn" class="w-9 h-9 rounded-full bg-slate-800/80 hover:bg-slate-700 border border-slate-700 flex items-center justify-center text-sm transition" title="Bật/Tắt âm thanh">
+          <span id="soundIcon">🔊</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Game Selector Tabs -->
+  <div class="max-w-md mx-auto w-full px-4 pt-4 pb-2">
+    <div class="flex bg-slate-900/80 p-1 rounded-2xl border border-slate-800/80 text-xs font-bold">
+      <button id="tabRope" class="tab-btn active flex-1 py-2 rounded-xl flex items-center justify-center space-x-1.5 transition">
+        <span>⭐</span>
+        <span>Thắng Nhảy Dây</span>
+      </button>
+      <button id="tabSnake" class="tab-btn flex-1 py-2 rounded-xl flex items-center justify-center space-x-1.5 transition">
+        <span>🐍</span>
+        <span>Rắn Săn Mồi</span>
+      </button>
+      <button id="tab2048" class="tab-btn flex-1 py-2 rounded-xl flex items-center justify-center space-x-1.5 transition">
+        <span>🔢</span>
+        <span>2048</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-4 max-w-4xl mx-auto w-full">
+
+    <!-- ================= SECTION 1: THẮNG NHẢY DÂY ================= -->
+    <section id="ropeGameSection" class="w-full flex flex-col items-center">
+      <div class="game-viewport-wrap pulse-glow">
+        
+        <!-- Live In-game HUD -->
+        <div id="gameHUD" class="game-hud hidden">
+          <div class="hud-pill">
+            <span class="text-xs text-slate-400 uppercase tracking-wider">Số lần nhảy</span>
+            <span id="hudScore" class="text-xl font-black text-emerald-400 ml-1">0</span>
+          </div>
+          <div id="hudCombo" class="hud-pill hidden bg-amber-500/20 text-amber-300 border-amber-500/40 text-sm animate-bounce">
+            x2 Combo!
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="ropeCanvas"></canvas>
+
+        <!-- Start Overlay Screen -->
+        <div id="startOverlay" class="game-overlay">
+          <div class="relative mb-3">
+            <img src="assets/thang-avatar.jpg" alt="Thắng Nhảy Dây" class="w-24 h-24 rounded-full border-4 border-emerald-400 shadow-xl shadow-emerald-500/30 object-cover mx-auto">
+            <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">PRO</span>
+          </div>
+          
+          <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1">
+            THẮNG NHẢY DÂY
+          </h1>
+          <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-3">
+            ⚡ Thử Thách Hành Lang 1.5m ⚡
+          </p>
+
+          <p class="text-slate-300 text-xs sm:text-sm max-w-xs mb-4 leading-relaxed">
+            Hành lang hẹp 1.5m không ngăn được đam mê! Căn đúng thời điểm dây chạm sàn để nhảy qua.
+          </p>
+
+          <!-- Player Nickname input -->
+          <div class="w-full max-w-xs mb-4 ui-interactive">
+            <label class="block text-left text-[11px] font-semibold text-slate-400 mb-1">Tên / Biệt danh của bạn:</label>
+            <div class="flex">
+              <input type="text" id="playerInput" maxlength="20" placeholder="Nhập tên của bạn..." class="w-full bg-slate-900 border border-slate-700 rounded-l-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400">
+              <button id="saveNameBtn" class="bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-r-xl border border-l-0 border-slate-700 text-xs font-bold text-emerald-400">Lưu</button>
+            </div>
+          </div>
+
+          <button id="startBtn" class="btn-neon text-sm sm:text-base font-extrabold w-full max-w-xs py-3.5 mb-3">
+            BẮT ĐẦU NHẢY NGAY 🚀
+          </button>
+
+          <p class="text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
+            <span>💡</span>
+            <span>Chạm màn hình hoặc gõ phím <b>Space</b> để nhảy</span>
+          </p>
+        </div>
+
+        <!-- Game Over Overlay Screen -->
+        <div id="gameOverOverlay" class="game-overlay hidden">
+          <div class="text-3xl mb-1">💥</div>
+          <h2 class="text-xl sm:text-2xl font-black text-rose-500 mb-1">VẤP DÂY RỒI!</h2>
+          <div id="finalTitle" class="text-xs font-bold text-amber-300 mb-4 uppercase tracking-wider">
+            ⭐ Chuyên Gia Bắt Nhịp
+          </div>
+
+          <!-- Score Card -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full max-w-xs mb-4 grid grid-cols-2 gap-3 text-center">
+            <div class="border-r border-slate-800 pr-2">
+              <div class="text-[11px] font-semibold text-slate-400 uppercase">Số lần nhảy</div>
+              <div id="finalScore" class="text-3xl font-black text-emerald-400">0</div>
+            </div>
+            <div class="pl-2">
+              <div class="text-[11px] font-semibold text-slate-400 uppercase">Kỷ lục của bạn</div>
+              <div id="finalHighScore" class="text-3xl font-black text-amber-400">0</div>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <button id="restartBtn" class="btn-neon text-sm font-extrabold w-full max-w-xs py-3 mb-3">
+            NHẢY LẠI 🔁
+          </button>
+
+          <!-- Ecosystem Links -->
+          <div class="w-full max-w-xs space-y-2 mt-1">
+            <a href="https://thangnhayday.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-emerald-500/30 text-xs font-semibold text-emerald-300 transition">
+              <span class="flex items-center gap-2">
+                <span>🪢</span>
+                <span>Học kỹ thuật chuẩn tại <b>thangnhayday.com</b></span>
+              </span>
+              <span>↗</span>
+            </a>
+            <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-sky-500/30 text-xs font-semibold text-sky-300 transition">
+              <span class="flex items-center gap-2">
+                <span>💻</span>
+                <span>Ghé góc IT & Công nghệ <b>thangit.com</b></span>
+              </span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Leaderboard Widget -->
+      <div class="w-full max-w-[480px] mt-6 bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2">
+            <span class="text-base">🏆</span>
+            <h3 class="font-extrabold text-sm text-slate-200 uppercase tracking-wide">Bảng Vàng Hành Lang 1m5</h3>
+          </div>
+          <span class="text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+            Cloudflare D1 Ready
+          </span>
+        </div>
+
+        <div id="leaderboardList" class="space-y-1.5">
+          <!-- Dynamically populated by leaderboard.js -->
+          <div class="text-xs text-slate-400 text-center py-2">Đang tải bảng xếp hạng...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SECTION 2: RẮN SĂN MỒI ================= -->
+    <section id="snakeGameSection" class="w-full max-w-md hidden flex flex-col items-center">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center">
+        <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
+          <span class="text-slate-300">🐍 RẮN SĂN MỒI NEON</span>
+          <div class="flex gap-4">
+            <span class="text-slate-400">Điểm: <b id="snakeScore" class="text-emerald-400">0</b></span>
+            <span class="text-slate-400">Kỷ lục: <b id="snakeHighScore" class="text-amber-400">0</b></span>
+          </div>
+        </div>
+
+        <div class="border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+          <canvas id="snakeCanvas"></canvas>
+        </div>
+
+        <!-- Virtual D-Pad for Mobile Touch -->
+        <div class="mt-4 flex flex-col items-center gap-1 sm:hidden">
+          <button id="snakeUp" class="dpad-btn">▲</button>
+          <div class="flex gap-4">
+            <button id="snakeLeft" class="dpad-btn">◀</button>
+            <button id="snakeDown" class="dpad-btn">▼</button>
+            <button id="snakeRight" class="dpad-btn">▶</button>
+          </div>
+        </div>
+        <p class="hidden sm:block text-xs text-slate-400 mt-3 text-center">
+          Dùng các phím mũi tên <b>W, A, S, D</b> hoặc <b>Phím Mũi Tên</b> để điều khiển
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= SECTION 3: 2048 ================= -->
+    <section id="game2048Section" class="w-full max-w-md hidden flex flex-col items-center">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center">
+        <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
+          <span class="text-slate-300">🔢 2048 RETRO NEON</span>
+          <div class="flex gap-3">
+            <div class="bg-slate-800 px-3 py-1 rounded-lg text-xs">
+              <span class="text-slate-400">Điểm:</span> <b id="score2048" class="text-emerald-400">0</b>
+            </div>
+            <div class="bg-slate-800 px-3 py-1 rounded-lg text-xs">
+              <span class="text-slate-400">Kỷ lục:</span> <b id="high2048" class="text-amber-400">0</b>
+            </div>
+          </div>
+        </div>
+
+        <div id="grid2048" class="grid-2048">
+          <!-- Populated by game-2048.js -->
+        </div>
+
+        <div class="flex justify-between items-center w-full mt-4 text-xs text-slate-400">
+          <span>Vuốt màn hình hoặc dùng phím mũi tên</span>
+          <button onclick="window.game2048.restart()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg font-semibold transition">Chơi Lại</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STORY & INSPIRATION ================= -->
+    <article class="max-w-[480px] w-full mt-8 bg-slate-900/40 border border-slate-800/60 rounded-2xl p-5 text-slate-300 text-xs leading-relaxed">
+      <h4 class="font-extrabold text-sm text-emerald-400 mb-2 flex items-center gap-2">
+        <span>📖</span>
+        <span>Câu chuyện: Nhảy dây trong hành lang 1m5</span>
+      </h4>
+      <p class="mb-2">
+        Nhiều người nghĩ phải có sân khấu lớn hay phòng tập rộng rãi mới bắt đầu rèn luyện thể thao được. Nhưng với Thắng, niềm đam mê và kỷ luật bắt đầu từ chính <b>hành lang chỉ rộng 1.5 mét</b>.
+      </p>
+      <p class="text-slate-400">
+        Không gian có thể chật, nhưng ý chí thì không có giới hạn. Chúc bạn có những phút giây giải trí vui vẻ và luôn giữ vững tinh thần rèn luyện mỗi ngày!
+      </p>
+    </article>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-slate-950/80 py-6 px-4 mt-8 text-center text-xs text-slate-500">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-slate-300">thangnd.io.vn</span>
+        <span>—</span>
+        <span>Hệ sinh thái Thắng ND</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="https://thangnhayday.com" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition font-medium">thangnhayday.com</a>
+        <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 transition font-medium">thangit.com</a>
+        <a href="https://github.com/ducthangqtm/thangnd.io.vn" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="audio.js"></script>
+  <script src="leaderboard.js"></script>
+  <script src="game-rope.js"></script>
+  <script src="game-snake.js"></script>
+  <script src="game-2048.js"></script>
+
+  <!-- Main Orchestrator -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialize Rope Game
+      const ropeGame = new RopeGame('ropeCanvas');
+      window.ropeGame = ropeGame;
+
+      // 2. Initialize Leaderboard
+      window.leaderboard.renderLeaderboardTable();
+
+      // 3. Initialize Sound Toggle
+      const soundBtn = document.getElementById('soundToggleBtn');
+      const soundIcon = document.getElementById('soundIcon');
+      const updateSoundUI = () => {
+        const isMuted = window.soundEngine.isMuted();
+        soundIcon.innerText = isMuted ? '🔇' : '🔊';
+        soundBtn.classList.toggle('opacity-60', isMuted);
+      };
+      updateSoundUI();
+      soundBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.soundEngine.toggleMute();
+        updateSoundUI();
+      });
+
+      // 4. Player Name Persistence
+      const playerInput = document.getElementById('playerInput');
+      const navPlayerName = document.getElementById('navPlayerName');
+      const saveNameBtn = document.getElementById('saveNameBtn');
+      const playerNameBtn = document.getElementById('playerNameBtn');
+
+      const savedName = localStorage.getItem('thang_player_name') || 'VĐV Hành Lang';
+      playerInput.value = savedName;
+      navPlayerName.innerText = savedName;
+
+      const saveName = () => {
+        const val = playerInput.value.trim() || 'VĐV Hành Lang';
+        localStorage.setItem('thang_player_name', val);
+        ropeGame.playerName = val;
+        navPlayerName.innerText = val;
+      };
+
+      saveNameBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        saveName();
+        saveNameBtn.innerText = 'Đã lưu ✓';
+        setTimeout(() => saveNameBtn.innerText = 'Lưu', 1500);
+      });
+
+      playerNameBtn.addEventListener('click', () => {
+        const newName = prompt('Nhập tên hoặc biệt danh của bạn:', ropeGame.playerName);
+        if (newName && newName.trim()) {
+          playerInput.value = newName.trim();
+          saveName();
+        }
+      });
+
+      // 5. Start and Restart Buttons
+      document.getElementById('startBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        saveName();
+        ropeGame.startGame();
+      });
+
+      document.getElementById('restartBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        ropeGame.restartGame();
+      });
+
+      // 6. Navigation Tabs
+      const tabRope = document.getElementById('tabRope');
+      const tabSnake = document.getElementById('tabSnake');
+      const tab2048 = document.getElementById('tab2048');
+
+      const secRope = document.getElementById('ropeGameSection');
+      const secSnake = document.getElementById('snakeGameSection');
+      const sec2048 = document.getElementById('game2048Section');
+
+      let snakeGameInstance = null;
+      let game2048Instance = null;
+
+      const switchTab = (activeTab, showSec) => {
+        [tabRope, tabSnake, tab2048].forEach(t => t.classList.remove('active'));
+        [secRope, secSnake, sec2048].forEach(s => s.classList.add('hidden'));
+
+        activeTab.classList.add('active');
+        showSec.classList.remove('hidden');
+
+        if (showSec === secSnake && !snakeGameInstance) {
+          snakeGameInstance = new SnakeGame('snakeCanvas');
+          window.snakeGame = snakeGameInstance;
+        }
+        if (showSec === sec2048 && !game2048Instance) {
+          game2048Instance = new Game2048('grid2048');
+          window.game2048 = game2048Instance;
+        }
+      };
+
+      tabRope.addEventListener('click', () => switchTab(tabRope, secRope));
+      tabSnake.addEventListener('click', () => switchTab(tabSnake, secSnake));
+      tab2048.addEventListener('click', () => switchTab(tab2048, sec2048));
+    });
+  </script>
+</body>
+</html>
