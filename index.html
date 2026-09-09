@@ -93,10 +93,17 @@
     </div>
 
     <!-- ================= HORIZONTAL ARCADE CARDS ================= -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full my-6">
-      
+    <!-- Mobile: vuốt ngang (scroll-snap). Desktop: grid -->
+    <div class="w-full my-6 flex sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6
+                overflow-x-auto sm:overflow-visible
+                snap-x snap-mandatory sm:snap-none
+                gap-4 pb-3 sm:pb-0
+                px-4 sm:px-0 -mx-4 sm:mx-0"
+         style="scrollbar-width:none; -ms-overflow-style:none;"
+         id="gameCarousel">
+
       <!-- Card 1: Thắng Nhảy Dây -->
-      <div id="cardRope" class="arcade-card" onclick="openArcadeModal('rope')">
+      <div id="cardRope" class="arcade-card snap-start snap-always flex-shrink-0 w-[80vw] sm:w-auto" onclick="openArcadeModal('rope')">
         <div class="arcade-card-header">
           <span class="arcade-font text-[9px] text-pink-400 tracking-wider">1.5M HALLWAY</span>
           <span class="text-emerald-400 text-xs font-bold">★ HERO</span>
@@ -117,7 +124,7 @@
       </div>
 
       <!-- Card 2: Cyber Snake -->
-      <div id="cardSnake" class="arcade-card" onclick="openArcadeModal('snake')">
+      <div id="cardSnake" class="arcade-card snap-start snap-always flex-shrink-0 w-[80vw] sm:w-auto" onclick="openArcadeModal('snake')">
         <div class="arcade-card-header">
           <span class="arcade-font text-[9px] text-cyan-400 tracking-wider">RETRO 8-BIT</span>
           <span class="text-slate-400 text-xs">CLASSIC</span>
@@ -138,7 +145,7 @@
       </div>
 
       <!-- Card 3: 2048 Neon -->
-      <div id="card2048" class="arcade-card" onclick="openArcadeModal('2048')">
+      <div id="card2048" class="arcade-card snap-start snap-always flex-shrink-0 w-[80vw] sm:w-auto" onclick="openArcadeModal('2048')">
         <div class="arcade-card-header">
           <span class="arcade-font text-[9px] text-amber-400 tracking-wider">PUZZLE LAB</span>
           <span class="text-slate-400 text-xs">BRAIN</span>
@@ -159,7 +166,7 @@
       </div>
 
       <!-- Card 4: Coming Soon -->
-      <div class="arcade-card opacity-60 cursor-not-allowed">
+      <div class="arcade-card snap-start snap-always flex-shrink-0 w-[80vw] sm:w-auto opacity-60 cursor-not-allowed">
         <div class="arcade-card-header">
           <span class="arcade-font text-[9px] text-slate-500 tracking-wider">SECRET STAGE</span>
           <span class="text-slate-600 text-xs">SOON</span>
@@ -179,6 +186,16 @@
         </div>
       </div>
 
+      <!-- Spacer cuối carousel để card cuối không bị sát mép -->
+      <div class="flex-shrink-0 w-4 sm:hidden"></div>
+    </div>
+
+    <!-- Dots indicator (chỉ hiện trên mobile) -->
+    <div class="flex sm:hidden items-center justify-center gap-2 mt-1 mb-2" id="carouselDots">
+      <span class="w-2 h-2 rounded-full bg-neon-cyan transition-all duration-300" style="background:var(--neon-cyan)"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300"></span>
     </div>
 
     <!-- Quick Leaderboard on Lobby -->
@@ -460,6 +477,23 @@
   <script src="game-rope.js"></script>
   <script src="game-snake.js"></script>
   <script src="game-2048.js"></script>
+  <script>
+    // Carousel dots indicator
+    (function() {
+      const carousel = document.getElementById('gameCarousel');
+      const dots = document.querySelectorAll('#carouselDots span');
+      if (!carousel || !dots.length) return;
+      carousel.addEventListener('scroll', () => {
+        const cardW = carousel.scrollWidth / 4;
+        const idx = Math.round(carousel.scrollLeft / cardW);
+        dots.forEach((d, i) => {
+          d.style.background = i === idx ? 'var(--neon-cyan)' : 'rgb(71,85,105)';
+          d.style.width = i === idx ? '8px' : '6px';
+          d.style.height = i === idx ? '8px' : '6px';
+        });
+      }, { passive: true });
+    })();
+  </script>
 
   <!-- Arcade Modal & Game Switcher Logic -->
   <script>
