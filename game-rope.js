@@ -17,14 +17,14 @@ class RopeGame {
     this.highScore = parseInt(localStorage.getItem('thang_high_score') || '0', 10);
     this.playerName = localStorage.getItem('thang_player_name') || 'VĐV Hành Lang';
 
-    // Character physics & state
+    // Character physics & state (Realistic Jump Rope Hop: quick & low clearance)
     this.char = {
       x: 0,
       y: 0,
       baseY: 0,
       vy: 0,
-      jumpForce: -13.8,
-      gravity: 0.72,
+      jumpForce: -7.6, // Low, snappy realistic jump rope hop
+      gravity: 0.82,
       isGrounded: true,
       jumpHeight: 0,
       scaleX: 1,
@@ -36,8 +36,8 @@ class RopeGame {
     // Rope rotation mechanics
     this.rope = {
       angle: -Math.PI / 2, // Starts at the top
-      baseSpeed: 0.076,
-      speed: 0.076,
+      baseSpeed: 0.078,
+      speed: 0.078,
       passedBottom: false,
       isDangerZone: false,
       glowIntensity: 1
@@ -101,9 +101,9 @@ class RopeGame {
     this.width = width;
     this.height = height;
 
-    // Set character coordinates
+    // Set character coordinates (Prominent center position)
     this.char.x = this.width / 2;
-    this.char.baseY = this.height * 0.70;
+    this.char.baseY = this.height * 0.64;
     this.char.y = this.char.baseY;
   }
 
@@ -302,7 +302,8 @@ class RopeGame {
     const isAtBottom = Math.abs(this.rope.angle - hitAngle) < dangerRange;
 
     if (isAtBottom && !this.rope.passedBottom) {
-      const isCleared = this.char.jumpHeight >= 15;
+      // Fast, realistic jump clearance (7px off the floor)
+      const isCleared = this.char.jumpHeight >= 7;
 
       if (!isCleared) {
         this.gameOver();
@@ -383,23 +384,23 @@ class RopeGame {
 
   drawShadow() {
     const x = this.char.x;
-    const y = this.char.baseY + 54;
+    const y = this.char.baseY + 130;
     const jump = this.char.jumpHeight;
 
-    const scale = Math.max(0.35, 1 - jump / 140);
-    const alpha = Math.max(0.18, 0.65 - jump / 180);
+    const scale = Math.max(0.4, 1 - jump / 45);
+    const alpha = Math.max(0.2, 0.7 - jump / 35);
 
     this.ctx.save();
     this.ctx.beginPath();
-    this.ctx.ellipse(x, y, 52 * scale, 15 * scale, 0, 0, Math.PI * 2);
+    this.ctx.ellipse(x, y, 68 * scale, 18 * scale, 0, 0, Math.PI * 2);
     this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
     this.ctx.fill();
 
-    // Soft colored floor reflection of lime shirt & shoes
-    if (jump < 40) {
+    // Soft warm reflection on terracotta tiles
+    if (jump < 20) {
       this.ctx.beginPath();
-      this.ctx.ellipse(x, y + 2, 35 * scale, 8 * scale, 0, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(57, 255, 20, ${0.15 * (1 - jump / 40)})`;
+      this.ctx.ellipse(x, y + 2, 45 * scale, 10 * scale, 0, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(57, 255, 20, ${0.18 * (1 - jump / 20)})`;
       this.ctx.fill();
     }
     this.ctx.restore();
@@ -413,19 +414,16 @@ class RopeGame {
     this.ctx.translate(cx, cy);
     this.ctx.scale(this.char.scaleX, this.char.scaleY);
 
-    // Desired sprite size
-    const spriteSize = 210;
+    // Prominent, large, sharp sprite (100% opaque)
+    const spriteSize = 295;
 
     if (this.state === 'GAMEOVER') {
-      // Draw Tripped / Game Over sprite
       if (this.tripSprite.complete && this.tripSprite.naturalWidth > 0) {
-        this.ctx.drawImage(this.tripSprite, -spriteSize / 2, -spriteSize / 2 - 15, spriteSize, spriteSize);
+        this.ctx.drawImage(this.tripSprite, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
       }
     } else {
-      // Draw Jumping / Athletic sprite
       if (this.jumpSprite.complete && this.jumpSprite.naturalWidth > 0) {
-        // Draw crisp character
-        this.ctx.drawImage(this.jumpSprite, -spriteSize / 2, -spriteSize / 2 - 15, spriteSize, spriteSize);
+        this.ctx.drawImage(this.jumpSprite, -spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
       }
     }
 
@@ -434,34 +432,34 @@ class RopeGame {
 
   drawRope() {
     const cx = this.char.x;
-    const cy = this.char.baseY + 10;
+    const cy = this.char.baseY + 8;
     const angle = this.rope.angle;
 
     // 3D Ellipse Radii
-    const radiusY = 110;
-    const radiusX = 75;
+    const radiusY = 138;
+    const radiusX = 98;
 
-    const ropeY = cy - 25 + Math.sin(angle) * radiusY;
+    const ropeY = cy + Math.sin(angle) * radiusY;
     const ropeZ = Math.cos(angle);
 
-    // Handle anchor coordinates near Thắng's hands
-    const leftHandleX = cx - 38;
-    const leftHandleY = this.char.y - 12;
-    const rightHandleX = cx + 38;
-    const rightHandleY = this.char.y - 12;
+    // Handle anchor coordinates exactly at Thắng's hands
+    const leftHandleX = cx - 62;
+    const leftHandleY = this.char.y + 12;
+    const rightHandleX = cx + 62;
+    const rightHandleY = this.char.y + 12;
 
     this.ctx.save();
 
     const isFront = ropeZ >= 0;
-    const lineWidth = isFront ? 4.5 : 2.6;
-    const alpha = isFront ? 0.98 : 0.6;
+    const lineWidth = isFront ? 4.8 : 2.8;
+    const alpha = isFront ? 0.98 : 0.62;
 
     // Glowing Neon Lime speed rope
     this.ctx.strokeStyle = `rgba(57, 255, 20, ${alpha})`;
     this.ctx.lineWidth = lineWidth;
     this.ctx.lineCap = 'round';
     this.ctx.shadowColor = '#39ff14';
-    this.ctx.shadowBlur = isFront ? 14 : 4;
+    this.ctx.shadowBlur = isFront ? 16 : 4;
 
     this.ctx.beginPath();
     this.ctx.moveTo(leftHandleX, leftHandleY);
@@ -479,19 +477,19 @@ class RopeGame {
 
     // Inner bright core
     if (isFront) {
-      this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
-      this.ctx.lineWidth = 1.6;
+      this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+      this.ctx.lineWidth = 1.8;
       this.ctx.shadowBlur = 0;
       this.ctx.stroke();
     }
 
     // Floor contact flash
-    if (Math.abs(angle - Math.PI / 2) < 0.22 && this.char.jumpHeight > 10) {
-      this.ctx.fillStyle = 'rgba(57, 255, 20, 0.55)';
+    if (Math.abs(angle - Math.PI / 2) < 0.22 && this.char.jumpHeight > 3) {
+      this.ctx.fillStyle = 'rgba(57, 255, 20, 0.6)';
       this.ctx.shadowColor = '#39ff14';
-      this.ctx.shadowBlur = 20;
+      this.ctx.shadowBlur = 22;
       this.ctx.beginPath();
-      this.ctx.ellipse(cx, cy + radiusY - 26, 36, 6, 0, 0, Math.PI * 2);
+      this.ctx.ellipse(cx, cy + radiusY - 6, 42, 8, 0, 0, Math.PI * 2);
       this.ctx.fill();
     }
 
