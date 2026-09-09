@@ -101,9 +101,9 @@ class RopeGame {
     this.width = width;
     this.height = height;
 
-    // Set character coordinates (Prominent center position)
+    // Set character coordinates (Symmetrical front center)
     this.char.x = this.width / 2;
-    this.char.baseY = this.height * 0.64;
+    this.char.baseY = this.height * 0.60;
     this.char.y = this.char.baseY;
   }
 
@@ -384,22 +384,22 @@ class RopeGame {
 
   drawShadow() {
     const x = this.char.x;
-    const y = this.char.baseY + 130;
+    const y = this.char.baseY + 148;
     const jump = this.char.jumpHeight;
 
     const scale = Math.max(0.4, 1 - jump / 45);
-    const alpha = Math.max(0.2, 0.7 - jump / 35);
+    const alpha = Math.max(0.25, 0.75 - jump / 35);
 
     this.ctx.save();
     this.ctx.beginPath();
-    this.ctx.ellipse(x, y, 68 * scale, 18 * scale, 0, 0, Math.PI * 2);
+    this.ctx.ellipse(x, y, 78 * scale, 20 * scale, 0, 0, Math.PI * 2);
     this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
     this.ctx.fill();
 
-    // Soft warm reflection on terracotta tiles
+    // Soft warm reflection on red terracotta tiles
     if (jump < 20) {
       this.ctx.beginPath();
-      this.ctx.ellipse(x, y + 2, 45 * scale, 10 * scale, 0, 0, Math.PI * 2);
+      this.ctx.ellipse(x, y + 2, 55 * scale, 12 * scale, 0, 0, Math.PI * 2);
       this.ctx.fillStyle = `rgba(57, 255, 20, ${0.18 * (1 - jump / 20)})`;
       this.ctx.fill();
     }
@@ -414,8 +414,8 @@ class RopeGame {
     this.ctx.translate(cx, cy);
     this.ctx.scale(this.char.scaleX, this.char.scaleY);
 
-    // Prominent, large, sharp sprite (100% opaque)
-    const spriteSize = 295;
+    // Front-facing, large, sharp sprite (100% opaque, 320px)
+    const spriteSize = 320;
 
     if (this.state === 'GAMEOVER') {
       if (this.tripSprite.complete && this.tripSprite.naturalWidth > 0) {
@@ -432,21 +432,21 @@ class RopeGame {
 
   drawRope() {
     const cx = this.char.x;
-    const cy = this.char.baseY + 8;
+    const cy = this.char.baseY - 5;
     const angle = this.rope.angle;
 
-    // 3D Ellipse Radii
-    const radiusY = 138;
-    const radiusX = 98;
+    // 3D Ellipse Radii tuned to loop under feet (dưới bàn chân)
+    const radiusY = 162;
+    const radiusX = 135;
 
     const ropeY = cy + Math.sin(angle) * radiusY;
     const ropeZ = Math.cos(angle);
 
-    // Handle anchor coordinates exactly at Thắng's hands
-    const leftHandleX = cx - 62;
-    const leftHandleY = this.char.y + 12;
-    const rightHandleX = cx + 62;
-    const rightHandleY = this.char.y + 12;
+    // Handle anchors at hands extended to both sides
+    const leftHandleX = cx - 110;
+    const leftHandleY = this.char.y + 8;
+    const rightHandleX = cx + 110;
+    const rightHandleY = this.char.y + 8;
 
     this.ctx.save();
 
@@ -483,13 +483,13 @@ class RopeGame {
       this.ctx.stroke();
     }
 
-    // Floor contact flash
-    if (Math.abs(angle - Math.PI / 2) < 0.22 && this.char.jumpHeight > 3) {
-      this.ctx.fillStyle = 'rgba(57, 255, 20, 0.6)';
+    // Floor contact flash (under feet on the red tile floor)
+    if (Math.abs(angle - Math.PI / 2) < 0.22 && this.char.jumpHeight > 2) {
+      this.ctx.fillStyle = 'rgba(57, 255, 20, 0.65)';
       this.ctx.shadowColor = '#39ff14';
-      this.ctx.shadowBlur = 22;
+      this.ctx.shadowBlur = 24;
       this.ctx.beginPath();
-      this.ctx.ellipse(cx, cy + radiusY - 6, 42, 8, 0, 0, Math.PI * 2);
+      this.ctx.ellipse(cx, cy + radiusY - 4, 48, 8, 0, 0, Math.PI * 2);
       this.ctx.fill();
     }
 
