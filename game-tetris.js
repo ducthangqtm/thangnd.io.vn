@@ -111,8 +111,9 @@ class TetrisGame {
     const parent = this.canvas.parentElement;
     if (!parent) return;
 
-    const maxW = Math.min(window.innerWidth - 32, 280);
-    const maxH = Math.min(window.innerHeight - 300, 480);
+    const isMobile = window.innerWidth < 640;
+    const maxW = Math.min(window.innerWidth - 24, isMobile ? 240 : 280);
+    const maxH = isMobile ? Math.min(window.innerHeight - 230, 400) : 460;
 
     // Maintain 1:2 aspect ratio (10:20 grid)
     let cell = Math.floor(Math.min(maxW / this.COLS, maxH / this.ROWS));
@@ -123,8 +124,8 @@ class TetrisGame {
     this.canvas.height = this.ROWS * cell;
 
     if (this.nextCanvas) {
-      this.nextCanvas.width = cell * 4;
-      this.nextCanvas.height = cell * 4;
+      this.nextCanvas.width = 40;
+      this.nextCanvas.height = 40;
     }
   }
 
@@ -729,30 +730,32 @@ class TetrisGame {
     this.nextCtx.clearRect(0, 0, w, h);
 
     const shape = this.nextPiece.shape;
-    const cell = this.cellSize;
-    const shapeW = shape[0].length * cell;
-    const shapeH = shape.length * cell;
+    const cols = shape[0].length;
+    const rows = shape.length;
+    const cell = Math.min(Math.floor((w - 4) / cols), Math.floor((h - 4) / rows), 10);
+    const shapeW = cols * cell;
+    const shapeH = rows * cell;
     const ox = Math.floor((w - shapeW) / 2);
     const oy = Math.floor((h - shapeH) / 2);
 
-    for (let r = 0; r < shape.length; r++) {
-      for (let c = 0; c < shape[r].length; c++) {
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
         if (shape[r][c]) {
-          const bx = ox + c * cell + 1;
-          const by = oy + r * cell + 1;
-          const bw = cell - 2;
-          const bh = cell - 2;
+          const bx = ox + c * cell + 0.5;
+          const by = oy + r * cell + 0.5;
+          const bw = cell - 1;
+          const bh = cell - 1;
 
           this.nextCtx.save();
           this.nextCtx.shadowColor = this.nextPiece.color;
-          this.nextCtx.shadowBlur = 6;
+          this.nextCtx.shadowBlur = 4;
           this.nextCtx.fillStyle = this.nextPiece.color;
           this.nextCtx.beginPath();
           this.nextCtx.roundRect(bx, by, bw, bh, 2);
           this.nextCtx.fill();
 
-          this.nextCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-          this.nextCtx.fillRect(bx + 1, by + 1, bw - 2, 2);
+          this.nextCtx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+          this.nextCtx.fillRect(bx + 0.5, by + 0.5, bw - 1, 1.5);
           this.nextCtx.restore();
         }
       }

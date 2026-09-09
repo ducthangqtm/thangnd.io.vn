@@ -456,30 +456,35 @@
       <section id="tetrisGameSection" class="w-full max-w-md hidden flex flex-col items-center">
         <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3 sm:p-4 w-full flex flex-col items-center font-sans">
           
-          <!-- Top bar: Score, Level, Lines, High, Next piece preview -->
-          <div class="flex items-center justify-between w-full mb-3 gap-2 text-xs">
-            <!-- Stats -->
-            <div class="grid grid-cols-2 gap-1.5 flex-1 font-mono">
-              <div class="bg-slate-800/90 border border-slate-700/60 px-2 py-1 rounded-lg">
-                <span class="text-slate-400 text-[10px] block">Điểm:</span>
-                <b id="tetrisScore" class="text-emerald-400 text-xs sm:text-sm">0</b>
+          <!-- Top bar: Ultra-compact, low-profile row -->
+          <div class="flex items-center justify-between w-full mb-2 gap-1.5 px-0.5 text-xs font-mono">
+            <!-- Stats in a compact pill group -->
+            <div class="flex items-center gap-1.5 sm:gap-3 bg-slate-950/80 border border-slate-800 px-2.5 py-1 rounded-xl flex-1 justify-between">
+              <div>
+                <span class="text-slate-400 text-[9px] block leading-none">ĐIỂM</span>
+                <b id="tetrisScore" class="text-emerald-400 text-xs sm:text-sm font-bold">0</b>
               </div>
-              <div class="bg-slate-800/90 border border-slate-700/60 px-2 py-1 rounded-lg">
-                <span class="text-slate-400 text-[10px] block">Kỷ lục:</span>
-                <b id="tetrisHighScore" class="text-amber-400 text-xs sm:text-sm">0</b>
+              <div class="h-4 w-[1px] bg-slate-800"></div>
+              <div>
+                <span class="text-slate-400 text-[9px] block leading-none">KỶ LỤC</span>
+                <b id="tetrisHighScore" class="text-amber-400 text-xs sm:text-sm font-bold">0</b>
               </div>
-              <div class="bg-slate-800/90 border border-slate-700/60 px-2 py-0.5 rounded-lg text-[11px]">
-                <span class="text-slate-400">Cấp:</span> <b id="tetrisLevel" class="text-cyan-400">1</b>
+              <div class="h-4 w-[1px] bg-slate-800"></div>
+              <div>
+                <span class="text-slate-400 text-[9px] block leading-none">CẤP</span>
+                <b id="tetrisLevel" class="text-cyan-400 text-xs sm:text-sm font-bold">1</b>
               </div>
-              <div class="bg-slate-800/90 border border-slate-700/60 px-2 py-0.5 rounded-lg text-[11px]">
-                <span class="text-slate-400">Dòng:</span> <b id="tetrisLines" class="text-pink-400">0</b>
+              <div class="h-4 w-[1px] bg-slate-800"></div>
+              <div>
+                <span class="text-slate-400 text-[9px] block leading-none">DÒNG</span>
+                <b id="tetrisLines" class="text-pink-400 text-xs sm:text-sm font-bold">0</b>
               </div>
             </div>
 
-            <!-- Next Piece Box -->
-            <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl flex flex-col items-center shrink-0">
-              <span class="text-[9px] font-mono text-slate-400 uppercase mb-1">TIẾP THEO</span>
-              <canvas id="tetrisNextCanvas" width="60" height="60" class="rounded"></canvas>
+            <!-- Mini Next Piece Box -->
+            <div class="bg-slate-950/80 border border-slate-800 px-2 py-0.5 rounded-xl flex items-center gap-1 shrink-0">
+              <span class="text-[8px] font-mono text-slate-400 uppercase">TIẾP:</span>
+              <canvas id="tetrisNextCanvas" width="40" height="40" class="rounded"></canvas>
             </div>
           </div>
 
@@ -515,20 +520,23 @@
             </div>
           </div>
 
-          <!-- Controls for Mobile -->
-          <div class="mt-4 flex items-center justify-center gap-2 sm:hidden touch-none select-none w-full max-w-xs">
-            <!-- Left & Right -->
-            <button id="tetrisLeft" class="dpad-btn-tetris" title="Sang Trái">◀</button>
-            <button id="tetrisRight" class="dpad-btn-tetris" title="Sang Phải">▶</button>
-            <!-- Rotate -->
-            <button id="tetrisRotate" class="dpad-btn-tetris text-cyan-400 border-cyan-500/40" title="Xoay">↻</button>
-            <!-- Soft Down -->
-            <button id="tetrisDown" class="dpad-btn-tetris text-amber-400 border-amber-500/40" title="Thả Nhanh">▼</button>
-            <!-- Hard Drop -->
-            <button id="tetrisDrop" class="dpad-btn-tetris text-rose-400 border-rose-500/40" title="Rơi Ngay">⏬</button>
+          <!-- Controls for Mobile (Gamepad 2-hands style: Left = Sang 2 bên, Right = Xoay & Vút xuống) -->
+          <div class="mt-3 flex items-center justify-between w-full max-w-sm px-1 sm:hidden touch-none select-none">
+            <!-- Cụm bên trái: nút sang 2 bên -->
+            <div class="flex items-center gap-2">
+              <button id="tetrisLeft" class="dpad-btn-tetris" title="Sang Trái">◀</button>
+              <button id="tetrisRight" class="dpad-btn-tetris" title="Sang Phải">▶</button>
+            </div>
+
+            <!-- Cụm bên phải: nút xoay và vút xuống -->
+            <div class="flex items-center gap-2">
+              <button id="tetrisDown" class="dpad-btn-tetris dpad-btn-down" title="Vút Xuống (Thả nhanh)">▼</button>
+              <button id="tetrisRotate" class="dpad-btn-tetris dpad-btn-rotate" title="Xoay Khối">↻</button>
+              <button id="tetrisDrop" class="dpad-btn-tetris dpad-btn-harddrop" title="Rơi Ngay">⏬</button>
+            </div>
           </div>
 
-          <p class="hidden sm:block text-xs text-slate-400 mt-3 text-center font-mono">
+          <p class="hidden sm:block text-xs text-slate-400 mt-2 text-center font-mono">
             Phím <b>A / D</b>: Di chuyển • <b>W / X</b>: Xoay • <b>S</b>: Thả nhanh • <b>Space</b>: Rơi tức thì
           </p>
         </div>

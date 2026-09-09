@@ -428,30 +428,72 @@ canvas {
   box-shadow: 0 0 25px var(--neon-glow-cyan);
 }
 
-/* Compact D-Pad for Tetris */
+/* Ergonomic Dual-Hand D-Pad for Tetris */
 .dpad-btn-tetris {
-  flex: 1;
-  max-width: 58px;
-  height: 52px;
-  background: rgba(18, 24, 52, 0.95);
-  border: 1.5px solid rgba(0, 240, 255, 0.4);
-  border-radius: 14px;
+  width: 56px;
+  height: 56px;
+  background: rgba(15, 20, 44, 0.95);
+  border: 2px solid rgba(0, 240, 255, 0.4);
+  border-radius: 18px;
   color: var(--neon-cyan);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: 900;
   cursor: pointer;
   user-select: none;
   touch-action: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-  transition: transform 0.08s ease, background 0.08s ease;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 240, 255, 0.1);
+  transition: transform 0.08s ease, background 0.08s ease, box-shadow 0.08s ease;
 }
 
 .dpad-btn-tetris:active {
   background: var(--neon-cyan);
   color: #060714;
-  transform: scale(0.92);
+  transform: scale(0.9);
+  box-shadow: 0 0 20px var(--neon-glow-cyan);
+}
+
+/* Xoay (Rotate) button highlight */
+.dpad-btn-rotate {
+  border-color: rgba(232, 121, 249, 0.6);
+  color: #e879f9;
+  font-size: 28px;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(232, 121, 249, 0.15);
+}
+
+.dpad-btn-rotate:active {
+  background: #e879f9;
+  color: #060714;
+  box-shadow: 0 0 20px rgba(232, 121, 249, 0.6);
+}
+
+/* Vút xuống / Thả nhanh (Down) button highlight */
+.dpad-btn-down {
+  border-color: rgba(250, 204, 21, 0.6);
+  color: #facc15;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(250, 204, 21, 0.15);
+}
+
+.dpad-btn-down:active {
+  background: #facc15;
+  color: #060714;
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.6);
+}
+
+/* Rơi ngay (Hard drop) button highlight */
+.dpad-btn-harddrop {
+  border-color: rgba(244, 63, 94, 0.5);
+  color: #f43f5e;
+  font-size: 20px;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(244, 63, 94, 0.15);
+}
+
+.dpad-btn-harddrop:active {
+  background: #f43f5e;
+  color: #060714;
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
 }
 
 /* Mini D-Pad for 2048 */
