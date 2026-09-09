@@ -71,10 +71,6 @@ header {
   font-family: 'Press Start 2P', monospace;
 }
 
-.outfit-font {
-  font-family: 'Outfit', sans-serif;
-}
-
 .synth-title {
   font-family: 'Press Start 2P', monospace;
   font-size: clamp(2rem, 6vw, 3.8rem);
@@ -98,7 +94,7 @@ header {
   border-radius: 9999px;
 }
 
-/* Arcade Game Cards (White House style) */
+/* Arcade Game Cards */
 .arcade-card {
   background: rgba(12, 14, 36, 0.85);
   border: 2px solid rgba(255, 42, 133, 0.4);
@@ -116,11 +112,6 @@ header {
   transform: translateY(-8px) scale(1.02);
   border-color: var(--neon-cyan);
   box-shadow: 0 14px 40px rgba(0, 240, 255, 0.3), 0 0 25px var(--neon-glow-cyan);
-}
-
-.arcade-card.active {
-  border-color: var(--neon-lime);
-  box-shadow: 0 12px 35px rgba(57, 255, 20, 0.35), 0 0 20px var(--neon-glow-lime);
 }
 
 .arcade-card-header {
@@ -150,7 +141,6 @@ header {
   transform: scale(1.08);
 }
 
-/* CRT Scanline overlay on thumbnails */
 .crt-scanlines {
   position: absolute;
   inset: 0;
@@ -173,7 +163,7 @@ header {
   background: transparent;
   color: var(--neon-cyan);
   border: 1px solid var(--neon-cyan);
-  padding: 10px 16px;
+  padding: 11px 16px;
   border-radius: 8px;
   text-align: center;
   text-transform: uppercase;
@@ -186,19 +176,83 @@ header {
 .arcade-play-btn:hover {
   background: var(--neon-cyan);
   color: #060714;
-  box-shadow: 0 0 15px var(--neon-glow-cyan);
+  box-shadow: 0 0 18px var(--neon-glow-cyan);
 }
 
-/* Active Game Arena */
+/* Fullscreen / Theater Arcade Modal */
+.arcade-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(3, 4, 12, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.arcade-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(12, 14, 36, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.modal-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Close & Action Buttons inside modal */
+.modal-ctrl-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-main);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-family: 'Press Start 2P', monospace;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.modal-ctrl-btn:hover {
+  background: var(--neon-pink);
+  color: #ffffff;
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 15px var(--neon-glow-pink);
+}
+
+/* Active Game Viewport */
 .game-viewport-wrap {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 460px;
   margin: 0 auto;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 28px rgba(57, 255, 20, 0.25);
-  border: 2px solid rgba(57, 255, 20, 0.4);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(57, 255, 20, 0.3);
+  border: 2px solid rgba(57, 255, 20, 0.5);
   background: #000000;
 }
 
