@@ -400,21 +400,20 @@
             </div>
           </div>
 
-          <!-- D-Pad for Mobile: Large Buttons & Separated Down Arrow -->
-          <div class="mt-4 flex flex-col items-center gap-2 sm:hidden touch-none select-none">
+          <!-- D-Pad for Mobile: Cross layout, properly centered -->
+          <div class="mt-6 flex flex-col items-center gap-2 sm:hidden touch-none select-none">
             <!-- UP -->
             <button id="snakeUp" class="dpad-btn" title="Lên">▲</button>
-            
-            <!-- LEFT & RIGHT with generous gap -->
-            <div class="flex items-center justify-between w-full max-w-[260px] px-1">
+
+            <!-- LEFT | blank center | RIGHT -->
+            <div class="flex items-center gap-2">
               <button id="snakeLeft" class="dpad-btn" title="Trái">◀</button>
+              <div style="width:68px;height:68px;"></div>
               <button id="snakeRight" class="dpad-btn" title="Phải">▶</button>
             </div>
-            
-            <!-- DOWN (Separated further down!) -->
-            <div class="pt-1">
-              <button id="snakeDown" class="dpad-btn" title="Xuống">▼</button>
-            </div>
+
+            <!-- DOWN (separated) -->
+            <button id="snakeDown" class="dpad-btn" title="Xuống">▼</button>
           </div>
           <p class="hidden sm:block text-xs text-slate-400 mt-3 text-center font-mono">
             Phím <b>W, A, S, D</b> hoặc <b>Phím Mũi Tên</b> để điều khiển
@@ -439,15 +438,7 @@
 
           <div id="grid2048" class="grid-2048 touch-none select-none"></div>
 
-          <!-- Mini D-Pad for 2048 on Mobile -->
-          <div class="mt-3 flex flex-col items-center gap-1.5 sm:hidden touch-none select-none">
-            <button id="btn2048Up" class="dpad-btn-mini" title="Lên">▲</button>
-            <div class="flex items-center justify-between w-full max-w-[210px] px-2">
-              <button id="btn2048Left" class="dpad-btn-mini" title="Trái">◀</button>
-              <button id="btn2048Right" class="dpad-btn-mini" title="Phải">▶</button>
-            </div>
-            <button id="btn2048Down" class="dpad-btn-mini" title="Xuống">▼</button>
-          </div>
+          <!-- 2048: Vuốt để chơi (không cần D-Pad) -->
 
           <div class="flex justify-between items-center w-full mt-4 text-xs font-sans gap-2">
             <button onclick="closeArcadeModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5">

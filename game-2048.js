@@ -101,11 +101,13 @@ class Game2048 {
 
     this.container.addEventListener('touchstart', (e) => {
       if (e.touches.length !== 1) return;
+      // Prevent browser back/forward swipe gesture
+      if (e.cancelable) e.preventDefault();
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       isTouching = true;
       hasMovedThisTouch = false;
-    }, { passive: true });
+    }, { passive: false });
 
     this.container.addEventListener('touchmove', (e) => {
       if (!isTouching || hasMovedThisTouch || e.touches.length !== 1) return;
@@ -139,19 +141,7 @@ class Game2048 {
   }
 
   initButtons() {
-    const bindMini = (id, dir) => {
-      const btn = document.getElementById(id);
-      if (btn) {
-        btn.addEventListener('pointerdown', (e) => {
-          e.preventDefault();
-          this.move(dir);
-        });
-      }
-    };
-    bindMini('btn2048Up', 'UP');
-    bindMini('btn2048Down', 'DOWN');
-    bindMini('btn2048Left', 'LEFT');
-    bindMini('btn2048Right', 'RIGHT');
+    // D-Pad removed for 2048 - swipe gestures only
   }
 
   move(dir) {
