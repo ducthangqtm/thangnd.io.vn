@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Thắng ND Arcade (.IO) — Select Your Game</title>
   <meta name="description" content="Thang ND Arcade - Khu trò chơi web retro 8-bit & Thắng Nhảy Dây hành lang 1.5m. Lấy cảm hứng từ phong cách White House Arcade.">
   <meta name="keywords" content="Thắng ND, Thang ND Arcade, Thắng Nhảy Dây, thangnd.io.vn, Cyber Snake, 2048 Neon, thangit.com, thangnhayday.com">
@@ -308,7 +308,7 @@
             <div class="w-full max-w-xs mb-4 ui-interactive font-sans">
               <label class="block text-left text-[11px] font-semibold text-slate-400 mb-1">Tên của bạn:</label>
               <div class="flex">
-                <input type="text" id="playerInput" maxlength="20" placeholder="Nhập tên..." class="w-full bg-slate-900 border border-slate-700 rounded-l-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400">
+                <input type="text" id="playerInput" maxlength="20" placeholder="Nhập tên..." class="w-full bg-slate-900 border border-slate-700 rounded-l-xl px-3 py-2 text-base text-white focus:outline-none focus:border-emerald-400">
                 <button id="saveNameBtn" class="bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-r-xl border border-l-0 border-slate-700 text-xs font-bold text-emerald-400">Lưu</button>
               </div>
             </div>
@@ -799,6 +799,32 @@
         ropeGameInstance.restartGame();
       });
     });
+  </script>
+
+  <!-- Prevent Mobile Zoom & Pinch on iOS Safari / Android -->
+  <script>
+    // 1. Block pinch-to-zoom gestures (iOS Safari)
+    ['gesturestart', 'gesturechange', 'gestureend'].forEach(evt => {
+      document.addEventListener(evt, (e) => e.preventDefault(), { passive: false });
+    });
+
+    // 2. Block 2+ finger pinch on touchmove
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // 3. Block double-tap to zoom
+    let lastTap = 0;
+    document.addEventListener('touchend', (e) => {
+      if (e.target.closest('input, textarea, select')) return;
+      const now = Date.now();
+      if (now - lastTap <= 300) {
+        e.preventDefault();
+      }
+      lastTap = now;
+    }, { passive: false });
   </script>
 </body>
 </html>
