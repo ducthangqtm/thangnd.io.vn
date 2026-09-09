@@ -415,9 +415,12 @@ class RopeGame {
     this.ctx.translate(cx, cy);
     this.ctx.scale(this.char.scaleX, this.char.scaleY);
 
-    // Pixel character dimensions (Crisp, high fidelity pixel rendering)
-    const spriteW = 240;
-    const spriteH = 328;
+    // HD character dimensions (Smooth anime digital art rendering)
+    const spriteH = 340;
+    const aspect = (this.jumpSprite.complete && this.jumpSprite.naturalHeight > 0)
+      ? (this.jumpSprite.naturalWidth / this.jumpSprite.naturalHeight)
+      : 0.62;
+    const spriteW = Math.round(spriteH * aspect);
 
     if (this.state === 'GAMEOVER') {
       // Tripped pose: tilted with dizzyness stars
@@ -460,11 +463,12 @@ class RopeGame {
     const ropeY = cy + Math.sin(angle) * radiusY;
     const ropeZ = Math.cos(angle);
 
-    // Precise handle anchors at hands of pixel character
-    const leftHandleX = cx - 85;
-    const leftHandleY = this.char.y + 12;
-    const rightHandleX = cx + 92;
-    const rightHandleY = this.char.y + 14;
+    // Precise handle anchors at hands of character
+    const handleDist = 92;
+    const leftHandleX = cx - handleDist;
+    const leftHandleY = this.char.y + 6;
+    const rightHandleX = cx + handleDist;
+    const rightHandleY = this.char.y + 6;
 
     this.ctx.save();
 
