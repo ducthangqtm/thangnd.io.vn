@@ -345,9 +345,11 @@ class RopeGame {
     this.drawShadow();
     this.drawThangCharacter();
 
-    // 4. Rope in front of character
+    // 4. Rope in front of character (or handle connector tips if loop is behind)
     if (!isRopeBehind) {
       this.drawRope();
+    } else {
+      this.drawHandleConnectors();
     }
 
     // 5. Particles & Popups
@@ -463,12 +465,17 @@ class RopeGame {
     const ropeY = cy + Math.sin(angle) * radiusY;
     const ropeZ = Math.cos(angle);
 
-    // Precise handle anchors at hands of character
-    const handleDist = 92;
-    const leftHandleX = cx - handleDist;
-    const leftHandleY = this.char.y + 6;
-    const rightHandleX = cx + handleDist;
-    const rightHandleY = this.char.y + 6;
+    // Precise handle anchors at the exact tips of handles held in Thắng's hands
+    // Based on thang-jump.png (647x1043, handle tips at x=18 & 629, y=608)
+    const scaleX = this.char.scaleX || 1;
+    const scaleY = this.char.scaleY || 1;
+    const handleDistX = 99.6 * scaleX;
+    const handleOffsetY = 28.2 * scaleY;
+
+    const leftHandleX = cx - handleDistX;
+    const leftHandleY = this.char.y + handleOffsetY;
+    const rightHandleX = cx + handleDistX;
+    const rightHandleY = this.char.y + handleOffsetY;
 
     this.ctx.save();
 
@@ -485,10 +492,12 @@ class RopeGame {
 
     const curveApexY = ropeY;
     const drop = curveApexY - Math.min(leftHandleY, rightHandleY);
+    const isOverhead = drop < 0;
 
-    // 100% smooth, perfectly rounded U-shaped curve at bottom (ZERO dent/bump)
-    const tanSpread = 65 * (1 + 0.1 * ropeZ);
-    const sideSpread = 16;
+    // Aerodynamic bow: spreads outwards when overhead to clear body cleanly
+    const tanSpread = 68 * (1 + 0.1 * ropeZ);
+    const sideSpread = isOverhead ? 26 : 16;
+    const dropFactor = isOverhead ? 0.42 : 0.55;
 
     // Motion trail rings when swinging fast
     if (isFront && this.state === 'PLAYING') {
@@ -496,16 +505,16 @@ class RopeGame {
       this.ctx.strokeStyle = 'rgba(255, 180, 20, 0.28)';
       this.ctx.lineWidth = 1.8;
       this.ctx.beginPath();
-      this.ctx.moveTo(leftHandleX, leftHandleY - 8);
+      this.ctx.moveTo(leftHandleX, leftHandleY - 6);
       this.ctx.bezierCurveTo(
-        leftHandleX - sideSpread - 5, leftHandleY + drop * 0.55 - 8,
-        cx - tanSpread, curveApexY - 8,
-        cx, curveApexY - 8
+        leftHandleX - sideSpread, leftHandleY + drop * dropFactor - 6,
+        cx - tanSpread, curveApexY - 6,
+        cx, curveApexY - 6
       );
       this.ctx.bezierCurveTo(
-        cx + tanSpread, curveApexY - 8,
-        rightHandleX + sideSpread + 5, rightHandleY + drop * 0.55 - 8,
-        rightHandleX, rightHandleY - 8
+        cx + tanSpread, curveApexY - 6,
+        rightHandleX + sideSpread, rightHandleY + drop * dropFactor - 6,
+        rightHandleX, rightHandleY - 6
       );
       this.ctx.stroke();
       this.ctx.restore();
@@ -516,13 +525,13 @@ class RopeGame {
     this.ctx.beginPath();
     this.ctx.moveTo(leftHandleX, leftHandleY);
     this.ctx.bezierCurveTo(
-      leftHandleX - sideSpread, leftHandleY + drop * 0.55,
+      leftHandleX - sideSpread, leftHandleY + drop * dropFactor,
       cx - tanSpread, curveApexY,
       cx, curveApexY
     );
     this.ctx.bezierCurveTo(
       cx + tanSpread, curveApexY,
-      rightHandleX + sideSpread, rightHandleY + drop * 0.55,
+      rightHandleX + sideSpread, rightHandleY + drop * dropFactor,
       rightHandleX, rightHandleY
     );
     this.ctx.stroke();
@@ -536,6 +545,15 @@ class RopeGame {
       this.ctx.stroke();
     }
 
+    // Glowing swivel anchor rings at handle tips
+    this.ctx.fillStyle = isFront ? '#ffd60a' : '#ff9e00';
+    this.ctx.shadowColor = '#ff6a00';
+    this.ctx.shadowBlur = 8;
+    this.ctx.beginPath();
+    this.ctx.arc(leftHandleX, leftHandleY, 3, 0, Math.PI * 2);
+    this.ctx.arc(rightHandleX, rightHandleY, 3, 0, Math.PI * 2);
+    this.ctx.fill();
+
     // Floor contact flash (under feet)
     if (Math.abs(angle - Math.PI / 2) < 0.22 && this.char.jumpHeight > 2) {
       this.ctx.fillStyle = 'rgba(255, 180, 0, 0.75)';
@@ -546,6 +564,29 @@ class RopeGame {
       this.ctx.fill();
     }
 
+    this.ctx.restore();
+  }
+
+  drawHandleConnectors() {
+    const cx = this.char.x;
+    const scaleX = this.char.scaleX || 1;
+    const scaleY = this.char.scaleY || 1;
+    const handleDistX = 99.6 * scaleX;
+    const handleOffsetY = 28.2 * scaleY;
+
+    const leftHandleX = cx - handleDistX;
+    const leftHandleY = this.char.y + handleOffsetY;
+    const rightHandleX = cx + handleDistX;
+    const rightHandleY = this.char.y + handleOffsetY;
+
+    this.ctx.save();
+    this.ctx.fillStyle = '#ff9e00';
+    this.ctx.shadowColor = '#ff6a00';
+    this.ctx.shadowBlur = 8;
+    this.ctx.beginPath();
+    this.ctx.arc(leftHandleX, leftHandleY, 3, 0, Math.PI * 2);
+    this.ctx.arc(rightHandleX, rightHandleY, 3, 0, Math.PI * 2);
+    this.ctx.fill();
     this.ctx.restore();
   }
 

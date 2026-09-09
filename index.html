@@ -165,24 +165,24 @@
         </div>
       </div>
 
-      <!-- Card 4: Coming Soon -->
-      <div class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto opacity-60 cursor-not-allowed">
+      <!-- Card 4: Xếp Hình Neon (Cyber Tetris) -->
+      <div id="cardTetris" class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto" onclick="openArcadeModal('tetris')">
         <div class="arcade-card-header">
-          <span class="arcade-font text-[8px] text-slate-500 tracking-wider">SECRET STAGE</span>
-          <span class="text-slate-600 text-[10px]">SOON</span>
+          <span class="arcade-font text-[8px] text-pink-400 tracking-wider">CYBER BRICK</span>
+          <span class="text-slate-400 text-[10px]">TETRIS</span>
         </div>
-        <div class="arcade-card-screen bg-slate-950 flex items-center justify-center">
-          <div class="arcade-font text-2xl text-slate-700 animate-pulse">?</div>
+        <div class="arcade-card-screen">
+          <img src="assets/tetris-thumb.jpg" alt="Xếp Hình Neon">
           <div class="crt-scanlines"></div>
         </div>
         <div class="arcade-card-body">
           <div>
-            <h3 class="arcade-font text-[10px] sm:text-xs text-slate-400 mb-1 leading-snug">COMING SOON</h3>
-            <p class="text-[10px] sm:text-xs text-slate-500 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
-              Một cuộc phiêu lưu công nghệ mới đang được ấp ủ.
+            <h3 class="arcade-font text-[10px] sm:text-xs text-white mb-1 leading-snug">XẾP HÌNH NEON</h3>
+            <p class="text-[10px] sm:text-xs text-slate-400 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
+              Xếp các khối gạch neon, phá dòng ghi điểm cao kỷ lục!
             </p>
           </div>
-          <button class="arcade-play-btn opacity-40" disabled>STAY TUNED</button>
+          <button class="arcade-play-btn">CHƠI NGAY ▶</button>
         </div>
       </div>
     </div>
@@ -208,15 +208,18 @@
       </div>
 
       <!-- Game Selector Tabs -->
-      <div class="flex items-center gap-1 p-0.5 sm:p-1 bg-slate-950/70 rounded-lg sm:rounded-xl mb-2 sm:mb-3.5 border border-slate-800/80 text-[11px] sm:text-xs">
-        <button class="lb-tab active flex-1 py-1 sm:py-1.5 px-1.5 sm:px-2 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-emerald-400 bg-slate-800/90 border border-emerald-500/40 shadow-sm" data-game="rope">
-          <span>🪢</span><span>Nhảy Dây</span>
+      <div class="grid grid-cols-4 gap-1 p-0.5 sm:p-1 bg-slate-950/70 rounded-lg sm:rounded-xl mb-2 sm:mb-3.5 border border-slate-800/80 text-[10px] sm:text-xs">
+        <button class="lb-tab active py-1 sm:py-1.5 px-1 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-emerald-400 bg-slate-800/90 border border-emerald-500/40 shadow-sm" data-game="rope">
+          <span>🪢</span><span class="truncate">Nhảy Dây</span>
         </button>
-        <button class="lb-tab flex-1 py-1 sm:py-1.5 px-1.5 sm:px-2 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="snake">
-          <span>🐍</span><span>Rắn Săn Mồi</span>
+        <button class="lb-tab py-1 sm:py-1.5 px-1 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="snake">
+          <span>🐍</span><span class="truncate">Rắn</span>
         </button>
-        <button class="lb-tab flex-1 py-1 sm:py-1.5 px-1.5 sm:px-2 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="2048">
-          <span>🔢</span><span>2048 Neon</span>
+        <button class="lb-tab py-1 sm:py-1.5 px-1 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="2048">
+          <span>🔢</span><span class="truncate">2048</span>
+        </button>
+        <button class="lb-tab py-1 sm:py-1.5 px-1 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="tetris">
+          <span>🧱</span><span class="truncate">Xếp Hình</span>
         </button>
       </div>
 
@@ -449,6 +452,88 @@
         </div>
       </section>
 
+      <!-- GAME 4: XẾP HÌNH NEON (CYBER TETRIS) -->
+      <section id="tetrisGameSection" class="w-full max-w-md hidden flex flex-col items-center">
+        <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3 sm:p-4 w-full flex flex-col items-center font-sans">
+          
+          <!-- Top bar: Score, Level, Lines, High, Next piece preview -->
+          <div class="flex items-center justify-between w-full mb-3 gap-2 text-xs">
+            <!-- Stats -->
+            <div class="grid grid-cols-2 gap-1.5 flex-1 font-mono">
+              <div class="bg-slate-800/90 border border-slate-700/60 px-2 py-1 rounded-lg">
+                <span class="text-slate-400 text-[10px] block">Điểm:</span>
+                <b id="tetrisScore" class="text-emerald-400 text-xs sm:text-sm">0</b>
+              </div>
+              <div class="bg-slate-800/90 border border-slate-700/60 px-2 py-1 rounded-lg">
+                <span class="text-slate-400 text-[10px] block">Kỷ lục:</span>
+                <b id="tetrisHighScore" class="text-amber-400 text-xs sm:text-sm">0</b>
+              </div>
+              <div class="bg-slate-800/90 border border-slate-700/60 px-2 py-0.5 rounded-lg text-[11px]">
+                <span class="text-slate-400">Cấp:</span> <b id="tetrisLevel" class="text-cyan-400">1</b>
+              </div>
+              <div class="bg-slate-800/90 border border-slate-700/60 px-2 py-0.5 rounded-lg text-[11px]">
+                <span class="text-slate-400">Dòng:</span> <b id="tetrisLines" class="text-pink-400">0</b>
+              </div>
+            </div>
+
+            <!-- Next Piece Box -->
+            <div class="bg-slate-950/80 border border-slate-800 p-1.5 rounded-xl flex flex-col items-center shrink-0">
+              <span class="text-[9px] font-mono text-slate-400 uppercase mb-1">TIẾP THEO</span>
+              <canvas id="tetrisNextCanvas" width="60" height="60" class="rounded"></canvas>
+            </div>
+          </div>
+
+          <!-- Main Tetris Canvas with Game Over Overlay -->
+          <div class="relative border-2 border-slate-800 rounded-xl overflow-hidden shadow-2xl bg-black">
+            <canvas id="tetrisCanvas"></canvas>
+
+            <!-- Tetris Game Over Overlay -->
+            <div id="tetrisGameOverOverlay" class="absolute inset-0 bg-black/85 backdrop-blur-sm hidden flex flex-col items-center justify-center p-4 z-20 font-sans">
+              <div class="text-3xl mb-1">🧱</div>
+              <h3 class="vn-arcade-font text-xl text-rose-500 mb-1">CHẠM TRẦN RỒI!</h3>
+              <p class="text-[11px] text-slate-400 mb-3 font-mono">Game Over</p>
+
+              <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 w-full max-w-xs mb-3.5 grid grid-cols-2 gap-2 text-center font-sans">
+                <div class="border-r border-slate-800 pr-2">
+                  <div class="text-[10px] font-semibold text-slate-400 uppercase">Điểm số</div>
+                  <div id="tetrisFinalScore" class="text-2xl font-black text-emerald-400">0</div>
+                </div>
+                <div class="pl-2">
+                  <div class="text-[10px] font-semibold text-slate-400 uppercase">Kỷ lục</div>
+                  <div id="tetrisFinalHighScore" class="text-2xl font-black text-amber-400">0</div>
+                </div>
+              </div>
+
+              <div class="w-full max-w-xs grid grid-cols-2 gap-2">
+                <button id="tetrisRestartBtn" class="btn-neon py-2.5 text-xs font-black flex items-center justify-center gap-1 shadow-lg">
+                  <span>🔁</span><span>CHƠI LẠI</span>
+                </button>
+                <button onclick="closeArcadeModal()" class="py-2.5 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl transition flex items-center justify-center gap-1">
+                  <span>🏠</span><span>VỀ MENU</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls for Mobile -->
+          <div class="mt-4 flex items-center justify-center gap-2 sm:hidden touch-none select-none w-full max-w-xs">
+            <!-- Left & Right -->
+            <button id="tetrisLeft" class="dpad-btn-tetris" title="Sang Trái">◀</button>
+            <button id="tetrisRight" class="dpad-btn-tetris" title="Sang Phải">▶</button>
+            <!-- Rotate -->
+            <button id="tetrisRotate" class="dpad-btn-tetris text-cyan-400 border-cyan-500/40" title="Xoay">↻</button>
+            <!-- Soft Down -->
+            <button id="tetrisDown" class="dpad-btn-tetris text-amber-400 border-amber-500/40" title="Thả Nhanh">▼</button>
+            <!-- Hard Drop -->
+            <button id="tetrisDrop" class="dpad-btn-tetris text-rose-400 border-rose-500/40" title="Rơi Ngay">⏬</button>
+          </div>
+
+          <p class="hidden sm:block text-xs text-slate-400 mt-3 text-center font-mono">
+            Phím <b>A / D</b>: Di chuyển • <b>W / X</b>: Xoay • <b>S</b>: Thả nhanh • <b>Space</b>: Rơi tức thì
+          </p>
+        </div>
+      </section>
+
     </div>
   </div>
 
@@ -474,6 +559,7 @@
   <script src="game-rope.js"></script>
   <script src="game-snake.js"></script>
   <script src="game-2048.js"></script>
+  <script src="game-tetris.js"></script>
   <script>
     // Infinite Circular Carousel for Mobile (Seamless ring, no rewind)
     (function() {
@@ -650,6 +736,7 @@
     let ropeGameInstance = null;
     let snakeGameInstance = null;
     let game2048Instance = null;
+    let tetrisGameInstance = null;
     let currentGame = 'rope';
 
     function openArcadeModal(gameType) {
@@ -661,8 +748,9 @@
       const secRope = document.getElementById('ropeGameSection');
       const secSnake = document.getElementById('snakeGameSection');
       const sec2048 = document.getElementById('game2048Section');
+      const secTetris = document.getElementById('tetrisGameSection');
 
-      [secRope, secSnake, sec2048].forEach(s => s.classList.add('hidden'));
+      [secRope, secSnake, sec2048, secTetris].forEach(s => s && s.classList.add('hidden'));
 
       if (gameType === 'rope') {
         titleEl.innerText = 'THẮNG NHẢY DÂY';
@@ -688,6 +776,20 @@
         if (!game2048Instance) {
           game2048Instance = new Game2048('grid2048');
           window.game2048 = game2048Instance;
+        }
+      } else if (gameType === 'tetris') {
+        titleEl.innerText = 'XẾP HÌNH NEON';
+        badgeEl.innerText = 'CYBER BRICK';
+        secTetris.classList.remove('hidden');
+        if (!tetrisGameInstance) {
+          tetrisGameInstance = new TetrisGame('tetrisCanvas', 'tetrisNextCanvas');
+          window.tetrisGame = tetrisGameInstance;
+        } else {
+          setTimeout(() => {
+            tetrisGameInstance.setupCanvas();
+            tetrisGameInstance.draw();
+            tetrisGameInstance.drawNextPiece();
+          }, 50);
         }
       }
 

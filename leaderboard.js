@@ -11,7 +11,7 @@ class LeaderboardManager {
 
   purgeLegacyMockCache() {
     // Clean up any legacy mock data stored during development
-    ['rope', 'snake', '2048'].forEach(g => {
+    ['rope', 'snake', '2048', 'tetris'].forEach(g => {
       const item = localStorage.getItem(`thang_lb_${g}`);
       if (item && (item.includes('DoubleUnder_Pro') || item.includes('CyberCobra') || item.includes('TileSwiper'))) {
         localStorage.removeItem(`thang_lb_${g}`);
@@ -92,7 +92,7 @@ class LeaderboardManager {
     let finalScore = 0;
     let name = this.getPlayerName();
 
-    if (typeof gameOrName === 'string' && ['rope', 'snake', '2048'].includes(gameOrName.toLowerCase())) {
+    if (typeof gameOrName === 'string' && ['rope', 'snake', '2048', 'tetris'].includes(gameOrName.toLowerCase())) {
       game = gameOrName.toLowerCase();
       finalScore = parseInt(score, 10);
       if (maybeName) name = String(maybeName).trim();
@@ -154,6 +154,7 @@ class LeaderboardManager {
       case 'rope': return 'cái';
       case 'snake': return 'điểm';
       case '2048': return 'điểm';
+      case 'tetris': return 'điểm';
       default: return 'điểm';
     }
   }
