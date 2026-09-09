@@ -37,7 +37,7 @@
 
   <!-- Tailwind CSS CDN + Custom Synthwave style.css -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 <body class="bg-[#060714] text-slate-100 flex flex-col min-h-screen">
 
@@ -457,7 +457,7 @@
         <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3 sm:p-4 w-full flex flex-col items-center font-sans">
           
           <!-- Board + Right Sidebar Info Layout -->
-          <div class="flex items-start justify-center gap-2 sm:gap-3 w-full">
+          <div class="flex items-center justify-center gap-3 w-full">
             
             <!-- Main Tetris Canvas with Game Over Overlay -->
             <div class="relative border-2 border-slate-800 rounded-xl overflow-hidden shadow-2xl bg-black shrink-0">
@@ -492,7 +492,7 @@
             </div>
 
             <!-- Right Sidebar: Info Column (Next piece, Score, High score, Level, Lines) -->
-            <div class="flex flex-col gap-1.5 w-20 sm:w-24 shrink-0 font-mono">
+            <div class="flex flex-col gap-2 w-20 sm:w-24 shrink-0 font-mono self-stretch justify-between py-0.5">
               <!-- Next piece box -->
               <div class="bg-slate-950/80 border border-slate-800/90 p-1.5 rounded-xl flex flex-col items-center">
                 <span class="text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-1">TIẾP THEO</span>
@@ -526,24 +526,23 @@
 
           </div>
 
-          <!-- Controls for Mobile (Gamepad 2-hands style: Left = Sang 2 bên, Right = Xoay & Vút xuống) -->
+          <!-- Controls for Mobile: 2 buttons on left, 2 buttons on right (Large 70px) -->
           <div class="mt-4 flex items-center justify-between w-full max-w-sm px-1 sm:hidden touch-none select-none">
-            <!-- Cụm bên trái: nút sang 2 bên (Trái & Phải) - TO HƠN DỄ BẤM -->
-            <div class="flex items-center gap-2.5">
+            <!-- Cụm bên trái: nút sang 2 bên (Trái & Phải) - TO 70px -->
+            <div class="flex items-center gap-3">
               <button id="tetrisLeft" class="dpad-btn-tetris" title="Sang Trái">◀</button>
               <button id="tetrisRight" class="dpad-btn-tetris" title="Sang Phải">▶</button>
             </div>
 
-            <!-- Cụm bên phải: nút xoay và vút xuống - TO HƠN DỄ BẤM -->
-            <div class="flex items-center gap-2">
-              <button id="tetrisDown" class="dpad-btn-tetris dpad-btn-down" title="Vút Xuống (Thả nhanh)">▼</button>
+            <!-- Cụm bên phải: nút xoay và vút xuống - TO 70px -->
+            <div class="flex items-center gap-3">
               <button id="tetrisRotate" class="dpad-btn-tetris dpad-btn-rotate" title="Xoay Khối">↻</button>
-              <button id="tetrisDrop" class="dpad-btn-tetris dpad-btn-harddrop" title="Rơi Tức Thì">⏬</button>
+              <button id="tetrisDrop" class="dpad-btn-tetris dpad-btn-harddrop" title="Vút Xuống / Rơi Đáy">⏬</button>
             </div>
           </div>
 
           <p class="hidden sm:block text-xs text-slate-400 mt-2.5 text-center font-mono">
-            Phím <b>A / D</b>: Di chuyển • <b>W / X</b>: Xoay • <b>S</b>: Thả nhanh • <b>Space</b>: Rơi tức thì
+            Phím <b>A / D</b>: Di chuyển • <b>W / X</b>: Xoay • <b>Space</b>: Vút xuống / Rơi tức thì
           </p>
         </div>
       </section>
@@ -568,12 +567,12 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="audio.js?v=2.2"></script>
-  <script src="leaderboard.js?v=2.2"></script>
-  <script src="game-rope.js?v=2.2"></script>
-  <script src="game-snake.js?v=2.2"></script>
-  <script src="game-2048.js?v=2.2"></script>
-  <script src="game-tetris.js?v=2.2"></script>
+  <script src="audio.js?v=2.3"></script>
+  <script src="leaderboard.js?v=2.3"></script>
+  <script src="game-rope.js?v=2.3"></script>
+  <script src="game-snake.js?v=2.3"></script>
+  <script src="game-2048.js?v=2.3"></script>
+  <script src="game-tetris.js?v=2.3"></script>
   <script>
     // Infinite Circular Carousel for Mobile (Seamless ring, no rewind)
     (function() {

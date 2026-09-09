@@ -588,9 +588,8 @@ class TetrisGame {
     // 2. Locked blocks in grid
     this.drawLockedBlocks();
 
-    // 3. Ghost piece (faint drop preview)
+    // 3. Current falling piece (Ghost piece hint removed as requested)
     if (this.state === 'PLAYING' && this.currentPiece) {
-      this.drawGhostPiece();
       this.drawPiece(this.currentPiece);
     }
 

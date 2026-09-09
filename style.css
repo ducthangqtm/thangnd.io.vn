@@ -428,23 +428,23 @@ canvas {
   box-shadow: 0 0 25px var(--neon-glow-cyan);
 }
 
-/* Ergonomic Dual-Hand D-Pad for Tetris (Large & Responsive) */
+/* Ergonomic Dual-Hand D-Pad for Tetris (Extra Large 70px) */
 .dpad-btn-tetris {
-  width: 64px;
-  height: 64px;
+  width: 70px;
+  height: 70px;
   background: rgba(15, 20, 44, 0.95);
   border: 2px solid rgba(0, 240, 255, 0.45);
-  border-radius: 20px;
+  border-radius: 22px;
   color: var(--neon-cyan);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 900;
   cursor: pointer;
   user-select: none;
   touch-action: manipulation;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(0, 240, 255, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65), inset 0 0 14px rgba(0, 240, 255, 0.12);
   transition: transform 0.06s ease, background 0.06s ease, box-shadow 0.06s ease;
 }
 
@@ -452,55 +452,39 @@ canvas {
   background: var(--neon-cyan);
   color: #060714;
   transform: scale(0.92);
-  box-shadow: 0 0 24px var(--neon-glow-cyan);
+  box-shadow: 0 0 26px var(--neon-glow-cyan);
 }
 
 /* Xoay (Rotate) button highlight - Big & Tactile */
 .dpad-btn-rotate {
-  width: 64px;
-  height: 64px;
+  width: 70px;
+  height: 70px;
   border-color: rgba(232, 121, 249, 0.65);
   color: #e879f9;
-  font-size: 32px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(232, 121, 249, 0.18);
+  font-size: 34px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65), inset 0 0 14px rgba(232, 121, 249, 0.18);
 }
 
 .dpad-btn-rotate:active {
   background: #e879f9;
   color: #060714;
-  box-shadow: 0 0 24px rgba(232, 121, 249, 0.7);
+  box-shadow: 0 0 26px rgba(232, 121, 249, 0.7);
 }
 
-/* Vút xuống / Thả nhanh (Down) button highlight */
-.dpad-btn-down {
-  width: 60px;
-  height: 64px;
-  border-color: rgba(250, 204, 21, 0.65);
-  color: #facc15;
-  font-size: 28px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(250, 204, 21, 0.18);
-}
-
-.dpad-btn-down:active {
-  background: #facc15;
-  color: #060714;
-  box-shadow: 0 0 24px rgba(250, 204, 21, 0.7);
-}
-
-/* Rơi ngay (Hard drop) button highlight */
+/* Rơi ngay (Drop) button highlight */
 .dpad-btn-harddrop {
-  width: 56px;
-  height: 64px;
-  border-color: rgba(244, 63, 94, 0.55);
+  width: 70px;
+  height: 70px;
+  border-color: rgba(244, 63, 94, 0.6);
   color: #f43f5e;
-  font-size: 22px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(244, 63, 94, 0.18);
+  font-size: 28px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65), inset 0 0 14px rgba(244, 63, 94, 0.18);
 }
 
 .dpad-btn-harddrop:active {
   background: #f43f5e;
   color: #060714;
-  box-shadow: 0 0 24px rgba(244, 63, 94, 0.7);
+  box-shadow: 0 0 26px rgba(244, 63, 94, 0.7);
 }
 
 /* Mini D-Pad for 2048 */
