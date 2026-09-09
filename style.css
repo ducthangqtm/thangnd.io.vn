@@ -1,5 +1,5 @@
 /* Synthwave Retro Arcade Theme - Inspired by the Iconic Arcade Aesthetic */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;0,800;1,700&family=Outfit:wght@600;700;800;900&family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
   --bg-deep: #060714;
@@ -69,6 +69,14 @@ header {
 /* Synthwave Typography */
 .arcade-font {
   font-family: 'Press Start 2P', monospace;
+}
+
+/* Chuẩn font chữ game phong cách Arcade hỗ trợ 100% tiếng Việt */
+.vn-arcade-font {
+  font-family: 'Chakra Petch', 'Outfit', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .synth-title {
@@ -158,12 +166,13 @@ header {
 }
 
 .arcade-play-btn {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 11px;
+  font-family: 'Chakra Petch', 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
   background: transparent;
   color: var(--neon-cyan);
   border: 1px solid var(--neon-cyan);
-  padding: 11px 16px;
+  padding: 10px 16px;
   border-radius: 8px;
   text-align: center;
   text-transform: uppercase;
@@ -313,10 +322,11 @@ canvas {
 .btn-neon {
   background: linear-gradient(135deg, #39ff14 0%, #00f0ff 100%);
   color: #060714;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  padding: 15px 24px;
+  font-family: 'Chakra Petch', 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  padding: 13px 26px;
   border-radius: 9999px;
   border: none;
   cursor: pointer;
