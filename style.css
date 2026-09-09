@@ -107,7 +107,7 @@ header {
   background: rgba(12, 14, 36, 0.85);
   border: 2px solid rgba(255, 42, 133, 0.4);
   border-radius: 18px;
-  overflow: hidden;
+  overflow: visible;
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: flex;
   flex-direction: column;
@@ -117,7 +117,7 @@ header {
 }
 
 .arcade-card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: scale(1.02);
   border-color: var(--neon-cyan);
   box-shadow: 0 14px 40px rgba(0, 240, 255, 0.3), 0 0 25px var(--neon-glow-cyan);
 }
@@ -136,6 +136,7 @@ header {
   aspect-ratio: 16 / 9;
   background: #000;
   overflow: hidden;
+  border-radius: 12px 12px 0 0;
 }
 
 .arcade-card-screen img {
@@ -158,7 +159,7 @@ header {
 }
 
 .arcade-card-body {
-  padding: 16px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -168,17 +169,17 @@ header {
 .arcade-play-btn {
   font-family: 'Chakra Petch', 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 13px;
+  font-size: 11px;
   background: transparent;
   color: var(--neon-cyan);
   border: 1px solid var(--neon-cyan);
-  padding: 10px 16px;
+  padding: 7px 12px;
   border-radius: 8px;
   text-align: center;
   text-transform: uppercase;
   transition: all 0.2s ease;
   letter-spacing: 0.08em;
-  margin-top: 14px;
+  margin-top: 10px;
 }
 
 .arcade-card:hover .arcade-play-btn,

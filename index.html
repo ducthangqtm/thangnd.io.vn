@@ -77,16 +77,17 @@
   <!-- Main Arcade Stage (Lobby View) -->
   <main class="relative z-10 flex-1 flex flex-col items-center px-4 pt-6 pb-12 max-w-6xl mx-auto w-full">
 
-    <!-- White House Arcade Style Title Section -->
-    <div class="text-center my-6">
-      <div class="text-[11px] font-bold text-cyan-400 tracking-[0.3em] uppercase mb-2 arcade-font">
+
+    <!-- Title Section - compact on mobile -->
+    <div class="text-center my-3 sm:my-6">
+      <div class="text-[9px] sm:text-[11px] font-bold text-cyan-400 tracking-[0.3em] uppercase mb-1 arcade-font">
         NOW PLAYING
       </div>
-      <h1 class="synth-title">
+      <h1 class="synth-title" style="font-size:clamp(1.4rem,5vw,3.8rem)">
         ARCADE
       </h1>
       <div class="synth-divider"></div>
-      <p class="mt-4 text-xs sm:text-sm text-slate-400 font-mono tracking-widest uppercase">
+      <p class="mt-2 text-[10px] sm:text-sm text-slate-400 font-mono tracking-widest uppercase">
         Select Your Game
       </p>
     </div>
