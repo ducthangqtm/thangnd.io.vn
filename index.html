@@ -164,11 +164,24 @@
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center space-x-2">
           <span class="text-lg">🏆</span>
-          <h3 class="font-extrabold text-sm text-slate-200 uppercase tracking-wide">Bảng Vàng Hành Lang 1m5</h3>
+          <h3 class="font-extrabold text-sm text-slate-200 uppercase tracking-wide">Bảng Vàng Arcade</h3>
         </div>
         <span class="text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">
           Cloudflare D1 Ready
         </span>
+      </div>
+
+      <!-- Game Selector Tabs -->
+      <div class="flex items-center gap-1.5 p-1 bg-slate-950/70 rounded-xl mb-3.5 border border-slate-800/80 text-xs">
+        <button class="lb-tab active flex-1 py-1.5 px-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-emerald-400 bg-slate-800/90 border border-emerald-500/40 shadow-sm" data-game="rope">
+          <span>🪢</span><span>Nhảy Dây</span>
+        </button>
+        <button class="lb-tab flex-1 py-1.5 px-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="snake">
+          <span>🐍</span><span>Rắn Săn Mồi</span>
+        </button>
+        <button class="lb-tab flex-1 py-1.5 px-2 rounded-lg font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="2048">
+          <span>🔢</span><span>2048 Neon</span>
+        </button>
       </div>
 
       <div id="leaderboardList" class="space-y-2">
@@ -472,6 +485,7 @@
 
       // Initialize Leaderboard
       window.leaderboard.renderLeaderboardTable();
+      window.leaderboard.initTabs();
 
       // Modal Controls
       document.getElementById('closeModalBtn').addEventListener('click', closeArcadeModal);
@@ -508,12 +522,20 @@
       const savedName = localStorage.getItem('thang_player_name') || 'VĐV Hành Lang';
       playerInput.value = savedName;
       navPlayerName.innerText = savedName;
+      if (ropeGameInstance) {
+        ropeGameInstance.playerName = savedName;
+      }
 
       const saveName = () => {
         const val = playerInput.value.trim() || 'VĐV Hành Lang';
         localStorage.setItem('thang_player_name', val);
-        ropeGameInstance.playerName = val;
+        if (ropeGameInstance) {
+          ropeGameInstance.playerName = val;
+        }
         navPlayerName.innerText = val;
+        if (window.leaderboard) {
+          window.leaderboard.setPlayerName(val);
+        }
       };
 
       saveNameBtn.addEventListener('click', (e) => {

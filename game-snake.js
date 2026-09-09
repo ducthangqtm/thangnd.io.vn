@@ -127,6 +127,11 @@ class SnakeGame {
         localStorage.setItem('snake_high_score', this.highScore);
       }
       this.updateUI();
+
+      // Submit score to Cloudflare D1 Leaderboard
+      if (window.leaderboard && this.score > 0) {
+        window.leaderboard.submitScore('snake', this.score);
+      }
       return;
     }
 

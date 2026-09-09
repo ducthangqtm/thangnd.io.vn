@@ -131,6 +131,11 @@ class Game2048 {
     }
     this.over = true;
     window.soundEngine.playTrip();
+
+    // Submit score to Cloudflare D1 Leaderboard
+    if (window.leaderboard && this.score > 0) {
+      window.leaderboard.submitScore('2048', this.score);
+    }
   }
 
   render() {

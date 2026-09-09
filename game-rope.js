@@ -172,7 +172,7 @@ class RopeGame {
     }
 
     if (window.leaderboard) {
-      window.leaderboard.submitScore(this.playerName, this.score);
+      window.leaderboard.submitScore('rope', this.score, this.playerName || window.leaderboard.getPlayerName());
     }
 
     setTimeout(() => {
