@@ -45,30 +45,30 @@
   <div class="retro-grid-bg"></div>
 
   <!-- Header Bar -->
-  <header class="px-4 py-3 sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-3">
+  <header class="px-3 py-2.5 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 min-w-0">
         <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" title="TiT Studio (thangit.com)" class="flex-shrink-0 transition-transform hover:scale-110">
-          <img src="assets/logo-tit.svg" alt="TiT Logo" class="w-10 h-10 drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]">
+          <img src="assets/logo-tit.svg" alt="TiT Logo" class="w-8 h-8 sm:w-10 sm:h-10 drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]">
         </a>
-        <img src="assets/thang-avatar.jpg" alt="Thắng ND" class="w-10 h-10 rounded-full border-2 border-emerald-400 object-cover shadow-md shadow-emerald-500/30">
-        <div>
-          <a href="#" class="font-extrabold text-base tracking-wider arcade-font text-white hover:text-emerald-400 transition">
+        <img src="assets/thang-avatar.jpg" alt="Thắng ND" class="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 rounded-full border-2 border-emerald-400 object-cover shadow-md shadow-emerald-500/30">
+        <div class="min-w-0">
+          <a href="#" class="block whitespace-nowrap font-extrabold text-[11px] sm:text-base tracking-wider arcade-font text-white hover:text-emerald-400 transition leading-tight">
             THANG ND <span class="text-emerald-400">.IO</span>
           </a>
-          <p class="text-[10px] text-slate-400 font-mono tracking-widest uppercase">Ecosystem by TiT</p>
+          <p class="hidden sm:block text-[10px] text-slate-400 font-mono tracking-widest uppercase">Ecosystem by TiT</p>
         </div>
       </div>
 
       <!-- Controls & Player Name -->
-      <div class="flex items-center space-x-2">
-        <button id="playerNameBtn" class="flex items-center space-x-1 text-xs bg-slate-900/90 hover:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 transition">
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <button id="playerNameBtn" class="flex items-center gap-1 text-xs bg-slate-900/90 hover:bg-slate-800 px-2.5 py-1.5 rounded-full border border-slate-700 transition">
           <span class="text-slate-400">👤</span>
-          <span id="navPlayerName" class="font-bold text-slate-200 truncate max-w-[110px]">VĐV Hành Lang</span>
-          <span class="text-[10px] text-emerald-400 ml-0.5">✏️</span>
+          <span id="navPlayerName" class="font-bold text-slate-200 truncate max-w-[70px] sm:max-w-[110px]">VĐV Hành Lang</span>
+          <span class="text-[10px] text-emerald-400">✏️</span>
         </button>
 
-        <button id="soundToggleBtn" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700 flex items-center justify-center text-sm transition" title="Bật/Tắt âm thanh">
+        <button id="soundToggleBtn" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700 flex items-center justify-center text-sm transition" title="Bật/Tắt âm thanh">
           <span id="soundIcon">🔊</span>
         </button>
       </div>
