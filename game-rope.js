@@ -365,7 +365,7 @@ class RopeGame {
     const w = this.width;
     const h = this.height;
 
-    // Draw the clean, realistic indoor apartment hallway (assets/hallway-bg.jpg)
+    // Draw high-octane Cyberpunk corridor (assets/hallway-bg.jpg)
     if (this.bgImg && this.bgImg.complete && this.bgImg.naturalWidth > 0) {
       const imgW = this.bgImg.naturalWidth;
       const imgH = this.bgImg.naturalHeight;
@@ -373,14 +373,13 @@ class RopeGame {
       const sw = w / scale;
       const sh = h / scale;
       const sx = (imgW - sw) / 2;
-      const sy = (imgH - sh) * 0.44; // Center perspective beautifully
+      const sy = (imgH - sh) * 0.44;
       this.ctx.drawImage(this.bgImg, sx, sy, sw, sh, 0, 0, w, h);
     } else {
-      // Warm realistic corridor fallback
       const grad = this.ctx.createLinearGradient(0, 0, 0, h);
-      grad.addColorStop(0, '#ebe6de');
-      grad.addColorStop(0.5, '#ddd6cb');
-      grad.addColorStop(1, '#c5beb3');
+      grad.addColorStop(0, '#0b0e1c');
+      grad.addColorStop(0.5, '#090c18');
+      grad.addColorStop(1, '#070913');
       this.ctx.fillStyle = grad;
       this.ctx.fillRect(0, 0, w, h);
     }
@@ -396,15 +395,17 @@ class RopeGame {
 
     this.ctx.save();
     this.ctx.beginPath();
-    this.ctx.ellipse(x, y, 68 * scale, 16 * scale, 0, 0, Math.PI * 2);
+    this.ctx.ellipse(x, y, 68 * scale, 15 * scale, 0, 0, Math.PI * 2);
     this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
     this.ctx.fill();
 
-    // Floor warm ambient reflection under shoes
+    // Cyberpunk wet floor neon reflection under shoes
     if (jump < 20) {
       this.ctx.beginPath();
-      this.ctx.ellipse(x, y + 2, 45 * scale, 8 * scale, 0, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(255, 170, 0, ${0.18 * (1 - jump / 20)})`;
+      this.ctx.ellipse(x, y + 2, 48 * scale, 8 * scale, 0, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(0, 240, 255, ${0.28 * (1 - jump / 20)})`;
+      this.ctx.shadowColor = '#00f0ff';
+      this.ctx.shadowBlur = 10;
       this.ctx.fill();
     }
     this.ctx.restore();
