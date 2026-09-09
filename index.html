@@ -478,19 +478,39 @@
   <script src="game-snake.js"></script>
   <script src="game-2048.js"></script>
   <script>
-    // Carousel dots indicator
+    // Carousel: dots indicator + infinite loop (card 4 → card 1)
     (function() {
       const carousel = document.getElementById('gameCarousel');
       const dots = document.querySelectorAll('#carouselDots span');
-      if (!carousel || !dots.length) return;
-      carousel.addEventListener('scroll', () => {
-        const cardW = carousel.scrollWidth / 4;
-        const idx = Math.round(carousel.scrollLeft / cardW);
+      if (!carousel) return;
+
+      const CARD_COUNT = 4;
+      let isLooping = false;
+
+      function updateDots() {
+        const cardW = carousel.clientWidth * 0.80 + 16; // 80vw + gap
+        const idx = Math.min(Math.round(carousel.scrollLeft / cardW), CARD_COUNT - 1);
         dots.forEach((d, i) => {
-          d.style.background = i === idx ? 'var(--neon-cyan)' : 'rgb(71,85,105)';
-          d.style.width = i === idx ? '8px' : '6px';
-          d.style.height = i === idx ? '8px' : '6px';
+          const active = i === idx;
+          d.style.background = active ? 'var(--neon-cyan)' : 'rgb(71,85,105)';
+          d.style.width = active ? '8px' : '6px';
+          d.style.height = active ? '8px' : '6px';
         });
+      }
+
+      carousel.addEventListener('scroll', () => {
+        if (isLooping) return;
+        updateDots();
+
+        // Loop: if scrolled to (or past) the end spacer, snap back to start
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        if (carousel.scrollLeft >= maxScroll - 8) {
+          isLooping = true;
+          setTimeout(() => {
+            carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            setTimeout(() => { isLooping = false; updateDots(); }, 400);
+          }, 350);
+        }
       }, { passive: true });
     })();
   </script>
