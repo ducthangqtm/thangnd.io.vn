@@ -111,31 +111,36 @@ header {
   }
 }
 
-/* Arcade Game Cards - Compact fixed block, no hover scale to avoid clipping */
+/* Arcade Game Cards - Fixed solid block, NO hover effects to prevent clipping/distortion */
 .arcade-card {
-  background: rgba(12, 14, 36, 0.9);
-  border: 1.5px solid rgba(255, 42, 133, 0.35);
+  background: rgba(12, 14, 36, 0.92);
+  border: 1.5px solid rgba(255, 42, 133, 0.4);
   border-radius: 14px;
   overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .arcade-card:hover {
-    border-color: rgba(0, 240, 255, 0.6);
-    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
-  }
+.arcade-card *,
+#gameCarousel * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .arcade-card-header {
-  background: rgba(20, 24, 54, 0.9);
-  padding: 5px 8px;
+  background: rgba(20, 24, 54, 0.95);
+  padding: 6px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -153,6 +158,7 @@ header {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  pointer-events: none;
 }
 
 .crt-scanlines {
@@ -164,7 +170,7 @@ header {
 }
 
 .arcade-card-body {
-  padding: 7px 8px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -178,19 +184,22 @@ header {
   background: transparent;
   color: var(--neon-cyan);
   border: 1px solid var(--neon-cyan);
-  padding: 4px 8px;
+  padding: 5px 8px;
   border-radius: 6px;
   text-align: center;
   text-transform: uppercase;
-  transition: all 0.2s ease;
   letter-spacing: 0.05em;
   margin-top: 6px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-.arcade-play-btn:hover {
-  background: var(--neon-cyan);
-  color: #060714;
-  box-shadow: 0 0 12px var(--neon-glow-cyan);
+#gameCarousel {
+  -webkit-overflow-scrolling: touch;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 #gameCarousel::-webkit-scrollbar {
