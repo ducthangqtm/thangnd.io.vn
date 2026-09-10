@@ -319,11 +319,11 @@ window.handleAuthAction = async function(action) {
 
       window.leaderboard.playerId = data.player_id;
 
+      const toSubmit = window.pendingScore; // Lưu lại trước khi closeAuthModal() xóa đi
       closeAuthModal();
 
-      if (window.pendingScore) {
-        window.leaderboard.submitScore(window.pendingScore.game, window.pendingScore.score, data.name);
-        window.pendingScore = null;
+      if (toSubmit) {
+        await window.leaderboard.submitScore(toSubmit.game, toSubmit.score, data.name);
       }
       
       window.leaderboard.renderLeaderboardTable(window.leaderboard.activeGame);
