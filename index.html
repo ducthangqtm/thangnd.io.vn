@@ -430,11 +430,8 @@
             </div>
           </div>
 
-          <div id="grid2048" class="grid-2048 touch-none select-none"></div>
-
           <!-- 2048: Vuốt để chơi (không cần D-Pad) -->
-
-          <div class="flex justify-between items-center w-full mt-4 text-xs font-sans gap-2">
+          <div class="flex justify-between items-center w-full mb-3 text-xs font-sans gap-2">
             <button onclick="closeArcadeModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5">
               <span>🏠</span><span>Về Trang Chủ</span>
             </button>
@@ -442,6 +439,10 @@
               <span>🔁</span><span>Chơi Lại</span>
             </button>
           </div>
+
+          <div id="grid2048" class="grid-2048 touch-none select-none"></div>
+
+          <p class="text-[10px] text-slate-500 mt-3 text-center font-mono hidden sm:block">Dùng phím mũi tên hoặc vuốt để di chuyển ô số</p>
         </div>
       </section>
 
@@ -519,24 +520,38 @@
 
           </div>
 
-          <!-- Controls for Mobile: 2 buttons on left, 2 buttons on right (Large 70px) -->
+          <!-- Controls for Mobile: Left (◀▶), Right (⏬↻) - drop first, rotate second -->
           <div class="mt-4 flex items-center justify-between w-full max-w-sm px-1 sm:hidden touch-none select-none">
-            <!-- Cụm bên trái: nút sang 2 bên (Trái & Phải) - TO 70px -->
+            <!-- Cụm bên trái: di chuyển trái phải -->
             <div class="flex items-center gap-3">
               <button id="tetrisLeft" class="dpad-btn-tetris" title="Sang Trái">◀</button>
               <button id="tetrisRight" class="dpad-btn-tetris" title="Sang Phải">▶</button>
             </div>
 
-            <!-- Cụm bên phải: nút xoay và vút xuống - TO 70px -->
+            <!-- Cụm bên phải: phi xuống trước, xoay sau -->
             <div class="flex items-center gap-3">
-              <button id="tetrisRotate" class="dpad-btn-tetris dpad-btn-rotate" title="Xoay Khối">↻</button>
               <button id="tetrisDrop" class="dpad-btn-tetris dpad-btn-harddrop" title="Vút Xuống / Rơi Đáy">⏬</button>
+              <button id="tetrisRotate" class="dpad-btn-tetris dpad-btn-rotate" title="Xoay Khối">↻</button>
             </div>
           </div>
 
-          <p class="hidden sm:block text-xs text-slate-400 mt-2.5 text-center font-mono">
-            Phím <b>A / D</b>: Di chuyển • <b>W / X</b>: Xoay • <b>Space</b>: Vút xuống / Rơi tức thì
-          </p>
+          <!-- PC Keyboard Hint -->
+          <div class="hidden sm:flex items-center justify-center gap-4 mt-3 flex-wrap">
+            <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
+              <span class="bg-slate-800 border border-slate-600 rounded px-1.5 py-0.5 text-slate-300 font-bold">A</span>
+              <span class="bg-slate-800 border border-slate-600 rounded px-1.5 py-0.5 text-slate-300 font-bold">D</span>
+              <span>Di chuyển</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
+              <span class="bg-slate-800 border border-slate-600 rounded px-1.5 py-0.5 text-slate-300 font-bold">W</span>
+              <span class="bg-slate-800 border border-slate-600 rounded px-1.5 py-0.5 text-slate-300 font-bold">X</span>
+              <span>Xoay</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
+              <span class="bg-slate-800 border border-slate-600 rounded px-2 py-0.5 text-slate-300 font-bold">Space</span>
+              <span>Rơi tức thì</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -633,6 +648,7 @@
       clonesBefore.forEach(c => carousel.insertBefore(c, originalCards[0]));
       // Append clones after
       clonesAfter.forEach(c => carousel.appendChild(c));
+      const gameNames = ['rope', 'snake', '2048', 'tetris'];
 
       let itemWidth = 0;
       let setDistance = 0;
@@ -663,6 +679,21 @@
           d.style.height = active ? '8px' : '5px';
           d.style.boxShadow = active ? '0 0 8px var(--neon-cyan)' : 'none';
         });
+
+        // Sync leaderboard tab to match the visible game card
+        const gameNames = ['rope', 'snake', '2048', 'tetris'];
+        const activeGame = gameNames[norm];
+        if (activeGame && window.leaderboard) {
+          window.leaderboard.renderLeaderboardTable(activeGame);
+          document.querySelectorAll('.lb-tab').forEach(t => {
+            const isActive = t.dataset.game === activeGame;
+            t.classList.toggle('active', isActive);
+            t.classList.toggle('text-emerald-400', isActive);
+            t.classList.toggle('bg-slate-800/90', isActive);
+            t.classList.toggle('border-emerald-500/40', isActive);
+            t.classList.toggle('text-slate-400', !isActive);
+          });
+        }
       }
 
       function initialPosition() {
@@ -841,14 +872,17 @@
       document.body.style.overflow = '';
     }
 
-    // Toggle real fullscreen API
+    // Toggle real fullscreen API — target the arcade modal element
     function toggleFullscreen() {
+      const modal = document.getElementById('arcadeModal');
+      const target = modal || document.documentElement;
       if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
+        target.requestFullscreen && target.requestFullscreen().catch(() => {
+          // Fallback: fullscreen the whole page
+          document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {});
+        });
       } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
+        document.exitFullscreen && document.exitFullscreen();
       }
     }
 
