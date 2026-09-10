@@ -43,28 +43,54 @@ export async function onRequestPost(context) {
     const name = String(body.name || 'Ẩn danh').trim().slice(0, 30);
     const game = String(body.game || 'rope').toLowerCase().trim().slice(0, 32);
 
-    // Case 1: Player just updated their display name
-    if (body.action === 'update_name') {
-      if (env && env.DB && playerId) {
-        await env.DB.prepare(
-          "UPDATE leaderboard SET name = ? WHERE player_id = ?"
-        ).bind(name, playerId).run();
-      }
-      return new Response(JSON.stringify({ success: true, updatedName: name }), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+    const headers = {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    };
+
+    // Case 1: Player Registration
+    if (body.action === 'register') {
+      const pin = String(body.pin || '').trim();
+      if (!pin || pin.length !== 4) return new Response(JSON.stringify({ error: 'Mã PIN phải gồm 4 ký tự' }), { status: 400, headers });
+      
+      if (env && env.DB) {
+        const existing = await env.DB.prepare("SELECT * FROM players WHERE name = ?").bind(name).first();
+        if (existing) {
+          return new Response(JSON.stringify({ error: 'Tên đã tồn tại. Vui lòng nhập PIN để đăng nhập hoặc chọn tên khác.', exists: true }), { status: 409, headers });
         }
-      });
+        
+        await env.DB.prepare("INSERT INTO players (name, pin, player_id) VALUES (?, ?, ?)").bind(name, pin, playerId).run();
+        await env.DB.prepare("UPDATE leaderboard SET name = ? WHERE player_id = ?").bind(name, playerId).run();
+      }
+      return new Response(JSON.stringify({ success: true, name, player_id: playerId }), { headers });
     }
 
-    // Case 2: Score submission
+    // Case 2: Player Login
+    if (body.action === 'login') {
+      const pin = String(body.pin || '').trim();
+      if (env && env.DB) {
+        const existing = await env.DB.prepare("SELECT * FROM players WHERE name = ? AND pin = ?").bind(name, pin).first();
+        if (!existing) {
+          return new Response(JSON.stringify({ error: 'Tên không tồn tại hoặc sai mã PIN.' }), { status: 401, headers });
+        }
+        return new Response(JSON.stringify({ success: true, name, player_id: existing.player_id }), { headers });
+      }
+      return new Response(JSON.stringify({ error: 'DB not connected' }), { status: 500, headers });
+    }
+
+    // Case 3: Score submission
     const score = parseInt(body.score, 10);
     if (isNaN(score) || score <= 0) {
-      return new Response(JSON.stringify({ error: 'Invalid score' }), { status: 400 });
+      return new Response(JSON.stringify({ error: 'Invalid score' }), { status: 400, headers });
     }
 
     if (env && env.DB) {
+      // Validate ownership if name is registered
+      const registered = await env.DB.prepare("SELECT player_id FROM players WHERE name = ?").bind(name).first();
+      if (registered && registered.player_id !== playerId) {
+        return new Response(JSON.stringify({ error: 'Tên này đã được đăng ký. Vui lòng đăng nhập hoặc chọn tên khác.', needsLogin: true }), { status: 403, headers });
+      }
+
       // 1. Synchronize name across all records of this player
       await env.DB.prepare(
         "UPDATE leaderboard SET name = ? WHERE player_id = ?"
@@ -81,14 +107,9 @@ export async function onRequestPost(context) {
       `).bind(playerId, game, name, score).run();
     }
 
-    return new Response(JSON.stringify({ success: true, player_id: playerId, game, name, score }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+    return new Response(JSON.stringify({ success: true, player_id: playerId, game, name, score }), { headers });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
   }
 }
 

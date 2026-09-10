@@ -13,3 +13,11 @@ CREATE TABLE IF NOT EXISTS leaderboard (
 -- Indices for rapid leaderboard sorting & player lookup
 CREATE INDEX IF NOT EXISTS idx_leaderboard_game_score ON leaderboard(game, score DESC);
 CREATE INDEX IF NOT EXISTS idx_leaderboard_player ON leaderboard(player_id);
+
+-- Players table for Name and PIN management
+CREATE TABLE IF NOT EXISTS players (
+  name TEXT PRIMARY KEY COLLATE NOCASE,
+  pin TEXT NOT NULL,
+  player_id TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

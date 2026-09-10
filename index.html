@@ -61,7 +61,7 @@
 
       <!-- Controls & Player Name -->
       <div class="flex items-center gap-1.5 flex-shrink-0">
-        <button id="playerNameBtn" class="flex items-center gap-1 text-xs bg-slate-900/90 hover:bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 transition">
+        <button id="playerNameBtn" class="flex items-center gap-1 text-xs bg-slate-900/90 hover:bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 transition" onclick="openAuthModal()">
           <span class="text-slate-400">👤</span>
           <span id="navPlayerName" class="font-bold text-slate-200 truncate max-w-[70px] sm:max-w-[110px]">VĐV Hành Lang</span>
           <span class="text-[10px] text-emerald-400">✏️</span>
@@ -307,14 +307,7 @@
               Hành lang hẹp 1.5m không ngăn được đam mê! Căn đúng nhịp dây chạm sàn để nhảy qua.
             </p>
 
-            <!-- Nickname input -->
-            <div class="w-full max-w-xs mb-4 ui-interactive font-sans">
-              <label class="block text-left text-[11px] font-semibold text-slate-400 mb-1">Tên của bạn:</label>
-              <div class="flex">
-                <input type="text" id="playerInput" maxlength="20" placeholder="Nhập tên..." class="w-full bg-slate-900 border border-slate-700 rounded-l-xl px-3 py-2 text-base text-white focus:outline-none focus:border-emerald-400">
-                <button id="saveNameBtn" class="bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-r-xl border border-l-0 border-slate-700 text-xs font-bold text-emerald-400">Lưu</button>
-              </div>
-            </div>
+            <!-- Removed inline nickname input to use Auth Modal -->
 
             <button id="startBtn" class="btn-neon w-full max-w-xs py-3.5 mb-3">
               BẮT ĐẦU NHẢY 🚀
@@ -547,6 +540,38 @@
         </div>
       </section>
 
+    </div>
+  </div>
+
+  <!-- ================= AUTH MODAL (NAME & PIN) ================= -->
+  <div id="authModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-sans">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-5 shadow-2xl transform scale-100 transition-transform">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-black text-emerald-400 flex items-center gap-2">
+          <span>🛡️</span> Xác Nhận Danh Tính
+        </h3>
+        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <p class="text-xs text-slate-300 mb-4" id="authModalDesc">
+        Bạn đã lọt vào Top 10! Vui lòng tạo hoặc nhập mã PIN 4 số để bảo vệ tên của bạn.
+      </p>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 mb-1 uppercase tracking-wider">Tên hiển thị</label>
+          <input type="text" id="authNameInput" maxlength="20" placeholder="Nhập tên..." class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 mb-1 uppercase tracking-wider">Mã PIN (4 số)</label>
+          <input type="password" id="authPinInput" inputmode="numeric" maxlength="4" placeholder="••••" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-center text-xl tracking-[0.5em] text-white focus:outline-none focus:border-emerald-400">
+        </div>
+        <div id="authErrorMsg" class="text-rose-400 text-[11px] hidden mt-1 font-semibold"></div>
+      </div>
+
+      <div class="mt-5 grid grid-cols-2 gap-3">
+        <button id="authLoginBtn" onclick="handleAuthAction('login')" class="py-2.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-sm transition">Đăng Nhập</button>
+        <button id="authRegisterBtn" onclick="handleAuthAction('register')" class="py-2.5 rounded-xl font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-900 text-sm transition shadow-[0_0_10px_rgba(16,185,129,0.3)]">Đăng Ký Mới</button>
+      </div>
     </div>
   </div>
 
@@ -862,51 +887,19 @@
         updateSoundUI();
       });
 
-      // Player Name
-      const playerInput = document.getElementById('playerInput');
+      // Player Name init
       const navPlayerName = document.getElementById('navPlayerName');
-      const saveNameBtn = document.getElementById('saveNameBtn');
-      const playerNameBtn = document.getElementById('playerNameBtn');
-
       const savedName = localStorage.getItem('thang_player_name') || 'VĐV Hành Lang';
-      playerInput.value = savedName;
-      navPlayerName.innerText = savedName;
+      
+      if (navPlayerName) navPlayerName.innerText = savedName;
       if (ropeGameInstance) {
         ropeGameInstance.playerName = savedName;
       }
 
-      const saveName = () => {
-        const val = playerInput.value.trim() || 'VĐV Hành Lang';
-        localStorage.setItem('thang_player_name', val);
-        if (ropeGameInstance) {
-          ropeGameInstance.playerName = val;
-        }
-        navPlayerName.innerText = val;
-        if (window.leaderboard) {
-          window.leaderboard.setPlayerName(val);
-        }
-      };
-
-      saveNameBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        saveName();
-        saveNameBtn.innerText = 'Đã lưu ✓';
-        setTimeout(() => saveNameBtn.innerText = 'Lưu', 1500);
-      });
-
-      playerNameBtn.addEventListener('click', () => {
-        const newName = prompt('Nhập tên hoặc biệt danh của bạn:', ropeGameInstance.playerName);
-        if (newName && newName.trim()) {
-          playerInput.value = newName.trim();
-          saveName();
-        }
-      });
-
       // Start & Restart Buttons
       document.getElementById('startBtn').addEventListener('click', (e) => {
         e.stopPropagation();
-        saveName();
-        ropeGameInstance.startGame();
+        if (ropeGameInstance) ropeGameInstance.startGame();
       });
 
       document.getElementById('restartBtn').addEventListener('click', (e) => {

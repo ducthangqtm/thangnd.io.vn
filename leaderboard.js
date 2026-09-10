@@ -37,28 +37,15 @@ class LeaderboardManager {
     return localStorage.getItem('thang_player_name') || 'VĐV Hành Lang';
   }
 
-  async setPlayerName(name) {
-    if (!name || !name.trim()) return;
-    const cleanName = name.trim().slice(0, 30);
-    localStorage.setItem('thang_player_name', cleanName);
+  hasRegistered() {
+    return localStorage.getItem('thang_player_registered') === 'true';
+  }
 
-    // Notify backend to update name across all leaderboards for this player
-    try {
-      await fetch(this.apiBase, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'update_name',
-          player_id: this.playerId,
-          name: cleanName
-        })
-      });
-    } catch (e) {
-      // Local fallback
-    }
-
-    // Refresh current leaderboard table
-    this.renderLeaderboardTable(this.activeGame);
+  async checkTop10Eligibility(game, score) {
+    const list = await this.fetchTopScores(game);
+    if (!list || list.length < 10) return true;
+    const lowest = list[list.length - 1].score;
+    return score > lowest;
   }
 
   async fetchTopScores(game = this.activeGame) {
@@ -104,9 +91,21 @@ class LeaderboardManager {
 
     if (isNaN(finalScore) || finalScore <= 0) return;
 
+    // Check if eligible for top 10 and not registered
+    if (!this.hasRegistered()) {
+      const eligible = await this.checkTop10Eligibility(game, finalScore);
+      if (eligible) {
+        window.pendingScore = { game, score: finalScore };
+        if (typeof openAuthModal === 'function') {
+          openAuthModal('Bạn đã lọt vào Top 10! Vui lòng tạo hoặc nhập mã PIN 4 số để bảo vệ tên của bạn.');
+        }
+        return; // Pause submission until auth
+      }
+    }
+
     // 1. Send to Cloudflare D1
     try {
-      await fetch(this.apiBase, {
+      const res = await fetch(this.apiBase, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -116,6 +115,14 @@ class LeaderboardManager {
           score: finalScore
         })
       });
+      const data = await res.json();
+      if (data.needsLogin) {
+        window.pendingScore = { game, score: finalScore };
+        if (typeof openAuthModal === 'function') {
+          openAuthModal('Tên này đã được đăng ký. Vui lòng nhập PIN để đăng nhập hoặc chọn tên khác.');
+        }
+        return; // Pause submission
+      }
     } catch (e) {
       // Offline fallback
     }
@@ -239,3 +246,92 @@ function escapeHtml(str) {
 }
 
 window.leaderboard = new LeaderboardManager();
+
+// ================= AUTH MODAL GLOBALS =================
+window.openAuthModal = function(desc = 'Vui lòng xác nhận danh tính của bạn để lưu tên.') {
+  const modal = document.getElementById('authModal');
+  if (!modal) return;
+  const descEl = document.getElementById('authModalDesc');
+  const nameInput = document.getElementById('authNameInput');
+  const pinInput = document.getElementById('authPinInput');
+  const errorMsg = document.getElementById('authErrorMsg');
+
+  if (descEl) descEl.innerText = desc;
+  if (nameInput) nameInput.value = window.leaderboard.getPlayerName() !== 'VĐV Hành Lang' ? window.leaderboard.getPlayerName() : '';
+  if (pinInput) pinInput.value = '';
+  if (errorMsg) errorMsg.classList.add('hidden');
+  
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+window.closeAuthModal = function() {
+  const modal = document.getElementById('authModal');
+  if (!modal) return;
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  window.pendingScore = null;
+}
+
+window.handleAuthAction = async function(action) {
+  const name = document.getElementById('authNameInput').value.trim();
+  const pin = document.getElementById('authPinInput').value.trim();
+  const errorMsg = document.getElementById('authErrorMsg');
+  const btnLogin = document.getElementById('authLoginBtn');
+  const btnRegister = document.getElementById('authRegisterBtn');
+
+  if (!name || name.length < 2) {
+    if (errorMsg) { errorMsg.innerText = 'Tên phải có ít nhất 2 ký tự!'; errorMsg.classList.remove('hidden'); }
+    return;
+  }
+  if (!pin || pin.length !== 4) {
+    if (errorMsg) { errorMsg.innerText = 'Mã PIN phải gồm 4 chữ số!'; errorMsg.classList.remove('hidden'); }
+    return;
+  }
+
+  if (btnLogin) btnLogin.disabled = true;
+  if (btnRegister) btnRegister.disabled = true;
+  if (errorMsg) errorMsg.classList.add('hidden');
+
+  try {
+    const res = await fetch(window.leaderboard.apiBase, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: action,
+        name: name,
+        pin: pin,
+        player_id: window.leaderboard.getPlayerId()
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      if (errorMsg) { errorMsg.innerText = data.error || 'Đã có lỗi xảy ra.'; errorMsg.classList.remove('hidden'); }
+    } else {
+      // Success
+      localStorage.setItem('thang_player_name', data.name);
+      localStorage.setItem('thang_arcade_player_id', data.player_id);
+      localStorage.setItem('thang_player_registered', 'true');
+      
+      const navPlayerName = document.getElementById('navPlayerName');
+      if (navPlayerName) navPlayerName.innerText = data.name;
+
+      window.leaderboard.playerId = data.player_id;
+
+      closeAuthModal();
+
+      if (window.pendingScore) {
+        window.leaderboard.submitScore(window.pendingScore.game, window.pendingScore.score, data.name);
+        window.pendingScore = null;
+      }
+      
+      window.leaderboard.renderLeaderboardTable(window.leaderboard.activeGame);
+    }
+  } catch (err) {
+    if (errorMsg) { errorMsg.innerText = 'Không thể kết nối máy chủ.'; errorMsg.classList.remove('hidden'); }
+  }
+
+  if (btnLogin) btnLogin.disabled = false;
+  if (btnRegister) btnRegister.disabled = false;
+}
