@@ -1,972 +1,369 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Thắng ND Arcade (.IO) — Select Your Game</title>
-  <meta name="description" content="Thang ND Arcade - Khu trò chơi web retro 8-bit & Thắng Nhảy Dây hành lang 1.5m. Lấy cảm hứng từ phong cách White House Arcade.">
-  <meta name="keywords" content="Thắng ND, Thang ND Arcade, Thắng Nhảy Dây, thangnd.io.vn, Cyber Snake, 2048 Neon, thangit.com, thangnhayday.com">
-  <meta name="author" content="Nguyễn Đức Thắng (Thắng ND)">
-  <meta name="theme-color" content="#060714">
-  <link rel="canonical" href="https://thangnd.io.vn/">
-  
-  <!-- Open Graph / Facebook / Zalo -->
-  <meta property="og:title" content="Thắng ND Arcade (.IO) — Select Your Game">
-  <meta property="og:description" content="Khu trò chơi Arcade Retro: Thắng Nhảy Dây, Cyber Snake, 2048 Neon với Bảng xếp hạng online toàn cầu!">
-  <meta property="og:image" content="assets/thang-rope-thumb.jpg">
-  <meta property="og:url" content="https://thangnd.io.vn/">
-  <meta property="og:type" content="website">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>thangnd.io.vn — Website đang bảo trì & nâng cấp</title>
+  <meta name="description" content="Website thangnd.io.vn đang trong quá trình bảo trì và nâng cấp để chuẩn bị ra mắt dự án mới." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  <!-- Schema.org JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Thắng ND Arcade",
-    "url": "https://thangnd.io.vn/",
-    "applicationCategory": "GameApplication",
-    "operatingSystem": "All",
-    "author": {
-      "@type": "Person",
-      "name": "Nguyễn Đức Thắng",
-      "url": "https://thangnd.io.vn/"
-    },
-    "description": "Cổng trò chơi arcade retro: Thắng Nhảy Dây hành lang 1.5m, Cyber Snake và 2048 Neon với Bảng xếp hạng online Cloudflare D1."
-  }
-  </script>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(15, 23, 42, 0.65);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.35);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.3);
+      --warning: #f59e0b;
+      --warning-glow: rgba(245, 158, 11, 0.2);
+    }
 
-  <!-- Tailwind CSS CDN + Custom Synthwave style.css -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css?v=2.3">
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Background Ambient Glows */
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
+      animation: float 8s ease-in-out infinite alternate;
+    }
+
+    .glow-orb-1 {
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, #4f46e5 0%, rgba(79, 70, 229, 0) 70%);
+      top: -100px;
+      left: 10%;
+    }
+
+    .glow-orb-2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #0284c7 0%, rgba(2, 132, 199, 0) 70%);
+      bottom: -80px;
+      right: 10%;
+      animation-delay: -4s;
+    }
+
+    .glow-orb-3 {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0) 70%);
+      top: 45%;
+      left: 55%;
+      animation-delay: -2s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+      100% {
+        transform: translate(30px, -25px) scale(1.08);
+      }
+    }
+
+    /* Grid Overlay Pattern */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Main Container */
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 620px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 48px 36px;
+      text-align: center;
+      box-shadow: 
+        0 20px 50px -10px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+      transition: border-color 0.3s ease;
+    }
+
+    .container:hover {
+      border-color: var(--border-hover);
+    }
+
+    /* Status Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fbbf24;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #f59e0b;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #f59e0b;
+      position: relative;
+    }
+
+    .badge-dot::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 1.5px solid #f59e0b;
+      animation: pulse-ring 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(0.6);
+        opacity: 0.9;
+      }
+      80%, 100% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+    }
+
+    /* Icon Graphic */
+    .icon-wrapper {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 24px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(56, 189, 248, 0.15) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px -5px var(--primary-glow);
+      position: relative;
+    }
+
+    .icon-wrapper svg {
+      width: 42px;
+      height: 42px;
+      stroke: #818cf8;
+      animation: float-icon 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes float-icon {
+      0% { transform: translateY(-2px) rotate(0deg); }
+      100% { transform: translateY(4px) rotate(4deg); }
+    }
+
+    /* Domain Name Header */
+    .domain-tag {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #a5b4fc, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    /* Main Title */
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+
+    /* Description */
+    p.desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    /* Info Box */
+    .info-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .info-icon {
+      flex-shrink: 0;
+      color: #38bdf8;
+    }
+
+    /* Progress bar visual */
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .progress-bar {
+      width: 65%;
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #38bdf8, #818cf8);
+      border-radius: 9999px;
+      position: relative;
+      animation: shimmer 2.5s infinite linear;
+      background-size: 200% 100%;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 2;
+      margin-top: 28px;
+      font-size: 0.85rem;
+      color: #64748b;
+      text-align: center;
+    }
+
+    footer a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: #f1f5f9;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 36px 22px;
+        border-radius: 22px;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      p.desc {
+        font-size: 0.92rem;
+      }
+      .glow-orb-1, .glow-orb-2 {
+        opacity: 0.4;
+      }
+    }
+  </style>
 </head>
-<body class="bg-[#060714] text-slate-100 flex flex-col min-h-screen">
+<body>
+  <!-- Ambient glowing background lights -->
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+  <div class="glow-orb glow-orb-3"></div>
 
-  <!-- Perspective Retro Grid Floor Background -->
-  <div class="retro-grid-bg"></div>
+  <!-- Subtle grid texture -->
+  <div class="grid-overlay"></div>
 
-  <!-- Header Bar -->
-  <header class="px-3 py-1.5 sm:py-2.5 sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2 min-w-0">
-        <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" title="TiT Studio (thangit.com)" class="flex-shrink-0 transition-transform hover:scale-105">
-          <img src="assets/logo-tit.svg" alt="TiT Logo" class="w-7 h-7 sm:w-10 sm:h-10 drop-shadow-[0_0_8px_rgba(0,240,255,0.7)]">
-        </a>
-        <div class="min-w-0">
-          <a href="#" class="block whitespace-nowrap font-bold text-[10px] sm:text-sm tracking-wide arcade-font text-white hover:text-emerald-400 transition leading-tight">
-            THANGND<span class="text-emerald-400">.IO.VN</span>
-          </a>
-          <p class="hidden sm:block text-[10px] text-slate-400 font-mono tracking-widest uppercase">Ecosystem by TiT</p>
-        </div>
-      </div>
-
-      <!-- Controls & Player Name -->
-      <div class="flex items-center gap-1.5 flex-shrink-0">
-        <button id="playerNameBtn" class="flex items-center gap-1 text-xs bg-slate-900/90 hover:bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 transition" onclick="openAuthModal()">
-          <span class="text-slate-400">👤</span>
-          <span id="navPlayerName" class="font-bold text-slate-200 truncate max-w-[70px] sm:max-w-[110px]">VĐV Hành Lang</span>
-          <span class="text-[10px] text-emerald-400">✏️</span>
-        </button>
-
-        <button id="soundToggleBtn" class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700 flex items-center justify-center text-xs sm:text-sm transition" title="Bật/Tắt âm thanh">
-          <span id="soundIcon">🔊</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Arcade Stage (Lobby View) -->
-  <main class="relative z-10 flex-1 flex flex-col items-center px-3 sm:px-4 pt-2 sm:pt-6 pb-8 sm:pb-12 max-w-6xl mx-auto w-full">
-
-
-    <!-- Title Section - compact on mobile -->
-    <div class="text-center my-1.5 sm:my-5">
-      <div class="text-[8px] sm:text-[11px] font-bold text-cyan-400 tracking-[0.25em] uppercase mb-0.5 arcade-font">
-        NOW PLAYING
-      </div>
-      <h1 class="synth-title">
-        ARCADE
-      </h1>
-      <div class="synth-divider"></div>
-      <p class="mt-1 text-[9px] sm:text-xs text-slate-400 font-mono tracking-widest uppercase">
-        Select Your Game
-      </p>
+  <!-- Main Card -->
+  <main class="container">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Đang bảo trì &amp; nâng cấp
     </div>
 
-    <!-- ================= HORIZONTAL ARCADE CARDS ================= -->
-    <!-- Mobile: vuốt ngang circular loop (scroll-snap). Desktop: 4-column grid -->
-    <div class="w-full my-2.5 sm:my-5 flex sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6
-                overflow-x-auto sm:overflow-visible
-                snap-x snap-mandatory sm:snap-none
-                gap-3 sm:gap-6 py-2 sm:py-0
-                px-4 sm:px-0"
-         style="scrollbar-width:none; -ms-overflow-style:none;"
-         id="gameCarousel">
-
-      <!-- Card 1: Thắng Nhảy Dây -->
-      <div id="cardRope" class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto" onclick="openArcadeModal('rope')">
-        <div class="arcade-card-header">
-          <span class="arcade-font text-[8px] text-pink-400 tracking-wider">1.5M HALLWAY</span>
-          <span class="text-emerald-400 text-[10px] font-bold">★ HERO</span>
-        </div>
-        <div class="arcade-card-screen">
-          <img src="assets/thang-rope-thumb.jpg" alt="Thắng Nhảy Dây">
-          <div class="crt-scanlines"></div>
-        </div>
-        <div class="arcade-card-body">
-          <div>
-            <h3 class="vn-arcade-font text-xs sm:text-sm text-white mb-1 leading-snug">THẮNG NHẢY DÂY</h3>
-            <p class="text-[10px] sm:text-xs text-slate-400 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
-              Nhảy qua dây trong hành lang 1.5m. Căn đúng nhịp để bất tử!
-            </p>
-          </div>
-          <button class="arcade-play-btn">CHƠI NGAY ▶</button>
-        </div>
-      </div>
-
-      <!-- Card 2: Cyber Snake -->
-      <div id="cardSnake" class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto" onclick="openArcadeModal('snake')">
-        <div class="arcade-card-header">
-          <span class="arcade-font text-[8px] text-cyan-400 tracking-wider">RETRO 8-BIT</span>
-          <span class="text-slate-400 text-[10px]">CLASSIC</span>
-        </div>
-        <div class="arcade-card-screen">
-          <img src="assets/cyber-snake-thumb.jpg" alt="Cyber Snake">
-          <div class="crt-scanlines"></div>
-        </div>
-        <div class="arcade-card-body">
-          <div>
-            <h3 class="arcade-font text-[10px] sm:text-xs text-white mb-1 leading-snug">CYBER SNAKE</h3>
-            <p class="text-[10px] sm:text-xs text-slate-400 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
-              Rắn săn mồi phong cách neon cyber. Phản xạ nhạy bén.
-            </p>
-          </div>
-          <button class="arcade-play-btn">CHƠI NGAY ▶</button>
-        </div>
-      </div>
-
-      <!-- Card 3: 2048 Neon -->
-      <div id="card2048" class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto" onclick="openArcadeModal('2048')">
-        <div class="arcade-card-header">
-          <span class="arcade-font text-[8px] text-amber-400 tracking-wider">PUZZLE LAB</span>
-          <span class="text-slate-400 text-[10px]">BRAIN</span>
-        </div>
-        <div class="arcade-card-screen">
-          <img src="assets/neon-2048-thumb.jpg" alt="2048 Neon">
-          <div class="crt-scanlines"></div>
-        </div>
-        <div class="arcade-card-body">
-          <div>
-            <h3 class="arcade-font text-[10px] sm:text-xs text-white mb-1 leading-snug">2048 NEON</h3>
-            <p class="text-[10px] sm:text-xs text-slate-400 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
-              Ghép các khối số theo cấp số nhân để chinh phục mốc 2048.
-            </p>
-          </div>
-          <button class="arcade-play-btn">CHƠI NGAY ▶</button>
-        </div>
-      </div>
-
-      <!-- Card 4: Xếp Hình Neon (Cyber Tetris) -->
-      <div id="cardTetris" class="arcade-card snap-start snap-always flex-shrink-0 w-[54vw] min-w-[185px] max-w-[215px] sm:w-auto" onclick="openArcadeModal('tetris')">
-        <div class="arcade-card-header">
-          <span class="arcade-font text-[8px] text-pink-400 tracking-wider">CYBER BRICK</span>
-          <span class="text-slate-400 text-[10px]">TETRIS</span>
-        </div>
-        <div class="arcade-card-screen">
-          <img src="assets/tetris-thumb.jpg" alt="Xếp Hình Neon">
-          <div class="crt-scanlines"></div>
-        </div>
-        <div class="arcade-card-body">
-          <div>
-            <h3 class="arcade-font text-[10px] sm:text-xs text-white mb-1 leading-snug">XẾP HÌNH NEON</h3>
-            <p class="text-[10px] sm:text-xs text-slate-400 leading-tight font-sans line-clamp-1 sm:line-clamp-2">
-              Xếp các khối gạch neon, phá dòng ghi điểm cao kỷ lục!
-            </p>
-          </div>
-          <button class="arcade-play-btn">CHƠI NGAY ▶</button>
-        </div>
-      </div>
+    <div class="icon-wrapper">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.012l3.492 1.054a1.5 1.5 0 011.026 1.78l-1.054 3.492a2.973 2.973 0 01-1.78 1.026l-3.492 1.054a1.5 1.5 0 01-1.78-1.026l-1.054-3.492a2.973 2.973 0 011.026-1.78z" />
+      </svg>
     </div>
 
-    <!-- Dots indicator (chỉ hiện trên mobile) -->
-    <div class="flex sm:hidden items-center justify-center gap-2 mt-1 mb-1.5" id="carouselDots">
-      <span class="w-2 h-2 rounded-full transition-all duration-300 cursor-pointer" style="background:var(--neon-cyan)"></span>
-      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer"></span>
-      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer"></span>
-      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer"></span>
+    <div class="domain-tag">thangnd.io.vn</div>
+    <h1>Hệ Thống Đang Nâng Cấp</h1>
+    
+    <p class="desc">
+      Website hiện đang tạm ngừng hoạt động để chuẩn bị triển khai phiên bản và dự án mới. Chúng tôi sẽ sớm quay trở lại với nhiều cải tiến và tính năng hấp dẫn!
+    </p>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar"></div>
     </div>
 
-    <!-- Quick Leaderboard on Lobby -->
-    <div class="w-full max-w-xl mt-2 sm:mt-5 bg-slate-900/85 backdrop-blur-md border border-slate-800/80 rounded-xl sm:rounded-2xl p-3 sm:p-5 font-sans">
-      <div class="flex items-center justify-between mb-2 sm:mb-3">
-        <div class="flex items-center space-x-2">
-          <span class="text-base sm:text-lg">🏆</span>
-          <h3 class="font-extrabold text-xs sm:text-sm text-slate-200 uppercase tracking-wide">Bảng Vàng Arcade</h3>
-        </div>
-        <span class="text-[9px] sm:text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
-          Cloudflare D1 Ready
-        </span>
+    <div class="info-card">
+      <div class="info-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
       </div>
-
-      <!-- Game Selector Tabs -->
-      <div class="grid grid-cols-4 gap-1 p-0.5 sm:p-1 bg-slate-950/70 rounded-lg sm:rounded-xl mb-2 sm:mb-3.5 border border-slate-800/80 text-[10px] sm:text-xs">
-        <button class="lb-tab active py-1 sm:py-1.5 px-1 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-emerald-400 bg-slate-800/90 border border-emerald-500/40 shadow-sm" data-game="rope">
-          <span>🪢</span><span class="truncate">Nhảy Dây</span>
-        </button>
-        <button class="lb-tab py-1 sm:py-1.5 px-1 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="snake">
-          <span>🐍</span><span class="truncate">Rắn</span>
-        </button>
-        <button class="lb-tab py-1 sm:py-1.5 px-1 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="2048">
-          <span>🔢</span><span class="truncate">2048</span>
-        </button>
-        <button class="lb-tab py-1 sm:py-1.5 px-1 rounded-md sm:rounded-lg font-bold transition flex items-center justify-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50" data-game="tetris">
-          <span>🧱</span><span class="truncate">Xếp Hình</span>
-        </button>
-      </div>
-
-      <div id="leaderboardList" class="space-y-1.5 sm:space-y-2">
-        <div class="text-xs text-slate-400 text-center py-2">Đang tải bảng xếp hạng...</div>
+      <div>
+        Dự án mới đang trong quá trình phát triển và hoàn thiện. Cảm ơn bạn đã ghé thăm và kiên nhẫn chờ đợi!
       </div>
     </div>
-
-    <!-- Story & Inspiration -->
-    <article class="max-w-xl w-full mt-8 bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 text-slate-300 text-xs leading-relaxed font-sans">
-      <h4 class="font-extrabold text-sm text-emerald-400 mb-2 flex items-center gap-2">
-        <span>📖</span>
-        <span>Câu chuyện: Nhảy dây trong hành lang 1m5</span>
-      </h4>
-      <p class="mb-2">
-        Nhiều người nghĩ phải có sân khấu lớn hay phòng tập rộng rãi mới bắt đầu rèn luyện thể thao được. Nhưng với Thắng, niềm đam mê và kỷ luật bắt đầu từ chính <b>hành lang chỉ rộng 1.5 mét</b>.
-      </p>
-      <p class="text-slate-400">
-        Không gian có thể chật, nhưng ý chí thì không có giới hạn. Chúc bạn có những phút giây giải trí vui vẻ và luôn giữ vững tinh thần rèn luyện mỗi ngày!
-      </p>
-    </article>
-
   </main>
 
-  <!-- ================= FULLSCREEN / THEATER ARCADE MODAL ================= -->
-  <div id="arcadeModal" class="arcade-modal">
-    <!-- Modal Top Bar -->
-    <div class="modal-header">
-      <div class="flex items-center space-x-3">
-        <span id="modalGameBadge" class="arcade-font text-[10px] text-pink-400">ARCADE</span>
-        <h2 id="modalGameTitle" class="vn-arcade-font text-sm sm:text-base text-white truncate max-w-[200px] sm:max-w-md">THẮNG NHẢY DÂY</h2>
-      </div>
-
-      <div class="flex items-center space-x-2">
-        <!-- Fullscreen Button -->
-        <button id="fullscreenBtn" class="modal-ctrl-btn" title="Bật/Tắt Toàn màn hình">
-          <span>⛶</span>
-          <span class="hidden sm:inline">FULLSCREEN</span>
-        </button>
-
-        <!-- Close / Return to Lobby -->
-        <button id="closeModalBtn" class="modal-ctrl-btn" title="Đóng về Menu">
-          <span>✕</span>
-          <span class="hidden sm:inline">MENU (ESC)</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Modal Body containing the active game -->
-    <div class="modal-body">
-      
-      <!-- GAME 1: THẮNG NHẢY DÂY -->
-      <section id="ropeGameSection" class="w-full flex flex-col items-center">
-        <div class="game-viewport-wrap">
-          
-          <!-- In-game HUD -->
-          <div id="gameHUD" class="game-hud hidden">
-            <div class="hud-pill">
-              <span class="text-[10px] text-slate-400 uppercase font-mono">NHẢY</span>
-              <span id="hudScore" class="text-xl font-black text-emerald-400 ml-1">0</span>
-            </div>
-            <div id="hudCombo" class="hud-pill hidden bg-amber-500/20 text-amber-300 border-amber-500/40 text-xs animate-bounce">
-              x2 Combo!
-            </div>
-          </div>
-
-          <!-- Canvas -->
-          <canvas id="ropeCanvas"></canvas>
-
-          <!-- Start Overlay -->
-          <div id="startOverlay" class="game-overlay">
-            <div class="relative mb-3">
-              <img src="assets/thang-avatar.jpg" alt="Thắng Nhảy Dây" class="w-20 h-20 rounded-full border-4 border-emerald-400 shadow-xl shadow-emerald-500/30 object-cover mx-auto">
-              <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">PRO</span>
-            </div>
-            
-            <h2 class="vn-arcade-font text-xl sm:text-2xl text-white mb-1 leading-relaxed">
-              THẮNG NHẢY DÂY
-            </h2>
-            <p class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-3 font-mono">
-              ⚡ Thử Thách Hành Lang 1.5m ⚡
-            </p>
-
-            <p class="text-slate-300 text-xs max-w-xs mb-4 leading-relaxed font-sans">
-              Hành lang hẹp 1.5m không ngăn được đam mê! Căn đúng nhịp dây chạm sàn để nhảy qua.
-            </p>
-
-            <!-- Removed inline nickname input to use Auth Modal -->
-
-            <button id="startBtn" class="btn-neon w-full max-w-xs py-3.5 mb-3">
-              BẮT ĐẦU NHẢY 🚀
-            </button>
-
-            <p class="text-[11px] text-slate-400 flex items-center justify-center gap-1.5 font-sans">
-              <span>💡</span>
-              <span>Chạm màn hình hoặc bấm phím <b>Space</b></span>
-            </p>
-          </div>
-
-          <!-- Game Over Overlay -->
-          <div id="gameOverOverlay" class="game-overlay hidden">
-            <div class="text-3xl mb-1">💥</div>
-            <h2 class="vn-arcade-font text-2xl text-rose-500 mb-2">VẤP DÂY RỒI!</h2>
-            <div id="finalTitle" class="text-xs font-bold text-amber-300 mb-4 uppercase tracking-wider font-sans">
-              ⭐ Chuyên Gia Bắt Nhịp
-            </div>
-
-            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 w-full max-w-xs mb-4 grid grid-cols-2 gap-3 text-center font-sans">
-              <div class="border-r border-slate-800 pr-2">
-                <div class="text-[11px] font-semibold text-slate-400 uppercase">Số lần nhảy</div>
-                <div id="finalScore" class="text-3xl font-black text-emerald-400">0</div>
-              </div>
-              <div class="pl-2">
-                <div class="text-[11px] font-semibold text-slate-400 uppercase">Kỷ lục của bạn</div>
-                <div id="finalHighScore" class="text-3xl font-black text-amber-400">0</div>
-              </div>
-            </div>
-
-            <!-- Về Trang Chủ ở trên -->
-            <button onclick="closeArcadeModal()" class="w-full max-w-xs py-3 mb-2.5 text-xs sm:text-sm font-bold bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-2xl transition flex items-center justify-center gap-1.5 shadow-md">
-              <span>🏠</span><span>VỀ TRANG CHỦ</span>
-            </button>
-
-            <!-- Nhảy Lại ở dưới -->
-            <button id="restartBtn" class="btn-neon w-full max-w-xs py-3 text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-lg">
-              <span>🔁</span><span>NHẢY LẠI</span>
-            </button>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- GAME 2: CYBER SNAKE -->
-      <section id="snakeGameSection" class="w-full max-w-md hidden flex flex-col items-center">
-        <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center font-sans">
-          <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
-            <span class="text-slate-300 arcade-font text-xs">🐍 CYBER SNAKE</span>
-            <div class="flex gap-4 text-xs font-mono">
-              <span class="text-slate-400">Điểm: <b id="snakeScore" class="text-emerald-400">0</b></span>
-              <span class="text-slate-400">Kỷ lục: <b id="snakeHighScore" class="text-amber-400">0</b></span>
-            </div>
-          </div>
-
-          <div class="relative border border-slate-800 rounded-xl overflow-hidden shadow-xl">
-            <canvas id="snakeCanvas"></canvas>
-
-            <!-- Snake Game Over Overlay -->
-            <div id="snakeGameOverOverlay" class="absolute inset-0 bg-black/85 backdrop-blur-sm hidden flex flex-col items-center justify-center p-4 z-20 font-sans">
-              <div class="text-3xl mb-1">💥</div>
-              <h3 class="vn-arcade-font text-xl text-rose-500 mb-1">ĐÂM ĐUÔI RỒI!</h3>
-              <p class="text-[11px] text-slate-400 mb-3 font-mono">Cyber Snake Over</p>
-
-              <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 w-full max-w-xs mb-3.5 grid grid-cols-2 gap-2 text-center font-sans">
-                <div class="border-r border-slate-800 pr-2">
-                  <div class="text-[10px] font-semibold text-slate-400 uppercase">Điểm số</div>
-                  <div id="snakeFinalScore" class="text-2xl font-black text-emerald-400">0</div>
-                </div>
-                <div class="pl-2">
-                  <div class="text-[10px] font-semibold text-slate-400 uppercase">Kỷ lục</div>
-                  <div id="snakeFinalHighScore" class="text-2xl font-black text-amber-400">0</div>
-                </div>
-              </div>
-
-              <div class="w-full max-w-xs grid grid-cols-2 gap-2">
-                <button id="snakeRestartBtn" class="btn-neon py-2.5 text-xs font-black flex items-center justify-center gap-1 shadow-lg">
-                  <span>🔁</span><span>CHƠI LẠI</span>
-                </button>
-                <button onclick="closeArcadeModal()" class="py-2.5 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl transition flex items-center justify-center gap-1">
-                  <span>🏠</span><span>VỀ TRANG CHỦ</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- D-Pad for Mobile: Cross layout, properly centered -->
-          <div class="mt-6 flex flex-col items-center gap-2 sm:hidden touch-none select-none">
-            <!-- UP -->
-            <button id="snakeUp" class="dpad-btn" title="Lên">▲</button>
-
-            <!-- LEFT | blank center | RIGHT -->
-            <div class="flex items-center gap-2">
-              <button id="snakeLeft" class="dpad-btn" title="Trái">◀</button>
-              <div style="width:68px;height:68px;"></div>
-              <button id="snakeRight" class="dpad-btn" title="Phải">▶</button>
-            </div>
-
-            <!-- DOWN (separated) -->
-            <button id="snakeDown" class="dpad-btn" title="Xuống">▼</button>
-          </div>
-          <p class="hidden sm:block text-xs text-slate-400 mt-3 text-center font-mono">
-            Phím <b>W, A, S, D</b> hoặc <b>Phím Mũi Tên</b> để điều khiển
-          </p>
-        </div>
-      </section>
-
-      <!-- GAME 3: 2048 -->
-      <section id="game2048Section" class="w-full max-w-md hidden flex flex-col items-center">
-        <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 w-full flex flex-col items-center font-sans">
-          <div class="flex justify-between items-center w-full mb-3 text-sm font-bold">
-            <span class="text-slate-300 arcade-font text-xs">🔢 2048 NEON</span>
-            <div class="flex gap-2.5 text-xs font-mono">
-              <div class="bg-slate-800/90 border border-slate-700/60 px-2.5 py-1 rounded-lg">
-                <span class="text-slate-400">Điểm:</span> <b id="score2048" class="text-emerald-400">0</b>
-              </div>
-              <div class="bg-slate-800/90 border border-slate-700/60 px-2.5 py-1 rounded-lg">
-                <span class="text-slate-400">Kỷ lục:</span> <b id="high2048" class="text-amber-400">0</b>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2048: Vuốt để chơi (không cần D-Pad) -->
-          <div class="flex justify-between items-center w-full mb-3 text-xs font-sans gap-2">
-            <button onclick="closeArcadeModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5">
-              <span>🏠</span><span>Về Trang Chủ</span>
-            </button>
-            <button onclick="window.game2048 && window.game2048.restart()" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-4 py-2 rounded-xl font-bold transition flex items-center gap-1.5">
-              <span>🔁</span><span>Chơi Lại</span>
-            </button>
-          </div>
-
-          <div id="grid2048" class="grid-2048 touch-none select-none"></div>
-
-          <p class="text-[10px] text-slate-500 mt-3 text-center font-mono hidden sm:block">Dùng phím mũi tên hoặc vuốt để di chuyển ô số</p>
-        </div>
-      </section>
-
-      <!-- GAME 4: XẾP HÌNH NEON (CYBER TETRIS) -->
-      <section id="tetrisGameSection" class="w-full max-w-md hidden flex flex-col items-center">
-        <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3 sm:p-4 w-full flex flex-col items-center font-sans">
-          
-          <!-- Board + Right Sidebar Info Layout -->
-          <div class="flex items-center justify-center gap-3 w-full">
-            
-            <!-- Main Tetris Canvas with Game Over Overlay -->
-            <div class="relative border-2 border-slate-800 rounded-xl overflow-hidden shadow-2xl bg-black shrink-0">
-              <canvas id="tetrisCanvas"></canvas>
-
-              <!-- Tetris Game Over Overlay -->
-              <div id="tetrisGameOverOverlay" class="absolute inset-0 bg-black/85 backdrop-blur-sm hidden flex flex-col items-center justify-center p-3 z-20 font-sans">
-                <div class="text-3xl mb-1">🧱</div>
-                <h3 class="vn-arcade-font text-lg sm:text-xl text-rose-500 mb-1">CHẠM TRẦN!</h3>
-                <p class="text-[10px] text-slate-400 mb-2.5 font-mono">Game Over</p>
-
-                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2.5 w-full max-w-[200px] mb-3 grid grid-cols-2 gap-1.5 text-center font-sans">
-                  <div class="border-r border-slate-800 pr-1">
-                    <div class="text-[9px] font-semibold text-slate-400 uppercase">Điểm</div>
-                    <div id="tetrisFinalScore" class="text-xl font-black text-emerald-400">0</div>
-                  </div>
-                  <div class="pl-1">
-                    <div class="text-[9px] font-semibold text-slate-400 uppercase">Kỷ lục</div>
-                    <div id="tetrisFinalHighScore" class="text-xl font-black text-amber-400">0</div>
-                  </div>
-                </div>
-
-                <div class="w-full max-w-[200px] flex flex-col gap-1.5">
-                  <button id="tetrisRestartBtn" class="btn-neon py-2 text-xs font-black flex items-center justify-center gap-1 shadow-lg">
-                    <span>🔁</span><span>CHƠI LẠI</span>
-                  </button>
-                  <button onclick="closeArcadeModal()" class="py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl transition flex items-center justify-center gap-1">
-                    <span>🏠</span><span>VỀ MENU</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Sidebar: Info Column (Next piece, Score, High score, Level, Lines) -->
-            <div class="flex flex-col gap-2 w-20 sm:w-24 shrink-0 font-mono self-stretch justify-between py-0.5">
-              <!-- Next piece box -->
-              <div class="bg-slate-950/80 border border-slate-800/90 p-1.5 rounded-xl flex flex-col items-center">
-                <span class="text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-1">TIẾP THEO</span>
-                <canvas id="tetrisNextCanvas" width="56" height="56" class="rounded"></canvas>
-              </div>
-
-              <!-- Score box -->
-              <div class="bg-slate-950/80 border border-slate-800/80 px-1.5 py-1.5 rounded-xl text-center">
-                <span class="text-[8px] text-slate-400 block font-semibold">ĐIỂM</span>
-                <b id="tetrisScore" class="text-emerald-400 text-sm sm:text-base font-black truncate block">0</b>
-              </div>
-
-              <!-- High score box -->
-              <div class="bg-slate-950/80 border border-slate-800/80 px-1.5 py-1.5 rounded-xl text-center">
-                <span class="text-[8px] text-slate-400 block font-semibold">KỶ LỤC</span>
-                <b id="tetrisHighScore" class="text-amber-400 text-sm sm:text-base font-black truncate block">0</b>
-              </div>
-
-              <!-- Level box -->
-              <div class="bg-slate-950/80 border border-slate-800/80 px-1.5 py-1.5 rounded-xl text-center">
-                <span class="text-[8px] text-slate-400 block font-semibold">CẤP ĐỘ</span>
-                <b id="tetrisLevel" class="text-cyan-400 text-xs sm:text-sm font-black">1</b>
-              </div>
-
-              <!-- Lines box -->
-              <div class="bg-slate-950/80 border border-slate-800/80 px-1.5 py-1.5 rounded-xl text-center">
-                <span class="text-[8px] text-slate-400 block font-semibold">ĂN DÒNG</span>
-                <b id="tetrisLines" class="text-pink-400 text-xs sm:text-sm font-black">0</b>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Controls for Mobile: Left (◀▶), Right (⏬↻) - drop first, rotate second -->
-          <div class="mt-4 flex items-center justify-between w-full max-w-sm px-1 sm:hidden touch-none select-none">
-            <!-- Cụm bên trái: di chuyển trái phải -->
-            <div class="flex items-center gap-3">
-              <button id="tetrisLeft" class="dpad-btn-tetris" title="Sang Trái">◀</button>
-              <button id="tetrisRight" class="dpad-btn-tetris" title="Sang Phải">▶</button>
-            </div>
-
-            <!-- Cụm bên phải: phi xuống trước, xoay sau -->
-            <div class="flex items-center gap-3">
-              <button id="tetrisDrop" class="dpad-btn-tetris dpad-btn-harddrop" title="Vút Xuống / Rơi Đáy">⏬</button>
-              <button id="tetrisRotate" class="dpad-btn-tetris dpad-btn-rotate" title="Xoay Khối">↻</button>
-            </div>
-          </div>
-
-          <!-- PC Keyboard Hint -->
-          <div class="hidden sm:flex items-center justify-center gap-4 mt-3 flex-wrap">
-            <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
-              <span class="bg-slate-800 border border-slate-600 rounded px-1.5 py-0.5 text-slate-300 font-bold">A</span>
-              <span class="bg-slate-800 border border-slate-600 rounded px-1.5 py-0.5 text-slate-300 font-bold">D</span>
-              <span>Di chuyển</span>
-            </div>
-            <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
-              <span class="bg-slate-800 border border-slate-600 rounded px-1.5 py-0.5 text-slate-300 font-bold">W</span>
-              <span class="bg-slate-800 border border-slate-600 rounded px-1.5 py-0.5 text-slate-300 font-bold">X</span>
-              <span>Xoay</span>
-            </div>
-            <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
-              <span class="bg-slate-800 border border-slate-600 rounded px-2 py-0.5 text-slate-300 font-bold">Space</span>
-              <span>Rơi tức thì</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <!-- ================= AUTH MODAL (NAME & PIN) ================= -->
-  <div id="authModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-sans">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm p-5 shadow-2xl transform scale-100 transition-transform">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-black text-emerald-400 flex items-center gap-2">
-          <span>🛡️</span> Xác Nhận Danh Tính
-        </h3>
-        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white">✕</button>
-      </div>
-      <p class="text-xs text-slate-300 mb-4" id="authModalDesc">
-        Bạn đã lọt vào Top 10! Vui lòng tạo hoặc nhập mã PIN 4 số để bảo vệ tên của bạn.
-      </p>
-
-      <div class="space-y-3">
-        <div>
-          <label class="block text-[11px] font-bold text-slate-400 mb-1 uppercase tracking-wider">Tên hiển thị</label>
-          <input type="text" id="authNameInput" maxlength="20" placeholder="Nhập tên..." class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400">
-        </div>
-        <div>
-          <label class="block text-[11px] font-bold text-slate-400 mb-1 uppercase tracking-wider">Mã PIN (4 số)</label>
-          <input type="password" id="authPinInput" inputmode="numeric" maxlength="4" placeholder="••••" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-center text-xl tracking-[0.5em] text-white focus:outline-none focus:border-emerald-400">
-        </div>
-        <div id="authErrorMsg" class="text-rose-400 text-[11px] hidden mt-1 font-semibold"></div>
-      </div>
-
-      <div class="mt-5 grid grid-cols-2 gap-3">
-        <button id="authLoginBtn" onclick="handleAuthAction('login')" class="py-2.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-sm transition">Đăng Nhập</button>
-        <button id="authRegisterBtn" onclick="handleAuthAction('register')" class="py-2.5 rounded-xl font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-900 text-sm transition shadow-[0_0_10px_rgba(16,185,129,0.3)]">Đăng Ký Mới</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="relative z-10 border-t border-slate-800/80 bg-slate-950/90 py-6 px-4 text-center text-xs text-slate-500 font-mono">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center space-x-2">
-        <span class="font-bold text-slate-300">thangnd.io.vn</span>
-        <span>—</span>
-        <span>Nguyễn Đức Thắng Ecosystem</span>
-      </div>
-      <div class="flex items-center space-x-4">
-        <a href="https://thangnhayday.com" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition font-medium">thangnhayday.com</a>
-        <a href="https://thangit.com" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition font-medium">thangit.com</a>
-        <a href="https://github.com/ducthangqtm/thangnd.io.vn" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition">GitHub</a>
-      </div>
-    </div>
+  <footer>
+    &copy; 2026 <strong>thangnd.io.vn</strong> &bull; All Rights Reserved
   </footer>
-
-  <!-- Scripts -->
-  <script src="audio.js?v=2.3"></script>
-  <script src="leaderboard.js?v=2.3"></script>
-  <script src="game-rope.js?v=2.3"></script>
-  <script src="game-snake.js?v=2.3"></script>
-  <script src="game-2048.js?v=2.3"></script>
-  <script src="game-tetris.js?v=2.3"></script>
-  <script>
-    // Infinite Circular Carousel for Mobile (Seamless ring, no rewind)
-    (function() {
-      const carousel = document.getElementById('gameCarousel');
-      const dots = document.querySelectorAll('#carouselDots span');
-      if (!carousel) return;
-
-      const isMobile = () => window.innerWidth < 640;
-      const originalCards = Array.from(carousel.querySelectorAll('.arcade-card'));
-      const COUNT = originalCards.length;
-      if (COUNT !== 4) return;
-
-      // Create clones: 4 before, 4 after for seamless circular swiping
-      const clonesBefore = [];
-      const clonesAfter = [];
-
-      originalCards.forEach((card, idx) => {
-        const prevClone = card.cloneNode(true);
-        prevClone.id = `card-prev-clone-${idx}`;
-        prevClone.classList.add('carousel-clone', 'sm:hidden');
-        const onclick = card.getAttribute('onclick');
-        if (onclick) prevClone.setAttribute('onclick', onclick);
-        clonesBefore.push(prevClone);
-
-        const nextClone = card.cloneNode(true);
-        nextClone.id = `card-next-clone-${idx}`;
-        nextClone.classList.add('carousel-clone', 'sm:hidden');
-        if (onclick) nextClone.setAttribute('onclick', onclick);
-        clonesAfter.push(nextClone);
-      });
-
-      // Prepend clones before
-      clonesBefore.forEach(c => carousel.insertBefore(c, originalCards[0]));
-      // Append clones after
-      clonesAfter.forEach(c => carousel.appendChild(c));
-      const gameNames = ['rope', 'snake', '2048', 'tetris'];
-
-      let itemWidth = 0;
-      let setDistance = 0;
-      let canonicalStart = 0;
-      let isTouching = false;
-      let isAdjusting = false;
-      let settleTimer = null;
-
-      function calcMetrics() {
-        if (!isMobile()) return;
-        const allCards = carousel.querySelectorAll('.arcade-card');
-        if (allCards.length >= COUNT * 2) {
-          const firstCard = allCards[0];
-          const firstOriginal = allCards[COUNT];
-          const secondOriginal = allCards[COUNT + 1];
-          itemWidth = secondOriginal.offsetLeft - firstOriginal.offsetLeft;
-          setDistance = itemWidth * COUNT;
-          canonicalStart = firstOriginal.offsetLeft - firstCard.offsetLeft;
-        }
-      }
-
-      function updateDots(activeDot) {
-        const norm = ((activeDot % COUNT) + COUNT) % COUNT;
-        dots.forEach((d, i) => {
-          const active = (i === norm);
-          d.style.background = active ? 'var(--neon-cyan)' : 'rgb(71,85,105)';
-          d.style.width = active ? '8px' : '5px';
-          d.style.height = active ? '8px' : '5px';
-          d.style.boxShadow = active ? '0 0 8px var(--neon-cyan)' : 'none';
-        });
-
-        // Sync leaderboard tab to match the visible game card
-        const gameNames = ['rope', 'snake', '2048', 'tetris'];
-        const activeGame = gameNames[norm];
-        if (activeGame && window.leaderboard) {
-          window.leaderboard.renderLeaderboardTable(activeGame);
-          document.querySelectorAll('.lb-tab').forEach(t => {
-            const isActive = t.dataset.game === activeGame;
-            t.classList.toggle('active', isActive);
-            t.classList.toggle('text-emerald-400', isActive);
-            t.classList.toggle('bg-slate-800/90', isActive);
-            t.classList.toggle('border-emerald-500/40', isActive);
-            t.classList.toggle('text-slate-400', !isActive);
-          });
-        }
-      }
-
-      function initialPosition() {
-        if (!isMobile()) return;
-        calcMetrics();
-        if (itemWidth <= 0) {
-          requestAnimationFrame(initialPosition);
-          return;
-        }
-        carousel.style.scrollSnapType = 'none';
-        carousel.style.scrollBehavior = 'auto';
-        carousel.scrollLeft = canonicalStart;
-        carousel.style.scrollSnapType = 'x mandatory';
-        updateDots(0);
-      }
-
-      function checkLoop() {
-        if (!isMobile() || isTouching || isAdjusting || itemWidth <= 0) return;
-
-        const currentRelative = carousel.scrollLeft - canonicalStart;
-        const activeIdx = Math.round(currentRelative / itemWidth);
-        updateDots(activeIdx);
-
-        // If swiped into next clones (activeIdx >= COUNT)
-        if (activeIdx >= COUNT) {
-          isAdjusting = true;
-          carousel.style.scrollSnapType = 'none';
-          carousel.style.scrollBehavior = 'auto';
-          carousel.scrollLeft -= setDistance;
-          void carousel.offsetWidth;
-          requestAnimationFrame(() => {
-            carousel.style.scrollSnapType = 'x mandatory';
-            isAdjusting = false;
-            const newRelative = carousel.scrollLeft - canonicalStart;
-            updateDots(Math.round(newRelative / itemWidth));
-          });
-        }
-        // If swiped into prev clones (activeIdx < 0)
-        else if (activeIdx < 0) {
-          isAdjusting = true;
-          carousel.style.scrollSnapType = 'none';
-          carousel.style.scrollBehavior = 'auto';
-          carousel.scrollLeft += setDistance;
-          void carousel.offsetWidth;
-          requestAnimationFrame(() => {
-            carousel.style.scrollSnapType = 'x mandatory';
-            isAdjusting = false;
-            const newRelative = carousel.scrollLeft - canonicalStart;
-            updateDots(Math.round(newRelative / itemWidth));
-          });
-        }
-      }
-
-      carousel.addEventListener('touchstart', () => {
-        isTouching = true;
-      }, { passive: true });
-
-      carousel.addEventListener('touchend', () => {
-        isTouching = false;
-        clearTimeout(settleTimer);
-        settleTimer = setTimeout(checkLoop, 100);
-      }, { passive: true });
-
-      carousel.addEventListener('scroll', () => {
-        if (!isMobile() || isAdjusting || itemWidth <= 0) return;
-        const currentRelative = carousel.scrollLeft - canonicalStart;
-        const activeIdx = Math.round(currentRelative / itemWidth);
-        updateDots(activeIdx);
-
-        clearTimeout(settleTimer);
-        settleTimer = setTimeout(checkLoop, 80);
-      }, { passive: true });
-
-      if ('onscrollend' in window) {
-        carousel.addEventListener('scrollend', checkLoop);
-      }
-
-      // Tap on dots to scroll to that game
-      dots.forEach((dot, dotIdx) => {
-        dot.style.cursor = 'pointer';
-        dot.addEventListener('click', (e) => {
-          e.stopPropagation();
-          if (!isMobile() || itemWidth <= 0) return;
-          carousel.scrollTo({
-            left: canonicalStart + dotIdx * itemWidth,
-            behavior: 'smooth'
-          });
-        });
-      });
-
-      window.addEventListener('resize', () => {
-        if (!isMobile()) return;
-        const oldRelative = carousel.scrollLeft - canonicalStart;
-        const curIdx = itemWidth > 0 ? Math.round(oldRelative / itemWidth) : 0;
-        calcMetrics();
-        if (itemWidth > 0) {
-          const normIdx = ((curIdx % COUNT) + COUNT) % COUNT;
-          carousel.scrollLeft = canonicalStart + normIdx * itemWidth;
-        }
-      });
-
-      setTimeout(initialPosition, 60);
-      window.addEventListener('load', initialPosition);
-    })();
-  </script>
-
-  <!-- Arcade Modal & Game Switcher Logic -->
-  <script>
-    let ropeGameInstance = null;
-    let snakeGameInstance = null;
-    let game2048Instance = null;
-    let tetrisGameInstance = null;
-    let currentGame = 'rope';
-
-    function openArcadeModal(gameType) {
-      currentGame = gameType;
-      const modal = document.getElementById('arcadeModal');
-      const titleEl = document.getElementById('modalGameTitle');
-      const badgeEl = document.getElementById('modalGameBadge');
-
-      const secRope = document.getElementById('ropeGameSection');
-      const secSnake = document.getElementById('snakeGameSection');
-      const sec2048 = document.getElementById('game2048Section');
-      const secTetris = document.getElementById('tetrisGameSection');
-
-      [secRope, secSnake, sec2048, secTetris].forEach(s => s && s.classList.add('hidden'));
-
-      if (gameType === 'rope') {
-        titleEl.innerText = 'THẮNG NHẢY DÂY';
-        badgeEl.innerText = '1.5M HALLWAY';
-        secRope.classList.remove('hidden');
-        if (ropeGameInstance) {
-          setTimeout(() => ropeGameInstance.setupCanvas(), 50);
-        }
-      } else if (gameType === 'snake') {
-        titleEl.innerText = 'CYBER SNAKE';
-        badgeEl.innerText = 'RETRO 8-BIT';
-        secSnake.classList.remove('hidden');
-        if (!snakeGameInstance) {
-          snakeGameInstance = new SnakeGame('snakeCanvas');
-          window.snakeGame = snakeGameInstance;
-        } else {
-          setTimeout(() => snakeGameInstance.setupCanvas(), 50);
-        }
-      } else if (gameType === '2048') {
-        titleEl.innerText = '2048 NEON';
-        badgeEl.innerText = 'PUZZLE LAB';
-        sec2048.classList.remove('hidden');
-        if (!game2048Instance) {
-          game2048Instance = new Game2048('grid2048');
-          window.game2048 = game2048Instance;
-        }
-      } else if (gameType === 'tetris') {
-        titleEl.innerText = 'XẾP HÌNH NEON';
-        badgeEl.innerText = 'CYBER BRICK';
-        secTetris.classList.remove('hidden');
-        if (!tetrisGameInstance) {
-          tetrisGameInstance = new TetrisGame('tetrisCanvas', 'tetrisNextCanvas');
-          window.tetrisGame = tetrisGameInstance;
-        } else {
-          setTimeout(() => {
-            tetrisGameInstance.setupCanvas();
-            tetrisGameInstance.draw();
-            tetrisGameInstance.drawNextPiece();
-          }, 50);
-        }
-      }
-
-      modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeArcadeModal() {
-      const modal = document.getElementById('arcadeModal');
-      modal.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    // Toggle real fullscreen API — target the arcade modal element
-    function toggleFullscreen() {
-      const modal = document.getElementById('arcadeModal');
-      const target = modal || document.documentElement;
-      if (!document.fullscreenElement) {
-        target.requestFullscreen && target.requestFullscreen().catch(() => {
-          // Fallback: fullscreen the whole page
-          document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {});
-        });
-      } else {
-        document.exitFullscreen && document.exitFullscreen();
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // Initialize Rope Game
-      ropeGameInstance = new RopeGame('ropeCanvas');
-      window.ropeGame = ropeGameInstance;
-
-      // Initialize Leaderboard
-      window.leaderboard.renderLeaderboardTable();
-      window.leaderboard.initTabs();
-
-      // Modal Controls
-      document.getElementById('closeModalBtn').addEventListener('click', closeArcadeModal);
-      document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
-
-      // ESC key to close modal
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeArcadeModal();
-        }
-      });
-
-      // Sound Toggle
-      const soundBtn = document.getElementById('soundToggleBtn');
-      const soundIcon = document.getElementById('soundIcon');
-      const updateSoundUI = () => {
-        const isMuted = window.soundEngine.isMuted();
-        soundIcon.innerText = isMuted ? '🔇' : '🔊';
-        soundBtn.classList.toggle('opacity-60', isMuted);
-      };
-      updateSoundUI();
-      soundBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        window.soundEngine.toggleMute();
-        updateSoundUI();
-      });
-
-      // Player Name init
-      const navPlayerName = document.getElementById('navPlayerName');
-      const savedName = localStorage.getItem('thang_player_name') || 'VĐV Hành Lang';
-      
-      if (navPlayerName) navPlayerName.innerText = savedName;
-      if (ropeGameInstance) {
-        ropeGameInstance.playerName = savedName;
-      }
-
-      // Start & Restart Buttons
-      document.getElementById('startBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (ropeGameInstance) ropeGameInstance.startGame();
-      });
-
-      document.getElementById('restartBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        ropeGameInstance.restartGame();
-      });
-    });
-  </script>
-
-  <!-- Prevent Mobile Zoom & Pinch on iOS Safari / Android -->
-  <script>
-    // 1. Block pinch-to-zoom gestures (iOS Safari)
-    ['gesturestart', 'gesturechange', 'gestureend'].forEach(evt => {
-      document.addEventListener(evt, (e) => e.preventDefault(), { passive: false });
-    });
-
-    // 2. Block 2+ finger pinch on touchmove
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches && e.touches.length > 1) {
-        e.preventDefault();
-      }
-    }, { passive: false });
-
-    // 3. Block double-tap to zoom
-    let lastTap = 0;
-    document.addEventListener('touchend', (e) => {
-      if (e.target.closest('input, textarea, select')) return;
-      const now = Date.now();
-      if (now - lastTap <= 300) {
-        e.preventDefault();
-      }
-      lastTap = now;
-    }, { passive: false });
-  </script>
 </body>
 </html>
