@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://thangnd.io.vn/sitemap.xml

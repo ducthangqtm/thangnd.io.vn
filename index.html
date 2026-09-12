@@ -571,8 +571,12 @@
 
   <!-- Client-Side Telemetry & API Integration Script -->
   <script>
-    // Cấu hình Base Endpoint Cloudflare Worker
-    const API_BASE = 'https://lab.thangnd.io.vn';
+    // Cấu hình API Endpoint (Ưu tiên Pages Functions /api/..., fallback sang Worker Lab khi test local)
+    const isLocalDev = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1' || 
+                       window.location.hostname.startsWith('192.168.') ||
+                       window.location.protocol === 'file:';
+    const API_BASE = isLocalDev ? 'https://lab.thangnd.io.vn' : '';
 
     // 1. Fetch Client IP & Geo Info
     async function initClientIP() {
