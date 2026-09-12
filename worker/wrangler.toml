@@ -1,0 +1,9 @@
+name = "thangnd-lab-api"
+main = "index.js"
+compatibility_date = "2026-09-01"
+
+# Cloudflare D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "thangnd-db"
+database_id = "1f218931-cee9-421e-86fe-6cbf61bb8d90"
