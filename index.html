@@ -278,53 +278,60 @@
         </div>
 
         <!-- Social Buttons Bar & Donate Action -->
-        <div class="flex flex-wrap items-center justify-between gap-2.5 pt-2">
-          <div class="flex flex-wrap items-center gap-2">
+        <div class="pt-3 border-t border-slate-100 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <span>🌐</span> Mạng xã hội & Kết nối
+            </span>
+            <!-- Nút mở VietQR Donate Modal tách riêng nổi bật nhẹ -->
+            <button 
+              onclick="openDonateModal()"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold transition-all border border-emerald-200 shadow-xs hover:shadow"
+              title="Ủng hộ duy trì máy chủ & Lab"
+            >
+              <span>💳</span>
+              <span>QR Donate</span>
+            </button>
+          </div>
+
+          <!-- Dải 6 nút mạng xã hội đối xứng: 2 hàng x 3 cột chuẩn Bento -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <!-- GitHub -->
-            <a href="https://github.com/ducthangqtm" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-700 text-xs font-bold transition-all duration-200 shadow-xs" title="GitHub ducthangqtm">
+            <a href="https://github.com/ducthangqtm" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-slate-100/90 hover:bg-slate-900 hover:text-white text-slate-700 text-xs font-medium transition-all duration-200 shadow-xs border border-slate-200/60" title="GitHub ducthangqtm">
               <i class="fa-brands fa-github text-sm"></i>
               <span>GitHub</span>
             </a>
 
-            <!-- Discord -->
-            <a href="https://discordapp.com/users/thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-indigo-50 hover:bg-[#5865F2] hover:text-white text-[#5865F2] text-xs font-bold transition-all duration-200 shadow-xs border border-indigo-100 hover:border-[#5865F2]" title="Discord @thangnhayday">
+            <!-- Discord (tím nhạt) -->
+            <a href="https://discordapp.com/users/thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-indigo-50/90 hover:bg-[#5865F2] hover:text-white text-[#5865F2] text-xs font-medium transition-all duration-200 shadow-xs border border-indigo-100 hover:border-[#5865F2]" title="Discord @thangnhayday">
               <i class="fa-brands fa-discord text-sm"></i>
               <span>Discord</span>
             </a>
 
-            <!-- YouTube -->
-            <a href="https://www.youtube.com/@thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-red-50 hover:bg-red-600 hover:text-white text-red-600 text-xs font-bold transition-all duration-200 shadow-xs border border-red-100 hover:border-red-600" title="YouTube @thangnhayday">
+            <!-- YouTube (đỏ nhạt) -->
+            <a href="https://www.youtube.com/@thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-red-50/90 hover:bg-red-600 hover:text-white text-red-600 text-xs font-medium transition-all duration-200 shadow-xs border border-red-100 hover:border-red-600" title="YouTube @thangnhayday">
               <i class="fa-brands fa-youtube text-sm"></i>
               <span>YouTube</span>
             </a>
 
-            <!-- TikTok -->
-            <a href="https://www.tiktok.com/@thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-800 text-xs font-bold transition-all duration-200 shadow-xs border border-slate-200/70" title="TikTok @thangnhayday">
+            <!-- TikTok (đen nhạt) -->
+            <a href="https://www.tiktok.com/@thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-slate-100/90 hover:bg-slate-900 hover:text-white text-slate-800 text-xs font-medium transition-all duration-200 shadow-xs border border-slate-200/70" title="TikTok @thangnhayday">
               <i class="fa-brands fa-tiktok text-sm"></i>
               <span>TikTok</span>
             </a>
 
-            <!-- Telegram -->
-            <a href="https://t.me/thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-sky-50 hover:bg-sky-500 hover:text-white text-sky-700 text-xs font-bold transition-all duration-200 shadow-xs border border-sky-100 hover:border-sky-500" title="Telegram @thangnhayday">
+            <!-- Telegram (xanh sky) -->
+            <a href="https://t.me/thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-sky-50/90 hover:bg-sky-500 hover:text-white text-sky-700 text-xs font-medium transition-all duration-200 shadow-xs border border-sky-100 hover:border-sky-500" title="Telegram @thangnhayday">
               <i class="fa-brands fa-telegram text-sm"></i>
               <span>Telegram</span>
             </a>
 
-            <!-- Facebook -->
-            <a href="https://www.facebook.com/thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-700 text-xs font-bold transition-all duration-200 shadow-xs border border-blue-100 hover:border-blue-600" title="Facebook @thangnhayday">
+            <!-- Facebook (xanh dương nhạt) -->
+            <a href="https://www.facebook.com/thangnhayday" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-blue-50/90 hover:bg-blue-600 hover:text-white text-blue-700 text-xs font-medium transition-all duration-200 shadow-xs border border-blue-100 hover:border-blue-600" title="Facebook @thangnhayday">
               <i class="fa-brands fa-facebook text-sm"></i>
               <span>Facebook</span>
             </a>
           </div>
-
-          <!-- Nút mở VietQR Donate Modal -->
-          <button 
-            onclick="openDonateModal()"
-            class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 text-xs font-bold transition-all border border-emerald-200/80 shadow-xs"
-          >
-            <span>💳</span>
-            <span>QR Donate</span>
-          </button>
         </div>
       </section>
 
