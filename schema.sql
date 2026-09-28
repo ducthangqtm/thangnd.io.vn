@@ -63,4 +63,4 @@ CREATE TABLE IF NOT EXISTS game_stats (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT OR IGNORE INTO game_stats (key, value) VALUES ('total_plays', 0);
+INSERT OR IGNORE INTO game_stats (key, value) VALUES ('total_plays', 142);

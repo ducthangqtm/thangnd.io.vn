@@ -400,7 +400,8 @@ export class TetrisGame extends BaseGame {
     }
   }
 
-  isValidPosition(piece, offsetX = 0, offsetY = 0) {
+  collide(piece = this.currentPiece, offsetX = 0, offsetY = 0) {
+    if (!piece) return true;
     for (let r = 0; r < piece.shape.length; r++) {
       for (let c = 0; c < piece.shape[r].length; c++) {
         if (piece.shape[r][c]) {
@@ -408,15 +409,19 @@ export class TetrisGame extends BaseGame {
           const newY = piece.y + r + offsetY;
 
           if (newX < 0 || newX >= this.COLS || newY >= this.ROWS) {
-            return false;
+            return true;
           }
           if (newY >= 0 && this.grid[newY][newX]) {
-            return false;
+            return true;
           }
         }
       }
     }
-    return true;
+    return false;
+  }
+
+  isValidPosition(piece, offsetX = 0, offsetY = 0) {
+    return !this.collide(piece, offsetX, offsetY);
   }
 
   move(dir) {
@@ -456,21 +461,21 @@ export class TetrisGame extends BaseGame {
 
   softDrop() {
     if (this.state !== 'PLAYING' || !this.currentPiece) return;
-    if (this.isValidPosition(this.currentPiece, 0, 1)) {
+    if (!this.collide(this.currentPiece, 0, 1)) {
       this.currentPiece.y++;
       this.score += 1;
       this.updateScore(this.score);
       soundEngine.playBlip(140, 0.03);
-      this.draw();
     } else {
       this.lockPiece();
     }
+    this.draw();
   }
 
   getGhostY() {
     if (!this.currentPiece) return 0;
     let ghostY = this.currentPiece.y;
-    while (this.isValidPosition(this.currentPiece, 0, ghostY - this.currentPiece.y + 1)) {
+    while (!this.collide(this.currentPiece, 0, ghostY - this.currentPiece.y + 1)) {
       ghostY++;
     }
     return ghostY;
@@ -478,15 +483,29 @@ export class TetrisGame extends BaseGame {
 
   hardDrop() {
     if (this.state !== 'PLAYING' || !this.currentPiece) return;
-    const ghostY = this.getGhostY();
-    const droppedCells = ghostY - this.currentPiece.y;
-    this.currentPiece.y = ghostY;
+
+    // Đẩy khối gạch xuống sát đáy tức thì
+    let droppedCells = 0;
+    while (!this.collide(this.currentPiece, 0, 1)) {
+      this.currentPiece.y++;
+      droppedCells++;
+    }
+
     this.score += droppedCells * 2;
     this.updateScore(this.score);
 
     this.spawnLockParticles(this.currentPiece);
     this.lockPiece();
     soundEngine.playThud();
+    this.draw(); // Vẽ lại canvas ngay lập tức
+  }
+
+  fastDrop() {
+    this.hardDrop();
+  }
+
+  drop() {
+    this.hardDrop();
   }
 
   lockPiece() {

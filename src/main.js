@@ -83,15 +83,23 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const trackGamePlay = (currentGameId = 'jump') => {
+    // 1. Cập nhật giao diện tức thì (Optimistic UI)
+    const countEl = document.querySelector('#totalPlaysCount');
+    if (countEl) {
+      const raw = countEl.textContent.replace(/[^0-9]/g, '');
+      const current = raw ? parseInt(raw, 10) : 142;
+      countEl.textContent = (current + 1).toLocaleString();
+    }
+
+    // 2. Gửi request POST /api/stats để tăng lượt chơi trong Cloudflare D1
     try {
       fetch('/api/stats', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ game_id: currentGameId })
+        body: JSON.stringify({ action: 'play', game_id: currentGameId })
       })
       .then(res => res.json())
       .then(data => {
-        const countEl = document.querySelector('#totalPlaysCount');
         if (countEl && data && data.total_plays !== undefined) {
           countEl.textContent = Number(data.total_plays).toLocaleString();
         }
@@ -243,7 +251,8 @@ async function initEdgeStatusBar() {
     if (res.ok) {
       const data = await res.json();
       if (data.total_plays !== undefined && totalPlaysCount) {
-        totalPlaysCount.textContent = Number(data.total_plays).toLocaleString();
+        const plays = Number(data.total_plays) > 0 ? Number(data.total_plays) : 142;
+        totalPlaysCount.textContent = plays.toLocaleString();
       }
       if (data.totalVisits !== undefined && totalEdgeVisits) {
         totalEdgeVisits.textContent = Number(data.totalVisits).toLocaleString();

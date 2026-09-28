@@ -190,15 +190,34 @@ export class GameController {
       const bindAction = (id, fn) => {
         const el = wrapper.querySelector(id);
         if (el) {
-          el.addEventListener('pointerdown', (e) => {
+          let lastTrigger = 0;
+          const handler = (e) => {
             e.preventDefault();
+            e.stopPropagation();
+            const now = performance.now();
+            if (now - lastTrigger < 80) return;
+            lastTrigger = now;
             if (this.currentGame) fn();
-          });
+          };
+          el.addEventListener('pointerdown', handler);
+          el.addEventListener('touchstart', handler, { passive: false });
+          el.addEventListener('click', handler);
         }
       };
 
       bindAction('#tetrisLeft', () => this.currentGame.move(-1));
       bindAction('#tetrisRight', () => this.currentGame.move(1));
+      bindAction('#tetrisDropBtn', () => {
+        if (this.currentGame) {
+          if (typeof this.currentGame.hardDrop === 'function') {
+            this.currentGame.hardDrop();
+          } else if (typeof this.currentGame.fastDrop === 'function') {
+            this.currentGame.fastDrop();
+          } else if (typeof this.currentGame.softDrop === 'function') {
+            this.currentGame.softDrop();
+          }
+        }
+      });
       bindAction('#tetrisRotateBtn', () => this.currentGame.rotate());
     }
   }

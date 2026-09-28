@@ -15,6 +15,22 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
 
+// Helper đảm bảo bảng game_stats luôn tồn tại và có giá trị khởi đầu
+async function ensureGameStatsTable(db) {
+  try {
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS game_stats (
+        key TEXT PRIMARY KEY,
+        value INTEGER NOT NULL DEFAULT 0,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+      INSERT OR IGNORE INTO game_stats (key, value) VALUES ('total_plays', 142);
+    `);
+  } catch (err) {
+    console.warn('ensureGameStatsTable warning:', err);
+  }
+}
+
 // GET: Lấy thống kê tổng hợp (Lượt gọi API/Edge Requests + Lượt chơi Arcade Game)
 export async function onRequestGet(context) {
   const { env } = context;
@@ -24,7 +40,7 @@ export async function onRequestGet(context) {
     return new Response(
       JSON.stringify({
         success: true,
-        total_plays: 128,
+        total_plays: 142,
         totalVisits: 1024,
         data: [
           { id: 'api_my_ip', name: 'API /api/my-ip Calls', visits: 512, updated_at: new Date().toISOString() },
@@ -43,6 +59,8 @@ export async function onRequestGet(context) {
   }
 
   try {
+    await ensureGameStatsTable(env.DB);
+
     // 1. Lấy thống kê từ site_stats
     let siteStatsResults = [];
     let totalVisits = 0;
@@ -57,12 +75,17 @@ export async function onRequestGet(context) {
     }
 
     // 2. Lấy total_plays từ game_stats
-    let totalPlays = 0;
+    let totalPlays = 142;
     try {
       const gameRow = await env.DB.prepare(
         "SELECT value FROM game_stats WHERE key = 'total_plays'"
       ).first();
-      totalPlays = gameRow ? Number(gameRow.value) : 0;
+      if (gameRow && Number(gameRow.value) > 0) {
+        totalPlays = Number(gameRow.value);
+      } else {
+        await env.DB.prepare("INSERT OR REPLACE INTO game_stats (key, value) VALUES ('total_plays', 142)").run();
+        totalPlays = 142;
+      }
     } catch (e) {
       console.warn('Lỗi đọc bảng game_stats:', e);
     }
@@ -86,7 +109,7 @@ export async function onRequestGet(context) {
     );
   } catch (err) {
     return new Response(
-      JSON.stringify({ success: false, error: err.message || 'Database query error', total_plays: 0, totalVisits: 0 }),
+      JSON.stringify({ success: false, error: err.message || 'Database query error', total_plays: 142, totalVisits: 0 }),
       {
         status: 500,
         headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders },
@@ -101,7 +124,7 @@ export async function onRequestPost(context) {
 
   if (!env.DB) {
     return new Response(
-      JSON.stringify({ success: true, total_plays: 129, message: 'Recorded (mock)' }),
+      JSON.stringify({ success: true, total_plays: 143, message: 'Recorded (mock)' }),
       {
         status: 200,
         headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders },
@@ -110,14 +133,16 @@ export async function onRequestPost(context) {
   }
 
   try {
-    // Tăng total_plays
+    await ensureGameStatsTable(env.DB);
+
+    // Tăng total_plays: Nếu < 142 thì nhảy lên 143, còn lại tăng +1
     await env.DB.prepare(`
-      INSERT INTO game_stats (key, value) VALUES ('total_plays', 1)
-      ON CONFLICT(key) DO UPDATE SET value = value + 1, updated_at = CURRENT_TIMESTAMP
+      INSERT INTO game_stats (key, value) VALUES ('total_plays', 143)
+      ON CONFLICT(key) DO UPDATE SET value = CASE WHEN value < 142 THEN 143 ELSE value + 1 END, updated_at = CURRENT_TIMESTAMP
     `).run();
 
     const row = await env.DB.prepare("SELECT value FROM game_stats WHERE key = 'total_plays'").first();
-    const updatedTotalPlays = row ? Number(row.value) : 0;
+    const updatedTotalPlays = row ? Number(row.value) : 143;
 
     return new Response(
       JSON.stringify({
@@ -131,7 +156,7 @@ export async function onRequestPost(context) {
     );
   } catch (err) {
     return new Response(
-      JSON.stringify({ success: false, error: err.message || 'Tracking update error' }),
+      JSON.stringify({ success: false, error: err.message || 'Tracking update error', total_plays: 143 }),
       {
         status: 500,
         headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders },
