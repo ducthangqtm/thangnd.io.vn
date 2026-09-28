@@ -1,8 +1,8 @@
-name = "thangnd-lab-api"
-main = "index.js"
+name = "thangnd-io-vn"
 compatibility_date = "2026-09-01"
+pages_build_output_dir = "dist"
 
-# Cloudflare D1 Database Binding
+# Cloudflare D1 Database Binding for thangnd.io.vn
 [[d1_databases]]
 binding = "DB"
 database_name = "thangnd-db"

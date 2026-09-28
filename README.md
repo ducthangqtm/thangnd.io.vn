@@ -1,116 +1,90 @@
-# Thắng ND — Digital Identity & Lab Ecosystem
+# ThangND Lab & Arcade Playground
 
-> **Digital Identity Hub & API Gateway** của **Nguyễn Đức Thắng (Thắng ND)**  
+> **Cổng Serverless Edge Computing & Retro Arcade Game Portal** tại `thangnd.io.vn`  
 > **Repository:** `ducthangqtm/thangnd.io.vn`  
-> **Hạ tầng triển khai:** Cloudflare Free Tier (Pages + Workers + D1 SQLite Database)
+> **Nền tảng triển khai:** Cloudflare Pages + Functions + Cloudflare D1 SQLite Database
 
 ---
 
-## 🌐 1. Cấu Trúc Hệ Sinh Thái Domain
+## 🎮 1. Giới Thiệu Dự Án
 
-| Tên miền / Subdomain | Mục đích & Chức năng | Nền tảng |
-| :--- | :--- | :--- |
-| **`thangnd.io.vn`** | **Digital Identity Hub (Root)**: Danh thiếp số Bento Grid hiện đại chuẩn PC Desktop, điều hướng toàn bộ hệ sinh thái | Cloudflare Pages |
-| **`lab.thangnd.io.vn`** | **Vibe Coding Playground & API Gateway**: Worker xử lý `/api/my-ip`, `/api/stats`, `/api/track` và tương tác D1 | Cloudflare Worker |
-| **`thangit.com`** | **Tech Gateway**: Kênh kỹ thuật mạng (Cisco, MikroTik, Cloudflare Zero Trust, WAN IP, Speedtest) | Site vệ tinh |
-| **`thangnhayday.com`** | **Fitness Gateway**: Kênh cardio nhảy dây (1000 Skips Challenge, Arcade Mini-game, D1 Leaderboard) | Site vệ tinh |
+Dự án `thangnd.io.vn` được tối ưu hóa và cấu trúc lại thành hai phân hệ cốt lõi:
+1. **Cloudflare Serverless Lab & API Gateway:**
+   - Sandbox tương tác trực tiếp với các Edge Functions:
+     + `GET /api/my-ip`: Kiểm tra IP client, ASN, ISP, vị trí địa lý và PoP Datacenter Cloudflare.
+     + `GET /api/stats`: Thống kê tổng hợp số lượt gọi API và số lượt chơi game lưu trên Cloudflare D1.
+     + `GET /api/leaderboard`: Truy vấn Bảng Vàng Top 10 High Scores theo từng tựa game.
+     + `POST /api/track`: Ghi nhận sự kiện telemetry vào D1 database.
+   - Trình giả lập cURL command, JSON syntax highlighter và kiểm tra độ trễ Edge theo thời gian thực.
+2. **Arcade Game Arena (Retro Cyberpunk Playground):**
+   - 6 tựa game mini Arcade chạy trên Canvas và Web Audio API:
+     1. **Thắng Nhảy Dây** (`jump`): Game nhảy dây vượt chướng ngại vật nhịp điệu.
+     2. **Chiến Cơ Neon** (`space_shooter`): Bắn tàu bay phong cách không gian neon.
+     3. **Đua Xe Neon** (`racer`): Đua xe né vật cản tốc độ cao.
+     4. **Cyber Snake** (`snake`): Rắn săn mồi cổ điển với giao diện cyberpunk.
+     5. **2048 Neon** (`2048`): Ghép số tư duy logic.
+     6. **Xếp Hình Neon** (`tetris`): Xếp gạch Tetris kinh điển.
+   - Bảng xếp hạng Top 10 High Scores (Global Leaderboard) kết nối trực tiếp với Cloudflare D1.
 
 ---
 
-## 📁 2. Cấu Trúc Thư Mục Dự Án
+## 📁 2. Cấu Trúc Thư Mục Chuẩn Hóa
 
 ```text
 thangnd.io.vn/
-├── public/                 # Cloudflare Pages (Frontend tĩnh)
-│   └── index.html          # Trang Bento Grid PC (Tailwind CSS CDN + Google Fonts)
-├── worker/                 # Cloudflare Workers (Backend API)
-│   ├── index.js            # Router API (/api/my-ip, /api/stats, /api/track)
-│   └── wrangler.toml       # Cấu hình Worker & binding Cloudflare D1
-├── schema.sql              # Script DDL khởi tạo bảng site_stats & seed dữ liệu
-├── index.html              # Đồng bộ root index.html hỗ trợ linh hoạt build Pages
-├── THANGND_ECOSYSTEM_SPEC.md # Đặc tả kiến trúc chi tiết
-└── README.md               # Hướng dẫn quản trị & triển khai hệ thống
+├── functions/               # Cloudflare Pages Functions (Edge APIs)
+│   └── api/
+│       ├── my-ip.js         # API trả về IP client & geo details
+│       ├── stats.js         # API thống kê tổng lượt call & game plays
+│       ├── track.js         # API ghi nhận event telemetry vào D1
+│       └── leaderboard.js   # API lấy và ghi nhận điểm kỷ lục D1
+├── public/                  # Static assets được phục vụ ở root
+│   ├── assets/              # Thumbnail games, sprites, backgrounds, sounds
+│   ├── logo-tit.svg         # Logo vector chính thức
+│   └── logo-tit.png
+├── src/                     # Mã nguồn Frontend ES Modules
+│   ├── games/               # Logic 6 game Arcade (Canvas + Audio)
+│   ├── modules/             # Quản lý Carousel, Leaderboard, Donate, Lab Sandbox
+│   ├── styles/              # CSS Neon Cyberpunk
+│   └── main.js              # Entry point kết nối Lab & Arcade
+├── index.html               # Trang chủ chính thức duy nhất
+├── schema.sql               # Script D1 Database (site_stats, players, leaderboards)
+├── vite.config.js           # Cấu hình Vite build
+├── wrangler.toml            # Cấu hình D1 database binding cho Pages
+└── package.json             # NPM scripts (dev, build, preview)
 ```
 
 ---
 
-## 🚀 3. Hướng Dẫn Triển Khai Nhanh
+## 🚀 3. Hướng Dẫn Chạy & Deploy
 
-### Bước 1: Khởi tạo Database Cloudflare D1
+### A. Chạy thử nghiệm Local (Development)
+```bash
+# Cài đặt dependencies
+npm install
 
+# Khởi chạy Vite Dev Server
+npm run dev
+
+# Kiểm tra build production
+npm run build
+```
+
+### B. Cấu hình Cloudflare Pages
+Khi kết nối Git repository trên Cloudflare Pages Dashboard:
+- **Framework preset:** `None` hoặc `Vite`
+- **Build command:** `npm run build`
+- **Build output directory:** `dist`
+- **Root directory:** `/` (để trống hoặc `/`)
+
+### C. Cấu hình D1 Database
 - **Database Name:** `thangnd-db`
 - **Database ID:** `1f218931-cee9-421e-86fe-6cbf61bb8d90`
+- Trong cài đặt Cloudflare Pages: vào **Settings ➔ Functions ➔ D1 database bindings**:
+  + **Variable name:** `DB`
+  + **D1 database:** Chọn `thangnd-db`
 
-Chạy lệnh thực thi file `schema.sql` lên D1 Remote:
+Thực thi schema cập nhật lên D1 (nếu cần):
 ```bash
-# Thực thi migration D1 trực tiếp qua Wrangler
 npx wrangler d1 execute thangnd-db --file=./schema.sql --remote
 ```
-
-*(Hoặc: Đăng nhập vào Cloudflare Dashboard ➔ Workers & Pages ➔ D1 SQL Database ➔ chọn `thangnd-db` ➔ tab **Console** ➔ dán toàn bộ nội dung file `schema.sql` và bấm Execute).*
-
----
-
-### Bước 2: Deploy Cloudflare Worker (`lab.thangnd.io.vn`)
-
-1. Di chuyển vào thư mục worker:
-```bash
-cd worker
-```
-
-2. Kiểm tra hoặc đăng nhập Cloudflare (nếu chưa đăng nhập):
-```bash
-npx wrangler login
-```
-
-3. Deploy Worker lên Cloudflare Edge:
-```bash
-npx wrangler deploy
-```
-
-4. **Gán Custom Domain trên Cloudflare Dashboard**:
-   - Truy cập **Workers & Pages** ➔ Chọn Worker **`thangnd-lab-api`**.
-   - Vào tab **Settings** ➔ **Domains & Routes** ➔ Bấm **Add** ➔ **Custom Domain**.
-   - Nhập: `lab.thangnd.io.vn` và bấm kích hoạt (Cloudflare sẽ tự động cấp SSL/TLS và cấu hình DNS CNAME).
-
----
-
-### Bước 3: Deploy Frontend (Cloudflare Pages)
-
-1. Truy cập **Cloudflare Dashboard** ➔ **Workers & Pages** ➔ **Create application** ➔ **Pages** ➔ **Connect to Git**.
-2. Chọn repository: **`ducthangqtm/thangnd.io.vn`**.
-3. Cấu hình thông số Build:
-   - **Framework preset**: `None`
-   - **Build command**: *(để trống)*
-   - **Build output directory**: `public` (hoặc `.` vì root đã đồng bộ `index.html`)
-4. Bấm **Save and Deploy**.
-5. **Gán Custom Domain**:
-   - Sau khi deploy xong, vào tab **Custom domains** của Pages project.
-   - Thêm `thangnd.io.vn` và bấm kích hoạt.
-
----
-
-## 🔌 4. Đặc Tả API Gateway (`lab.thangnd.io.vn`)
-
-| Phương thức | Đường dẫn | Chức năng | Dữ liệu trả về |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/my-ip` | Trả về thông tin IP, quốc gia, thành phố của khách qua Cloudflare Headers | `{ "ip": "...", "country": "VN", "city": "Hanoi" }` |
-| `GET` | `/api/stats` | Lấy danh sách lượt click / visits các site từ Cloudflare D1 | `{ "success": true, "data": [...], "totalVisits": 120 }` |
-| `POST` | `/api/track` | Tăng số lượt visits cho site (`thangit`, `thangnhayday`, `thangnd_hub`) | `{ "success": true, "siteId": "thangit" }` |
-| `OPTIONS`| `*` | Xử lý CORS Preflight cho toàn bộ domain vệ tinh | Status 204 No Content |
-
----
-
-## 🛠️ 5. Thử Nghiệm Tại Local (Development)
-
-- **Test Worker API tại máy:**
-  ```bash
-  cd worker
-  npx wrangler dev
-  ```
-- **Test Frontend tại máy:**
-  Mở file `public/index.html` trực tiếp trên trình duyệt hoặc sử dụng Live Server (`npx serve public`).
-
----
-
-© 2026 **Nguyễn Đức Thắng (Thắng ND)**. All rights reserved.

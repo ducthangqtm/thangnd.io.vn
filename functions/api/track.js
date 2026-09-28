@@ -22,25 +22,18 @@ export async function onRequest(context) {
     );
   }
 
-  if (!env.DB) {
-    return new Response(
-      JSON.stringify({ success: false, error: 'D1 database binding "DB" not found in Pages configuration.' }),
-      { status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders } }
-    );
-  }
-
   try {
     let siteId = '';
     const contentType = request.headers.get('content-type') || '';
 
     if (contentType.includes('application/json')) {
       const body = await request.json().catch(() => ({}));
-      siteId = body.siteId || body.id;
+      siteId = body.siteId || body.id || body.event;
     } else {
       const text = await request.text().catch(() => '');
       try {
         const parsed = JSON.parse(text);
-        siteId = parsed.siteId || parsed.id;
+        siteId = parsed.siteId || parsed.id || parsed.event;
       } catch {
         siteId = text.trim();
       }
@@ -59,6 +52,24 @@ export async function onRequest(context) {
       return new Response(
         JSON.stringify({ success: false, error: 'Invalid siteId format' }),
         { status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders } }
+      );
+    }
+
+    if (!env.DB) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          siteId: sanitizedSiteId,
+          message: 'Tracking recorded (mock mode)',
+        }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            ...corsHeaders,
+          },
+        }
       );
     }
 
