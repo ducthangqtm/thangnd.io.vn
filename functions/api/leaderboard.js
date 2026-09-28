@@ -45,18 +45,14 @@ export async function onRequestGet(context) {
 
   // Fallback nếu chưa kết nối D1
   if (!env.DB) {
-    const mockResults = [
-      { player_name: "Thắng Nhảy Dây", score: 128, created_at: "2026-09-01" },
-      { player_name: "Pro_Skipper", score: 105, created_at: "2026-09-05" },
-      { player_name: "SpeedHop", score: 88, created_at: "2026-09-10" }
-    ];
     return new Response(
       JSON.stringify({
         success: true,
         game_id,
         type: 'alltime',
-        results: mockResults,
-        top10: mockResults.map((r, idx) => ({ ...r, rank: idx + 1, display_name: r.player_name })),
+        results: [],
+        top10: [],
+        min_qualifying_score: 1,
         mock: true
       }),
       { status: 200, headers: responseHeaders }

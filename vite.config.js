@@ -1,39 +1,13 @@
 import { defineConfig } from 'vite';
 
-// In-memory mock store cho môi trường local development (tránh lỗi 404 khi test host ip)
+// In-memory store cho môi trường local development (khởi tạo trống, lưu điểm động khi chơi)
 const localMockScores = {
-  jump: [
-    { rank: 1, player_name: "Thắng Nhảy Dây", display_name: "Thắng Nhảy Dây", score: 128, created_at: "2026-09-01" },
-    { rank: 2, player_name: "Pro_Skipper", display_name: "Pro_Skipper", score: 105, created_at: "2026-09-05" },
-    { rank: 3, player_name: "SpeedHop", display_name: "SpeedHop", score: 88, created_at: "2026-09-10" },
-    { rank: 4, player_name: "HànhLangMaster", display_name: "HànhLangMaster", score: 72, created_at: "2026-09-12" },
-    { rank: 5, player_name: "MinhNhảy", display_name: "MinhNhảy", score: 65, created_at: "2026-09-15" }
-  ],
-  snake: [
-    { rank: 1, player_name: "CyberViper", display_name: "CyberViper", score: 680, created_at: "2026-09-01" },
-    { rank: 2, player_name: "NeonSnake", display_name: "NeonSnake", score: 540, created_at: "2026-09-05" },
-    { rank: 3, player_name: "Thắng Nhảy Dây", display_name: "Thắng Nhảy Dây", score: 420, created_at: "2026-09-10" }
-  ],
-  '2048': [
-    { rank: 1, player_name: "NeonMaster", display_name: "NeonMaster", score: 16384, created_at: "2026-09-01" },
-    { rank: 2, player_name: "QuickMerge", display_name: "QuickMerge", score: 8192, created_at: "2026-09-05" },
-    { rank: 3, player_name: "Thắng Nhảy Dây", display_name: "Thắng Nhảy Dây", score: 4096, created_at: "2026-09-10" }
-  ],
-  tetris: [
-    { rank: 1, player_name: "BlockKing", display_name: "BlockKing", score: 9800, created_at: "2026-09-01" },
-    { rank: 2, player_name: "TetrisPro", display_name: "TetrisPro", score: 8400, created_at: "2026-09-05" },
-    { rank: 3, player_name: "Thắng Nhảy Dây", display_name: "Thắng Nhảy Dây", score: 6500, created_at: "2026-09-10" }
-  ],
-  space_shooter: [
-    { rank: 1, player_name: "AcePilot_VN", display_name: "AcePilot_VN", score: 3250, created_at: "2026-09-12" },
-    { rank: 2, player_name: "CosmicLegend", display_name: "CosmicLegend", score: 2680, created_at: "2026-09-14" },
-    { rank: 3, player_name: "Thắng Nhảy Dây", display_name: "Thắng Nhảy Dây", score: 1980, created_at: "2026-09-16" }
-  ],
-  racer: [
-    { rank: 1, player_name: "OutrunKing", display_name: "OutrunKing", score: 3850, created_at: "2026-09-12" },
-    { rank: 2, player_name: "SpeedDemon", display_name: "SpeedDemon", score: 3100, created_at: "2026-09-14" },
-    { rank: 3, player_name: "Thắng Nhảy Dây", display_name: "Thắng Nhảy Dây", score: 2450, created_at: "2026-09-16" }
-  ]
+  jump: [],
+  snake: [],
+  '2048': [],
+  tetris: [],
+  space_shooter: [],
+  racer: []
 };
 
 let localTotalPlays = 142;
